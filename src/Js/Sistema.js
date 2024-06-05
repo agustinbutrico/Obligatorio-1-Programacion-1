@@ -24,4 +24,15 @@ class Sistema {
       ),
     ];
   }
+
+  obtenerProductoPorId(pIdProducto) {
+    let productoEncontrado = [];
+    // recorre productos y los identifica por su id
+    for (let i = 0; this.productos.length; i++) {
+        if (pIdProducto === this.productos[i].id) {
+            productoEncontrado.push(this.productos[i])
+        }
+    }
+    return productoEncontrado;
+  }
 }
