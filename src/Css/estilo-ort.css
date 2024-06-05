@@ -1,0 +1,197 @@
+@charset "utf-8";
+/* CSS Document */
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz@8..144&display=swap");
+
+body {
+  font-family: "Roboto Flex", sans-serif;
+  background-color: #fafafa;
+  margin: 0;
+}
+
+/* Estilos contenedor de todo el documento */
+#contenedor {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Estilos contenedor de todo el contenido  */
+main {
+  padding: 20px;
+}
+
+/* Titulos */
+h1,
+h2,
+h3,
+h5,
+h6 {
+  font-family: "Roboto Flex", sans-serif;
+  color: #002e4a;
+}
+
+h2 {
+  font-weight: 800;
+  color: #c0ca33;
+  text-transform: uppercase;
+}
+
+h4 {
+  margin-top: 26px;
+  font-weight: 600;
+  color: #c0ca33;
+}
+
+/* Estilos nav */
+#navPrincipal {
+  float: right;
+  margin-top: 5px;
+  margin-right: 10px;
+  max-width: 700px;
+}
+
+#navPrincipal li {
+  list-style-type: none;
+  padding: 10px;
+  margin: 5px;
+  float: left;
+}
+
+header img {
+  margin: 20px;
+  width: 60px;
+  border:1px solid #888;
+}
+
+#navPrincipal a {
+  cursor: pointer;
+  color: #fafafa;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+#navPrincipal a:hover {
+  color: #c0ca33;
+}
+
+header {
+  background-color: #002e4a;
+  clear: both;
+  color: fafafa;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Estilos tabla */
+table,
+th,
+td {
+  border-collapse: collapse;
+  border: none;
+  padding-left: 15px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  background-color: #fafafa;
+  text-align: center;
+}
+
+table {
+  min-width: 700px;
+}
+
+thead {
+  border-bottom: 1px solid black;
+  background-color: #fafafa;
+  color: #002e4a;
+  font-weight: normal;
+}
+
+table img {
+  max-width: 100px;
+}
+
+td > input[type="button"] {
+  max-width: 150px;
+  font-size: 12px;
+}
+
+table tr:nth-child(odd) td {
+  background-color: #ececec;
+}
+
+table tr:nth-child(even) td {
+  background-color: #fafafa;
+}
+
+/* Estilos label de los inputs */
+label {
+  text-transform: uppercase;
+  font-size: 13px;
+}
+
+/* Estilos de los inputs */
+input,
+textarea,
+select {
+  margin: 0 10px 10px 0;
+  display: block;
+  min-width: 200px;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #495057;
+  background-color: fafafa;
+  background-clip: padding-box;
+  border: 1.5px solid #4a5a70;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+/* area de texto */
+.textArea {
+  min-height: 80px;
+}
+
+/* boton */
+input[type="button"],
+button {
+  background-color: #002e4a;
+  color: #fafafa;
+  border: 1px solid rgb(0, 58, 117);
+  border-radius: 6px;
+  min-width: 100px;
+  height: 35px;
+  text-transform: uppercase;
+}
+
+input[type="button"]:hover {
+  background-color: #c0ca33;
+  border: 1px solid #eefe00;
+  color: #fafafa;
+}
+
+input[type="button"]:disabled {
+  background-color: lightgray;
+}
+
+main {
+  min-height: 250px;
+}
+
+/* Estilos del footer */
+footer {
+  background-color: #002e4a;
+  clear: both;
+  padding: 20px;
+  color: #f5f5f7;
+  font-size: 12px;
+}
+
+footer a {
+  cursor: pointer;
+  color: #f5f5f7;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
