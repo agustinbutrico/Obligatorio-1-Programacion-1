@@ -1,14 +1,11 @@
 class Sistema {
   constructor() {
-    this.Administrador = [
-        new Administrador("Valentin123", 123456),
-        new Administrador("Agustin321", 654321)
-    ];
-    
+    this.Administrador = [new Administrador("Valentin123", 123456), new Administrador("Agustin321", 654321)];
+
     this.idUsuario = 2;
     this.Usuario = [
-        new Usuario (0, 3000, "Nahuel", "Sosa", "Nahu515", "Panda2803", "WWWW-XXXX-YYYY-ZZZZ", "234"),
-        new Usuario (1, 3000, "Jose", "Jose", "Juan", "Juanico", "WVVW-XYYX-YGGY-ZFFZ", "967")
+      new Usuario(0, 3000, "Nahuel", "Sosa", "Nahu515", "Panda2803", "WWWW-XXXX-YYYY-ZZZZ", "234"),
+      new Usuario(1, 3000, "Jose", "Jose", "Juan", "Juanico", "WVVW-XYYX-YGGY-ZFFZ", "967"),
     ];
 
     this.idProducto = 2;
@@ -40,9 +37,9 @@ class Sistema {
     let productoEncontrado = [];
     // recorre productos y los identifica por su id
     for (let i = 0; this.productos.length; i++) {
-        if (pIdProducto === this.productos[i].id) {
-            productoEncontrado.push(this.productos[i])
-        }
+      if (pIdProducto === this.productos[i].id) {
+        productoEncontrado.push(this.productos[i]);
+      }
     }
     return productoEncontrado;
   }
