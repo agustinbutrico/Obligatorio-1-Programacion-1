@@ -5,11 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Obligatorio Programación 1</title>
     <meta name="description" content="Resolución al obligatorio de Analista en TI, Programación 1, año 2024 " />
-    <link rel="stylesheet" href="src/Css/estilo-ort.css">
+    <link rel="stylesheet" href="src/Css/estilo-login-registro.css" />
+    <link rel="stylesheet" href="src/Css/estilo-ort.css" />
+    <link rel="stylesheet" href="src/Css/estilo-extra.css" />
   </head>
 
   <body>
-    <div id="contenedor">
+    <!-- Login / Registro -->
+    <section class="ingreso">
+      <div>
+        <h2>Ingresar</h2>
+        <form action="#" method="post" id="fIngreso">
+          <label for="txtNombreUsuario">Nombre</label>
+          <input type="text" id="txtUsuarioIngreso" />
+          <label for="txtContraseniaUsuario">Contraseña</label>
+          <input type="password" id="passContraseniaIngreso" />
+        </form>
+      </div>
+      <div>
+        <input type="button" value="Ingresar" id="btnIngresar" />
+      </div>
+      <div><p>No soy usuario registrado y quiero <span><a href="">crear una cuenta</a></span></p></div>
+    </section>
+    <section class="registro">
+      <div>
+        <h2>Registrarse</h2>
+        <form action="#" method="post" id="fRegistro">
+          <label for="txtNombreRegistro">Nombre</label>
+          <input type="text" id="txtNombreRegistro" />
+          <label for="txtApellidoRegistro">Apellido</label>
+          <input type="text" id="txtApellidoRegistro" />
+          <label for="txtUsuarioRegistro">Nombre usuario</label>
+          <input type="text" id="txtUsuarioRegistro" />
+          <label for="txtContraseniaRegistro">Contraseña</label>
+          <input type="password" id="txtContraseniaRegistro" />
+        </form>
+      </div>
+      <div>
+        <input type="button" value="Registrarse" id="btnRegistrar" />
+      </div>
+    </section>
+    <!-- Contenido -->
+    <section class="postIngreso">
       <header>
         <img id="logo" src="https://p1.develotion.com/cart.jpg" alt="logo" />
         <nav>
@@ -29,80 +66,12 @@
           </ul>
         </nav>
       </header>
-      <!-- FIN CABEZAL -->
+
       <main>
-        <section>
-          <!-- TITULOS -->
-          <h1>Titulo 1</h1>
-          <h2>Titulo 2</h2>
-          <h3>Titulo 3</h3>
-          <h4>Titulo 4</h4>
-          <hr />
-          <!-- INPUTS -->
-          <h3>Inputs</h3>
-          <label for="txtTexto">txtTexto</label>
-          <input type="text" id="txtTexto" />
-          <label for="nbrNumero">nbrNumero</label>
-          <input type="number" id="nbrNumero" />
-          <label for="txtPass">txtPass</label>
-          <input type="password" id="txtPass" />
-          <label for="txtComentarios">Text Area</label>
-          <textarea id="txtComentarios"></textarea>
-          <label for="slcOpciones">Select</label>
-          <select id="slcOpciones">
-            <option value="1">opcion 1</option>
-            <option value="2">opcion 2</option>
-            <option value="3">opcion 3</option>
-          </select>
-          <input type="button" value="Enviar" /><br />
-          <hr />
-        </section>
-
-        <!-- TABLA -->
-        <h3>Resumen</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Precio</th>
-              <th>Imagen</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Nombre 1</td>
-              <td>30</td>
-              <td><img src="https://place-hold.it/100x100/aaa/imagen.jpg" alt="prueba" /></td>
-              <td>
-                <input type="button" value="Acción" />
-              </td>
-            </tr>
-            <tr>
-              <td>9</td>
-              <td>30</td>
-              <td><img src="https://place-hold.it/100x100/aaa/imagen.jpg" alt="prueba" /></td>
-              <td>
-                <input type="button" value="Accion" />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <p>
-          Donec dapibus arcu a diam commodo, vel vehicula orci volutpat. Vestibulum convallis tempor mattis. Donec molestie semper leo vel luctus.
-          Curabitur quis nisi maximus, luctus lorem quis, dignissim augue.
-        </p>
-        <hr />
+        <section></section>
       </main>
-      <!-- FIN CONTENIDO -->
-      <footer>
-        <a href="https://www.ort.edu.uy">Footer</a>
-      </footer>
-      <!-- FIN PIE -->
-    </div>
-    <!-- FIN CONTENEDOR -->
-<img src="src/Img/calzado-basket-long.jpg" alt="">
+    </section>
+
     <script src="src/Js/Productos.js"></script>
     <script src="src/Js/Sistema.js"></script>
     <script src="src/Js/codigo.js"></script>
