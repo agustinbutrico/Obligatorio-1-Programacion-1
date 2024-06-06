@@ -9,7 +9,7 @@ body {
 }
 
 /* Estilos contenedor de todo el documento */
-#contenedor {
+.logged {
   width: 100%;
   display: flex;
   flex-direction: column;
