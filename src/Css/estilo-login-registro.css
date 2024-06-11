@@ -1,0 +1,12 @@
+.ingreso,
+.registro {
+    border: 2px solid #002e4a;
+    border-radius: 10px;
+    width: 380px;
+    margin: 100px auto;
+    display: grid;
+    padding: 20px;
+    align-items: center;
+    justify-content: start;
+    grid-template-columns: 1fr;
+}
