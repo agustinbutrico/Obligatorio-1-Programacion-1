@@ -1,6 +1,6 @@
 class Sistema {
   constructor() {
-    this.Administrador = [new Administrador("Valentin123", 123456), new Administrador("Agustin321", 654321)];
+    this.Administradores = [new Administrador("Valentin123", 123456), new Administrador("Agustin321", 654321)];
 
     this.idUsuario = 2;
     this.Usuario = [
@@ -9,7 +9,7 @@ class Sistema {
     ];
 
     this.idProducto = 2;
-    this.productos = [
+    this.Productos = [
       new Producto(
         "Calzado Basket Long",
         300,

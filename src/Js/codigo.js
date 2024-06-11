@@ -2,7 +2,9 @@ document.querySelector("#btnIngresar").addEventListener("click", ingreso);
 document.querySelector("#btnRegistrar").addEventListener("click", registro);
 document.querySelector("#aCrearCuenta").addEventListener("click", crearCuenta);
 
-// let sis = new Sistema();
+let sis = new Sistema();
+ocultarTodo();
+mostrarIngreso();
 
 function mostrar(pId) {
   document.querySelector("#" + pId).style.display = "block";
@@ -12,33 +14,46 @@ function ocultar(pId) {
 }
 
 function ocultarTodo() {
+  ocultar("secNavegacion");
   ocultar("secIngreso");
   ocultar("secRegistro");
   ocultar("secContenido");
 }
+function mostrarNavegacion(admin) {
+  mostrar("secNavegacion");
+  if (admin) {
+    ocultar("navUsuario");
+    mostrar("navAdministrador");
+  } else {
+    mostrar("navUsuario");
+    ocultar("navAdministrador");
+  }
+}
 function mostrarIngreso() {
-  ocultarTodo();
   mostrar("secIngreso");
 }
 function mostrarRegistro() {
-  ocultarTodo();
   mostrar("secRegistro");
 }
-mostrarIngreso();
 function mostrarContenido() {
-  ocultarTodo();
   mostrar("secContenido");
 }
 //
 //
 //
-function ingreso() {
+function ingreso(admin) {
+  ocultarTodo();
+  mostrarNavegacion(admin);
   mostrarContenido();
 }
 function registro() {
+  ocultarTodo();
   mostrarIngreso();
 }
 function crearCuenta() {
   ocultarTodo();
   mostrarRegistro();
 }
+//
+//
+//
