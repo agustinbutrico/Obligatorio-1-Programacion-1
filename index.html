@@ -7,16 +7,35 @@
     <meta name="description" content="Resolución al obligatorio de Analista en TI, Programación 1, año 2024 " />
     <link rel="stylesheet" href="src/Css/estilo-login-registro.css" />
     <link rel="stylesheet" href="src/Css/estilo-ort.css" />
-    <link rel="stylesheet" href="src/Css/estilo-extra.css" />
   </head>
 
   <body>
-    <!-- Login / Registro -->
-    <section class="ingreso">
+    <!-- Navegacion -->
+    <section id="secNavegacion">
+      <header>
+        <!-- Usuario -->
+        <section id="navUsuario">
+          <img id="logo" src="https://p1.develotion.com/cart.jpg" alt="logo" />
+          <nav>
+            <ul id="navPrincipal"></ul>
+          </nav>
+        </section>
+        <!-- Administrador -->
+        <section id="navAdministrador">
+          <img id="logo" src="https://p1.develotion.com/cart.jpg" alt="logo" />
+          <nav>
+            <ul id="navPrincipal"></ul>
+          </nav>
+        </section>
+      </header>
+    </section>
+
+    <!-- Login -->
+    <section class="ingreso" id="secIngreso">
       <div>
         <h2>Ingresar</h2>
         <form action="#" method="post" id="fIngreso">
-          <label for="txtNombreUsuario">Nombre</label>
+          <label for="txtUsuarioIngreso">Nombre</label>
           <input type="text" id="txtUsuarioIngreso" />
           <label for="txtContraseniaUsuario">Contraseña</label>
           <input type="password" id="passContraseniaIngreso" />
@@ -25,9 +44,16 @@
       <div>
         <input type="button" value="Ingresar" id="btnIngresar" />
       </div>
-      <div><p>No soy usuario registrado y quiero <span><a href="">crear una cuenta</a></span></p></div>
+      <div>
+        <p>
+          No soy usuario registrado y quiero <span><a id="aCrearCuenta">crear una cuenta</a></span>
+        </p>
+        <p id="pErrorIngreso"></p>
+      </div>
     </section>
-    <section class="registro">
+
+    <!-- Registro -->
+    <section class="registro" id="secRegistro">
       <div>
         <h2>Registrarse</h2>
         <form action="#" method="post" id="fRegistro">
@@ -39,40 +65,28 @@
           <input type="text" id="txtUsuarioRegistro" />
           <label for="txtContraseniaRegistro">Contraseña</label>
           <input type="password" id="txtContraseniaRegistro" />
+          <label for="txtTarjetaRegistro">Tarjeta de Credito / Debito</label>
+          <input type="text" id="txtTarjetaRegistro" />
+          <label for="txtCVCRegistro">Codigo CVC</label>
+          <input type="text" id="txtCVCRegistro" />
         </form>
       </div>
       <div>
         <input type="button" value="Registrarse" id="btnRegistrar" />
       </div>
     </section>
-    <!-- Contenido -->
-    <section class="postIngreso">
-      <header>
-        <img id="logo" src="https://p1.develotion.com/cart.jpg" alt="logo" />
-        <nav>
-          <ul id="navPrincipal">
-            <li>
-              <a>Sección 1</a>
-            </li>
-            <li>
-              <a>Sección 2</a>
-            </li>
-            <li>
-              <a>Sección 3</a>
-            </li>
-            <li>
-              <a>Sección 4</a>
-            </li>
-          </ul>
-        </nav>
-      </header>
 
+    <!-- Contenido -->
+    <section class="contenido" id="secContenido">
       <main>
         <section></section>
       </main>
     </section>
 
-    <script src="src/Js/Productos.js"></script>
+    <!-- Scripts -->
+    <script src="src/Js/Administrador.js"></script>
+    <script src="src/Js/Usuario.js"></script>
+    <script src="src/Js/Producto.js"></script>
     <script src="src/Js/Sistema.js"></script>
     <script src="src/Js/codigo.js"></script>
   </body>

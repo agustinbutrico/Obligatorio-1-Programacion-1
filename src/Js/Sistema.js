@@ -1,15 +1,19 @@
 class Sistema {
   constructor() {
-    this.Administrador = [new Administrador("Valentin123", 123456), new Administrador("Agustin321", 654321)];
+    this.Administradores = [
+      new Administrador("Valentin123", 123456),
+      new Administrador("Agustin321", 654321),
+      new Administrador("PedroP12", 666999),
+    ];
 
     this.idUsuario = 2;
-    this.Usuario = [
+    this.Usuarios = [
       new Usuario(0, 3000, "Nahuel", "Sosa", "Nahu515", "Panda2803", "WWWW-XXXX-YYYY-ZZZZ", "234"),
       new Usuario(1, 3000, "Jose", "Jose", "Juan", "Juanico", "WVVW-XYYX-YGGY-ZFFZ", "967"),
     ];
 
     this.idProducto = 2;
-    this.productos = [
+    this.Productos = [
       new Producto(
         "Calzado Basket Long",
         300,
@@ -33,12 +37,27 @@ class Sistema {
     ];
   }
 
+  bucarAdministrador(pNombre, pContrasenia) {
+    for (let i = 0; i < this.Administradores.length; i++) {
+      if (this.Administradores[i].nombreAdmin === pNombre && this.Administradores[i].passAdmin === pContrasenia) {
+        return true;
+      }
+    }
+  }
+  bucarUsuario(pNombre, pContrasenia) {
+    for (let i = 0; i < this.Usuarios.length; i++) {
+      if (this.Usuarios[i].nombreUsuario === pNombre && this.Usuarios[i].passComprador === pContrasenia) {
+        return true;
+      }
+    }
+  }
+
   obtenerProductoPorId(pIdProducto) {
     let productoEncontrado = [];
     // recorre productos y los identifica por su id
-    for (let i = 0; this.productos.length; i++) {
-      if (pIdProducto === this.productos[i].id) {
-        productoEncontrado.push(this.productos[i]);
+    for (let i = 0; this.Productos.length; i++) {
+      if (pIdProducto === this.Productos[i].id) {
+        productoEncontrado.push(this.Productos[i]);
       }
     }
     return productoEncontrado;

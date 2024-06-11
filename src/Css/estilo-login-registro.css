@@ -10,3 +10,8 @@
     justify-content: start;
     grid-template-columns: 1fr;
 }
+#aCrearCuenta {
+    text-decoration: underline;
+    color: #004570;
+    cursor: pointer;
+}
