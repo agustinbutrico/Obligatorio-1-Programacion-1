@@ -41,16 +41,29 @@ function mostrarContenido() {
 //
 //
 //
-function ingreso(admin) {
-  ocultarTodo();
-  mostrarNavegacion(admin);
-  mostrarContenido();
+function ingreso() {
+  nombre = document.querySelector("#txtUsuarioIngreso").value;
+  contrasenia = document.querySelector("#passContraseniaIngreso").value;
+  if (sis.bucarAdministrador(nombre, contrasenia)) {
+    // Navegacion en true muestra la navegación de administrador
+    ocultarTodo();
+    mostrarNavegacion(true);
+    mostrarContenido();
+  } else if (sis.bucarUsuario(nombre, contrasenia)) {
+    ocultarTodo();
+    mostrarNavegacion(false);
+    mostrarContenido();
+  } else {
+    document.querySelector("#pErrorIngreso").innerHTML = "Usario y/o contraseña incorrectos";
+  }
 }
 function registro() {
+  // Mostrar
   ocultarTodo();
   mostrarIngreso();
 }
 function crearCuenta() {
+  // Mostrar
   ocultarTodo();
   mostrarRegistro();
 }
