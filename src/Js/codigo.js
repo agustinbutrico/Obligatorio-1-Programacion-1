@@ -31,6 +31,7 @@ function mostrarNavegacion(admin) {
 }
 function mostrarIngreso() {
   mostrar("secIngreso");
+  document.querySelector("#pErrorIngreso").innerHTML = "";
 }
 function mostrarRegistro() {
   mostrar("secRegistro");
