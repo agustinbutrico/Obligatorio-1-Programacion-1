@@ -1,6 +1,5 @@
 document.querySelector("#btnIngresar").addEventListener("click", ingreso);
 document.querySelector("#btnRegistrar").addEventListener("click", registro);
-document.querySelector("#aCrearCuenta").addEventListener("click", crearCuenta);
 
 let sis = new Sistema();
 ocultarTodo();
@@ -35,6 +34,7 @@ function mostrarIngreso() {
 }
 function mostrarRegistro() {
   mostrar("secRegistro");
+  document.querySelector("#pErrorRegistro").innerHTML = "";
 }
 function mostrarContenido() {
   mostrar("secContenido");
@@ -42,15 +42,34 @@ function mostrarContenido() {
 //
 //
 //
+function registro() {
+  let usuario = document.querySelector("#txtUsuarioRegistro").value;
+  let pass = document.querySelector("#txtPassRegistro").value;
+  let nombre = document.querySelector("#txtNombreRegistro").value;
+  let apellido = document.querySelector("#txtApellidoRegistro").value;
+  let tarjeta = document.querySelector("#txtTarjetaRegistro").value;
+  let cvc = document.querySelector("#txtCVCRegistro").value;
+  if (sis.existeAdministrador(usuario) || sis.existeUsuario(usuario)) {
+    document.querySelector("#pErrorRegistro").innerHTML = "Nombre de usuario ya en uso";
+  } else {
+    sis.registrarUsuario(usuario, pass, nombre, apellido, tarjeta, cvc);
+    // Mostrar
+    ocultarTodo();
+    mostrarIngreso();
+  }
+}
 function ingreso() {
-  nombre = document.querySelector("#txtUsuarioIngreso").value;
+  usuario = document.querySelector("#txtUsuarioIngreso").value;
   contrasenia = document.querySelector("#passContraseniaIngreso").value;
-  if (sis.bucarAdministrador(nombre, contrasenia)) {
+  if (campoVacio(usuario) || campoVacio(contrasenia)) {
+    document.querySelector("#pErrorIngreso").innerHTML = "Los campos no pueden estar vacios";
+  }
+  if (sis.buscarAdministrador(usuario, contrasenia)) {
     // Navegacion en true muestra la navegación de administrador
     ocultarTodo();
     mostrarNavegacion(true);
     mostrarContenido();
-  } else if (sis.bucarUsuario(nombre, contrasenia)) {
+  } else if (sis.buscarUsuario(usuario, contrasenia)) {
     ocultarTodo();
     mostrarNavegacion(false);
     mostrarContenido();
@@ -58,16 +77,10 @@ function ingreso() {
     document.querySelector("#pErrorIngreso").innerHTML = "Usario y/o contraseña incorrectos";
   }
 }
-function registro() {
-  // Mostrar
-  ocultarTodo();
-  mostrarIngreso();
+
+//
+//
+//
+function campoVacio(campo) {
+  return campo === "";
 }
-function crearCuenta() {
-  // Mostrar
-  ocultarTodo();
-  mostrarRegistro();
-}
-//
-//
-//

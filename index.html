@@ -42,13 +42,13 @@
         </form>
       </div>
       <div>
+        <p id="pErrorIngreso"></p>
         <input type="button" value="Ingresar" id="btnIngresar" />
       </div>
       <div>
         <p>
           No soy usuario registrado y quiero <span><a id="aCrearCuenta">crear una cuenta</a></span>
         </p>
-        <p id="pErrorIngreso"></p>
       </div>
     </section>
 
@@ -57,14 +57,16 @@
       <div>
         <h2>Registrarse</h2>
         <form action="#" method="post" id="fRegistro">
+          <label for="txtUsuarioRegistro">Nombre usuario</label>
+          <input type="text" id="txtUsuarioRegistro" />
+          <label for="txtPassRegistro">Contraseña</label>
+          <input type="password" id="txtPassRegistro" />
+
           <label for="txtNombreRegistro">Nombre</label>
           <input type="text" id="txtNombreRegistro" />
           <label for="txtApellidoRegistro">Apellido</label>
           <input type="text" id="txtApellidoRegistro" />
-          <label for="txtUsuarioRegistro">Nombre usuario</label>
-          <input type="text" id="txtUsuarioRegistro" />
-          <label for="txtContraseniaRegistro">Contraseña</label>
-          <input type="password" id="txtContraseniaRegistro" />
+
           <label for="txtTarjetaRegistro">Tarjeta de Credito / Debito</label>
           <input type="text" id="txtTarjetaRegistro" />
           <label for="txtCVCRegistro">Codigo CVC</label>
@@ -72,6 +74,7 @@
         </form>
       </div>
       <div>
+        <p id="pErrorRegistro"></p>
         <input type="button" value="Registrarse" id="btnRegistrar" />
       </div>
     </section>
