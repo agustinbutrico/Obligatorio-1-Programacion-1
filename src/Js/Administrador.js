@@ -1,6 +1,6 @@
 class Administrador {
-  constructor(_nombreAdmin, _passAdmin) {
-    this.nombreAdmin = _nombreAdmin;
-    this.passAdmin = _passAdmin;
+  constructor(_user, _pass) {
+    this.user = _user;
+    this.pass = _pass;
   }
 }

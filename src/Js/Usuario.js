@@ -1,12 +1,12 @@
 class Usuario {
-  constructor(_id, _saldoCuenta, _nombreComprador, _apellidoComprador, _nombreUsuario, _passComprador, _numeroTarjeta, _codigoCVC) {
+  constructor(_id, _saldo, _user, _pass, _nombre, _apellido, _tarjeta, _cvc) {
     this.id = _id;
-    this.saldoCuenta = _saldoCuenta;
-    this.nombreComprador = _nombreComprador;
-    this.apellidoComprador = _apellidoComprador;
-    this.nombreUsuario = _nombreUsuario;
-    this.passComprador = _passComprador;
-    this.numeroTarjeta = _numeroTarjeta;
-    this.codigoCVC = _codigoCVC;
+    this.saldo = _saldo;
+    this.user = _user;
+    this.pass = _pass;
+    this.nombre = _nombre;
+    this.apellido = _apellido;
+    this.tarjeta = _tarjeta;
+    this.cvc = _cvc;
   }
 }
