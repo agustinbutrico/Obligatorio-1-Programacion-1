@@ -53,15 +53,15 @@ class Sistema {
       }
     }
   }
-  // Permite encontrar usuarios y administradores
-  buscarAdministrador(pUser, pPass) {
+  // Verifica que el nombre de usuario y contraseña sean correctos
+  verificarCredencialesAdministrador(pUser, pPass) {
     for (let i = 0; i < this.Administradores.length; i++) {
       if (this.Administradores[i].user === pUser && this.Administradores[i].pass === pPass) {
         return true;
       }
     }
   }
-  buscarUsuario(pUser, pPass) {
+  verificarCredencialesUsuario(pUser, pPass) {
     for (let i = 0; i < this.Usuarios.length; i++) {
       if (this.Usuarios[i].user === pUser && this.Usuarios[i].pass === pPass) {
         return true;
