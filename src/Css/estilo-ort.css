@@ -9,7 +9,7 @@ body {
 }
 
 /* Estilos contenedor de todo el documento */
-.logged {
+body > section {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -43,38 +43,42 @@ h4 {
 }
 
 /* Estilos nav */
-#navPrincipal {
+#navPrincipal,
+#navSecundaria {
   float: right;
   margin-top: 5px;
   margin-right: 10px;
   max-width: 700px;
 }
 
-#navPrincipal li {
+#navPrincipal li,
+#navSecundaria li {
   list-style-type: none;
   padding: 10px;
   margin: 5px;
   float: left;
 }
 
-header img {
+header section img {
   margin: 20px;
   width: 60px;
   border: 1px solid #888;
 }
 
-#navPrincipal a {
+#navPrincipal a,
+#navSecundaria a {
   cursor: pointer;
   color: #fafafa;
   font-size: 14px;
   font-weight: 600;
 }
 
-#navPrincipal a:hover {
+#navPrincipal a:hover,
+#navSecundaria a:hover {
   color: #c0ca33;
 }
 
-header {
+header section {
   background-color: #002e4a;
   clear: both;
   color: fafafa;
