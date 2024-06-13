@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,18 +13,22 @@
     <!-- Navegacion -->
     <section id="secNavegacion">
       <header>
-        <!-- Usuario -->
+        <!-- Navegacion Usuario -->
         <section id="navUsuario">
           <img id="logo" src="https://p1.develotion.com/cart.jpg" alt="logo" />
           <nav>
-            <ul id="navPrincipal"></ul>
+            <ul id="navPrincipal">
+              <li><a id="aSalirDelSistema">Salir del sistema</a></li>
+            </ul>
           </nav>
         </section>
-        <!-- Administrador -->
+        <!-- Navegacio Administrador -->
         <section id="navAdministrador">
           <img id="logo" src="https://p1.develotion.com/cart.jpg" alt="logo" />
           <nav>
-            <ul id="navPrincipal"></ul>
+            <ul id="navSecundaria">
+              <li><a id="aSalirDelSistema">Salir del sistema</a></li>
+            </ul>
           </nav>
         </section>
       </header>
@@ -82,14 +86,27 @@
     <!-- Contenido -->
     <section class="contenido" id="secContenido">
       <main>
+        <section id="secProductos">
+          <!-- tabla de los productos -->
+          <table>
+            <thead>
+              <th>Producto</th>
+              <th>Nombre</th>
+              <th>Descripcion</th>
+              <th>Precio</th>
+            </thead>
+            <tbody id="curpoProductos"></tbody>
+          </table>
+        </section>
+
         <section></section>
       </main>
     </section>
 
     <!-- Scripts -->
-    <script src="src/Js/Administrador.js"></script>
-    <script src="src/Js/Usuario.js"></script>
-    <script src="src/Js/Producto.js"></script>
+    <script src="src/Js/classes/Administrador.js"></script>
+    <script src="src/Js/classes/Usuario.js"></script>
+    <script src="src/Js/classes/Producto.js"></script>
     <script src="src/Js/Sistema.js"></script>
     <script src="src/Js/codigo.js"></script>
   </body>
