@@ -82,10 +82,8 @@ class Sistema {
   }
   // Funciones productos
   // Añade un producto nuevo a Productos
-  añadirProducto(pNombre, pPrecio, pDescripcion, pImagen, pStock, pEstado, pOferta) {
-    this.Productos.push(
-      new Producto(idProducto, pNombre, pPrecio, pDescripcion, pImagen, pStock, pEstado, pOferta)
-    );
+  agregarProducto(pNombre, pPrecio, pDescripcion, pImagen, pStock, pEstado, pOferta) {
+    this.Productos.push(new Producto(idProducto, pNombre, pPrecio, pDescripcion, pImagen, pStock, pEstado, pOferta));
     idProducto++;
   }
   // Elimina un producto existente de Productos
@@ -97,7 +95,6 @@ class Sistema {
       }
     }
   }
-  
   // Edita un producto existente en Productos
   editarProducto(pNombre, pPrecio, pDescripcion, pImagen, pId) {
     for (let i = 0; i < this.Productos.length; i++) {
@@ -112,55 +109,33 @@ class Sistema {
   }
   // Obtiene los meta datos de un producto existente en Productos
   obtenerProductoPorId(pIdProducto) {
-    let productoEncontrado = [];
-    // recorre productos y los identifica por su id
-    for (let i = 0; this.Productos.length; i++) {
+    for (let i = 0; i < this.Productos.length; i++) {
       if (pIdProducto === this.Productos[i].id) {
-        productoEncontrado.push(this.Productos[i]);
+        return this.Productos[i];
       }
     }
-    return productoEncontrado;
+    return null;
   }
   // FIN Funciones productos
-
-
-aniadirAlCarrito(id){
-  let productoExistente = false;
-  let productoInexistente = false;
-
-  if(this.Carrito[0].id !== undefined){
-    
-    for(let i = 0; i < this.Carrito.length; i++){
-      let idPcarrito = this.Carrito[i].id;
-      if (idPcarrito = id){
-        productoExistente = true;
+  // Funciones carrito
+  agregarAlCarrito(idProducto) {
+    for (let i = 0; i < this.Carrito.length; i++) {
+      if (this.Carrito[i].id === idProducto) {
+        this.Carrito[i].cantUnidades++;
+        return;
+      }
+    }
+    let productoEnCarrito = this.obtenerProductoPorId(idProducto);
+    productoEnCarrito.cantUnidades = 1;
+    this.Carrito.push(productoEnCarrito);
+  }
+  eliminarDelCarrito(pIdCarrito) {
+    for (let i = 0; i < this.Carrito.length; i++) {
+      if (this.Carrito[i].id === pIdCarrito) {
+        this.Carrito.splice(i, 1);
+        break;
       }
     }
   }
-
-  
-  for (let i = 0; i < this.Productos.length; i++){
-    let idPproducto = this.Productos[i].id;
-    if ( idPproducto === id)
-      productoInexistente = true;
-  }
-
-  if(productoExistente){
-    this.Carrito[id].cantUnidades++;
-  }else if(productoInexistente){
-    this.Carrito.push(this.Productos[i])
-  }
-
-}
-
-
-eliminarDelCarrito(pIdCarrito) {
-  for (let i = 0; i < this.Carrito.length; i++) {
-    if (this.Carrito[i].id === pIdCarrito) {
-      this.Carrito.splice(i, 1);
-      break;
-    }
-  }
-}
-
+  // FIN Funciones carrito
 }

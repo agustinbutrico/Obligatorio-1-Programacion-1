@@ -2,12 +2,13 @@ document.querySelector("#btnIngresar").addEventListener("click", ingreso);
 document.querySelector("#btnRegistrar").addEventListener("click", registro);
 document.querySelector("#aCrearCuenta").addEventListener("click", mostrarRegistro);
 document.querySelector("#aSalirDelSistema").addEventListener("click", mostrarIngreso);
-document.querySelector("#airAlCarrito").addEventListener("click", mostrarCarrito);
+document.querySelector("#aListarProductos").addEventListener("click", mostrarProductos);
+document.querySelector("#aIrAlCarrito").addEventListener("click", mostrarCarrito);
 
 let sis = new Sistema();
+let esAdministrador = false;
 mostrarIngreso();
 listarProductos();
-mostrarCarrito();
 
 //  Mostrar / Ocultar
 function mostrar(pId, estilo) {
@@ -21,11 +22,12 @@ function ocultarTodo() {
   ocultar("secNavegacion");
   ocultar("secIngreso");
   ocultar("secRegistro");
-  ocultar("secContenido");
+  ocultar("secProductos");
+  ocultar("secCarrito");
 }
-function mostrarNavegacion(admin) {
+function mostrarNavegacion() {
   mostrar("secNavegacion", "block");
-  if (admin) {
+  if (esAdministrador) {
     ocultar("navUsuario");
     mostrar("navAdministrador", "flex");
   } else {
@@ -43,8 +45,15 @@ function mostrarRegistro() {
   mostrar("secRegistro", "block");
   document.querySelector("#pErrorRegistro").innerHTML = "";
 }
-function mostrarContenido() {
-  mostrar("secContenido", "block");
+function mostrarProductos() {
+  ocultarTodo();
+  mostrarNavegacion();
+  mostrar("secProductos", "block");
+}
+function mostrarCarrito() {
+  ocultarTodo();
+  mostrarNavegacion();
+  mostrar("secCarrito", "block");
 }
 // FIN Mostrar / Ocultar
 // Validaciones
@@ -108,15 +117,14 @@ function ingreso() {
   if (campoVacio(usuario) || campoVacio(contrasenia)) {
     document.querySelector("#pErrorIngreso").innerHTML = "No pueden haber campos vacios";
   } else if (sis.verificarCredencialesAdministrador(usuario, contrasenia)) {
-    // Navegacion en true muestra la navegación del administrador
+    esAdministrador = true;
     ocultarTodo();
-    mostrarNavegacion(true);
-    mostrarContenido();
+    mostrarNavegacion();
+    mostrarProductos();
   } else if (sis.verificarCredencialesUsuario(usuario, contrasenia)) {
-    // Navegacion en false muestra la navegación del usuario
     ocultarTodo();
-    mostrarNavegacion(false);
-    mostrarContenido();
+    mostrarNavegacion();
+    mostrarProductos();
   } else {
     document.querySelector("#pErrorIngreso").innerHTML = "Usario y/o contraseña incorrectos";
   }
@@ -132,30 +140,22 @@ function listarProductos() {
         <td>${sis.Productos[i].nombre}</td>
         <td>${sis.Productos[i].descripcion}</td>
         <td>${sis.Productos[i].precio}</td>
-        <td><input type="button" value="Añadir al Carrito" class="btnAniadirAlCarrito" data-id-producto="${sis.Productos[i].id}"></td>
+        <td><input type="button" value="Añadir al Carrito" class="btnAgregarAlCarrito" data-id-producto="${sis.Productos[i].id}"></td>
       </tr>`;
   }
   document.querySelector("#curpoProductos").innerHTML = cuerpoTabla;
   bindearBotonComprar();
 }
 function bindearBotonComprar() {
-  let botones = document.querySelectorAll(".btnAniadirAlCarrito");
+  let botones = document.querySelectorAll(".btnAgregarAlCarrito");
 
   for (let i = 0; i < botones.length; i++) {
-    botones[i].addEventListener("click", aniadirAlCarrito);
+    botones[i].addEventListener("click", agregarAlCarrito);
   }
-
 }
 // FIN Productos
-
-function aniadirAlCarrito(){
-
-  let idProducto = Number(this.getAttribute("data-id-producto"));
-  sis.aniadirAlCarrito(idProducto);
-}
-
 // Carrito
-function mostrarCarrito() {
+function listarCarrito() {
   let cuerpoTabla = "";
 
   for (let i = 0; i < sis.Carrito.length; i++) {
@@ -167,10 +167,9 @@ function mostrarCarrito() {
         <td><input type="button" value="Eliminar Producto" class="btnEliminarDelCarrito" data-id-Carrito="${sis.Carrito[i].id}"></td>
       </tr>`;
   }
-  document.querySelector("#curpoCarrito").innerHTML = cuerpoTabla;
+  document.querySelector("#cuerpoCarrito").innerHTML = cuerpoTabla;
   bindearBotonEliminarDelCarrito();
 }
-
 function bindearBotonEliminarDelCarrito() {
   let botones = document.querySelectorAll(".btnEliminarDelCarrito");
 
@@ -178,10 +177,14 @@ function bindearBotonEliminarDelCarrito() {
     botones[i].addEventListener("click", eliminarDelCarrito);
   }
 }
-function eliminarDelCarrito(){
-
+function agregarAlCarrito() {
+  let idProducto = Number(this.getAttribute("data-id-producto"));
+  sis.agregarAlCarrito(idProducto);
+  listarCarrito();
+}
+function eliminarDelCarrito() {
   let idCarrito = Number(this.getAttribute("data-id-Carrito"));
   sis.eliminarDelCarrito(idCarrito);
-  mostrarCarrito();
+  listarCarrito();
 }
 // Fin Carrito
