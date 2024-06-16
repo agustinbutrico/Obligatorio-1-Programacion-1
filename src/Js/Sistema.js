@@ -26,7 +26,8 @@ class Sistema {
         "src/Img/calzado-basket-long.jpg",
         10,
         "activo",
-        false
+        false,
+        1
       ),
       new Producto(
         1,
@@ -36,9 +37,11 @@ class Sistema {
         "src/Img/patin-sanz.jpg",
         15,
         "activo",
-        false
+        false,
+        1
       ),
     ];
+    this.Carrito = [];
   }
   // Permite registrar usuarios con id auto incremental y saldo base precargado
   registrarUsuario(pNombreUsuario, pContrasenia, pNombre, pApellido, pTarjeta, pCVC) {
@@ -94,6 +97,7 @@ class Sistema {
       }
     }
   }
+  
   // Edita un producto existente en Productos
   editarProducto(pNombre, pPrecio, pDescripcion, pImagen, pId) {
     for (let i = 0; i < this.Productos.length; i++) {
@@ -118,4 +122,45 @@ class Sistema {
     return productoEncontrado;
   }
   // FIN Funciones productos
+
+
+aniadirAlCarrito(id){
+  let productoExistente = false;
+  let productoInexistente = false;
+
+  if(this.Carrito[0].id !== undefined){
+    
+    for(let i = 0; i < this.Carrito.length; i++){
+      let idPcarrito = this.Carrito[i].id;
+      if (idPcarrito = id){
+        productoExistente = true;
+      }
+    }
+  }
+
+  
+  for (let i = 0; i < this.Productos.length; i++){
+    let idPproducto = this.Productos[i].id;
+    if ( idPproducto === id)
+      productoInexistente = true;
+  }
+
+  if(productoExistente){
+    this.Carrito[id].cantUnidades++;
+  }else if(productoInexistente){
+    this.Carrito.push(this.Productos[i])
+  }
+
+}
+
+
+eliminarDelCarrito(pIdCarrito) {
+  for (let i = 0; i < this.Carrito.length; i++) {
+    if (this.Carrito[i].id === pIdCarrito) {
+      this.Carrito.splice(i, 1);
+      break;
+    }
+  }
+}
+
 }
