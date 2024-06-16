@@ -15,7 +15,7 @@
       <header>
         <!-- Navegacion Usuario -->
         <section id="navUsuario">
-          <img id="logo" src="https://p1.develotion.com/cart.jpg" alt="logo" />
+          <a id="airAlCarrito"><img id="logo" src="https://p1.develotion.com/cart.jpg" alt="logo"  /></a>
           <nav>
             <ul id="navPrincipal">
               <li><a id="aSalirDelSistema">Salir del sistema</a></li>
@@ -24,7 +24,7 @@
         </section>
         <!-- Navegacio Administrador -->
         <section id="navAdministrador">
-          <img id="logo" src="https://p1.develotion.com/cart.jpg" alt="logo" />
+          <a id="airAlCarrito"><img id="logo" src="https://p1.develotion.com/cart.jpg" alt="logo"  /></a>
           <nav>
             <ul id="navSecundaria">
               <li><a id="aSalirDelSistema">Salir del sistema</a></li>
@@ -98,8 +98,27 @@
             <tbody id="curpoProductos"></tbody>
           </table>
         </section>
+        <!-- Carrito de compras -->
+        <section id="secCarrito">
+          <table>
+            <thead>
+              <th>Producto</th>
+              <th>Nombre</th>
+              <th>Cantidad</th>
+              <th>Precio</th>
+              <th>Estado</th>
+            </thead>
+            <tbody id="cuerpoCarrito"></tbody>
+          </table>
+          <table>
+            <thead>
+              <th>Monto total</th>
+              <th></th>
+            </thead>
+            <tbody id="finalCompras"></tbody>
+          </table>
 
-        <section></section>
+        </section>
       </main>
     </section>
 
@@ -107,6 +126,7 @@
     <script src="src/Js/classes/Administrador.js"></script>
     <script src="src/Js/classes/Usuario.js"></script>
     <script src="src/Js/classes/Producto.js"></script>
+    <script src="src/Js/classes/Carrito.js"></script>
     <script src="src/Js/Sistema.js"></script>
     <script src="src/Js/codigo.js"></script>
   </body>
