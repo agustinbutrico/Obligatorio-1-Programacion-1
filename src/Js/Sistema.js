@@ -26,7 +26,8 @@ class Sistema {
         "src/Img/calzado-basket-long.jpg",
         10,
         "activo",
-        false
+        false,
+        1
       ),
       new Producto(
         1,
@@ -36,9 +37,11 @@ class Sistema {
         "src/Img/patin-sanz.jpg",
         15,
         "activo",
-        false
+        false,
+        1
       ),
     ];
+    this.Carrito = [];
   }
   // Permite registrar usuarios con id auto incremental y saldo base precargado
   registrarUsuario(pNombreUsuario, pContrasenia, pNombre, pApellido, pTarjeta, pCVC) {
@@ -79,10 +82,8 @@ class Sistema {
   }
   // Funciones productos
   // Añade un producto nuevo a Productos
-  añadirProducto(pNombre, pPrecio, pDescripcion, pImagen, pStock, pEstado, pOferta) {
-    this.Productos.push(
-      new Producto(idProducto, pNombre, pPrecio, pDescripcion, pImagen, pStock, pEstado, pOferta)
-    );
+  agregarProducto(pNombre, pPrecio, pDescripcion, pImagen, pStock, pEstado, pOferta) {
+    this.Productos.push(new Producto(idProducto, pNombre, pPrecio, pDescripcion, pImagen, pStock, pEstado, pOferta));
     idProducto++;
   }
   // Elimina un producto existente de Productos
@@ -108,14 +109,33 @@ class Sistema {
   }
   // Obtiene los meta datos de un producto existente en Productos
   obtenerProductoPorId(pIdProducto) {
-    let productoEncontrado = [];
-    // recorre productos y los identifica por su id
-    for (let i = 0; this.Productos.length; i++) {
+    for (let i = 0; i < this.Productos.length; i++) {
       if (pIdProducto === this.Productos[i].id) {
-        productoEncontrado.push(this.Productos[i]);
+        return this.Productos[i];
       }
     }
-    return productoEncontrado;
+    return null;
   }
   // FIN Funciones productos
+  // Funciones carrito
+  agregarAlCarrito(idProducto) {
+    for (let i = 0; i < this.Carrito.length; i++) {
+      if (this.Carrito[i].id === idProducto) {
+        this.Carrito[i].cantUnidades++;
+        return;
+      }
+    }
+    let productoEnCarrito = this.obtenerProductoPorId(idProducto);
+    productoEnCarrito.cantUnidades = 1;
+    this.Carrito.push(productoEnCarrito);
+  }
+  eliminarDelCarrito(pIdCarrito) {
+    for (let i = 0; i < this.Carrito.length; i++) {
+      if (this.Carrito[i].id === pIdCarrito) {
+        this.Carrito.splice(i, 1);
+        break;
+      }
+    }
+  }
+  // FIN Funciones carrito
 }

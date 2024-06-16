@@ -15,18 +15,20 @@
       <header>
         <!-- Navegacion Usuario -->
         <section id="navUsuario">
-          <img id="logo" src="https://p1.develotion.com/cart.jpg" alt="logo" />
+          <a id="aIrAlCarrito"><img id="logo" src="https://p1.develotion.com/cart.jpg" alt="logo" /></a>
           <nav>
             <ul id="navPrincipal">
+              <li><a id="aListarProductos">Productos</a></li>
               <li><a id="aSalirDelSistema">Salir del sistema</a></li>
             </ul>
           </nav>
         </section>
         <!-- Navegacio Administrador -->
         <section id="navAdministrador">
-          <img id="logo" src="https://p1.develotion.com/cart.jpg" alt="logo" />
+          <a id="aIrAlCarrito"><img id="logo" src="https://p1.develotion.com/cart.jpg" alt="logo" /></a>
           <nav>
             <ul id="navSecundaria">
+              <li><a id="aListarProductos">Productos</a></li>
               <li><a id="aSalirDelSistema">Salir del sistema</a></li>
             </ul>
           </nav>
@@ -41,7 +43,7 @@
         <form action="#" method="post" id="fIngreso">
           <label for="txtUsuarioIngreso">Nombre</label>
           <input type="text" id="txtUsuarioIngreso" />
-          <label for="txtContraseniaUsuario">Contraseña</label>
+          <label for="passContraseniaIngreso">Contraseña</label>
           <input type="password" id="passContraseniaIngreso" />
         </form>
       </div>
@@ -84,7 +86,7 @@
     </section>
 
     <!-- Contenido -->
-    <section class="contenido" id="secContenido">
+    <section class="contenido">
       <main>
         <section id="secProductos">
           <!-- tabla de los productos -->
@@ -98,8 +100,19 @@
             <tbody id="curpoProductos"></tbody>
           </table>
         </section>
-
-        <section></section>
+        <!-- Carrito de compras -->
+        <section id="secCarrito">
+          <table>
+            <thead>
+              <th>Producto</th>
+              <th>Nombre</th>
+              <th>Precio</th>
+              <th>Cantidad</th>
+              <th>Estado</th>
+            </thead>
+            <tbody id="cuerpoCarrito"></tbody>
+          </table>
+        </section>
       </main>
     </section>
 
@@ -107,6 +120,7 @@
     <script src="src/Js/classes/Administrador.js"></script>
     <script src="src/Js/classes/Usuario.js"></script>
     <script src="src/Js/classes/Producto.js"></script>
+    <script src="src/Js/classes/Carrito.js"></script>
     <script src="src/Js/Sistema.js"></script>
     <script src="src/Js/codigo.js"></script>
   </body>
