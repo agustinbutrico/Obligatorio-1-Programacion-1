@@ -133,7 +133,6 @@ function ingreso() {
 // Productos
 function listarProductos() {
   let cuerpoTabla = "";
-  let identificadorProd = 0;
   for (i = 0; i < sis.Productos.length; i++) {
     let prod = sis.Productos[i];
     cuerpoTabla += `<tr>

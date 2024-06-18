@@ -123,7 +123,7 @@ class Sistema {
   // FIN Funciones productos
   // Funciones compra
   agregarCompra(pIdProducto) {
-    let idCompraTemp = `PROD_ID_${idCompraGlob}`;
+    let idCompraTemp = `COMPRA_ID_${idCompraGlob}`;
     let prod = this.obtenerProductoPorId(pIdProducto);
     this.Compra.push(
       new Compra(
