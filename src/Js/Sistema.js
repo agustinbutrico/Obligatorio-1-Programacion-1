@@ -41,6 +41,28 @@ class Sistema {
         0,
         1
       ),
+      new Producto(
+        "PROD_ID_2",
+        "Pelota de Futbol",
+        250,
+        "Una pelota de futbol de 26 pulgadas blanca y negra",
+        "src/Img/pelota.jpg",
+        300,
+        1,
+        1,
+        1
+      ),
+      new Producto(
+        "PROD_ID_3",
+        "Pack de deporte Familiar",
+        6670,
+        "Un grupo de articulos deportivos para disfrutar en familia",
+        "src/Img/pack-deporte.jpg",
+        2,
+        1,
+        1,
+        1
+      )
     ];
     this.Compra = [];
   }
@@ -125,6 +147,10 @@ class Sistema {
   agregarCompra(pIdProducto) {
     let idCompraTemp = `COMPRA_ID_${idCompraGlob}`;
     let prod = this.obtenerProductoPorId(pIdProducto);
+    let cantUnidades = document.querySelector(`#numCantUnidades${prod.id}`).value
+    if (prod.oferta === 1){
+      cantUnidades = document.querySelector(`#numCantUnidadesOferta${prod.id}`).value
+    }
     this.Compra.push(
       new Compra(
         idCompraTemp,
@@ -135,7 +161,7 @@ class Sistema {
         prod.stock,
         prod.estado,
         prod.oferta,
-        document.querySelector(`#numCantUnidades${prod.id}`).value
+        cantUnidades
       )
     );
     idCompraGlob++;
@@ -148,5 +174,7 @@ class Sistema {
       }
     }
   }
+
+
   // FIN Funciones compra
 }
