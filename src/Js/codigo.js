@@ -52,9 +52,9 @@ function mostrarProductos() {
 }
 function mostrarCarrito() {
   ocultarTodo();
+  listarCarrito();
   mostrarNavegacion();
   mostrar("secCarrito", "block");
-  carritoVacio(Carrito);
 }
 // FIN Mostrar / Ocultar
 // Validaciones
@@ -89,7 +89,14 @@ function registro() {
   let cvc = document.querySelector("#txtCVCRegistro").value;
   document.querySelector("#pErrorRegistro").innerHTML = "";
 
-  if (campoVacio(usuario) || campoVacio(contrasenia) || campoVacio(nombre) || campoVacio(apellido) || campoVacio(tarjeta) || campoVacio(cvc)) {
+  if (
+    campoVacio(usuario) ||
+    campoVacio(contrasenia) ||
+    campoVacio(nombre) ||
+    campoVacio(apellido) ||
+    campoVacio(tarjeta) ||
+    campoVacio(cvc)
+  ) {
     document.querySelector("#pErrorRegistro").innerHTML = "No pueden haber campos vacios";
   } else {
     if (contrasenia.length <= 5) {
@@ -134,14 +141,15 @@ function ingreso() {
 // Productos
 function listarProductos() {
   let cuerpoTabla = "";
+  let producto = sis.Carrito[i];
 
   for (i = 0; i < sis.Productos.length; i++) {
     cuerpoTabla += `<tr>
-        <td><img src="${sis.Productos[i].imagen}"></td>
-        <td>${sis.Productos[i].nombre}</td>
-        <td>${sis.Productos[i].descripcion}</td>
-        <td>${sis.Productos[i].precio}</td>
-        <td><input type="button" value="Añadir al Carrito" class="btnAgregarAlCarrito" data-id-producto="${sis.Productos[i].id}"></td>
+        <td><img src="${producto.imagen}"></td>
+        <td>${producto.nombre}</td>
+        <td>${producto.descripcion}</td>
+        <td>${producto.precio}</td>
+        <td><input type="button" value="Añadir al Carrito" class="btnAgregarAlCarrito" data-id-producto="${producto.id}"></td>
       </tr>`;
   }
   document.querySelector("#curpoProductos").innerHTML = cuerpoTabla;
@@ -160,34 +168,27 @@ function listarCarrito() {
   let cuerpoTabla = "";
   let resumenCarrito = "";
   let montofinal = 0;
-  let estado = 0;
+  let producto = sis.Carrito[i];
 
   for (let i = 0; i < sis.Carrito.length; i++) {
-
-    let producto =  sis.Carrito[i];
     let sumaPrecios = producto.precio * producto.cantUnidades;
     montofinal += sumaPrecios;
 
-
     cuerpoTabla += `<tr>
-        <td><img src="${sis.Carrito[i].imagen}"></td>
-        <td>${sis.Carrito[i].nombre}</td>
-        <td>${sis.Carrito[i].precio}</td>
-        <td>${sis.Carrito[i].cantUnidades}</td>
-        <td><input type="button" value="Eliminar Producto" class="btnEliminarDelCarrito" data-id-Carrito="${sis.Carrito[i].id}"></td>
-      </tr>`
-
-      estado = sis.Carrito[i].estado
+        <td><img src="${producto.imagen}"></td>
+        <td>${producto.nombre}</td>
+        <td>${producto.precio}</td>
+        <td>${producto.cantUnidades}</td>
+        <td><input type="button" value="Eliminar Producto" class="btnEliminarDelCarrito" data-id-Carrito="${producto.id}"></td>
+      </tr>`;
   }
-    resumenCarrito =
-      `<tr>
+  resumenCarrito = `<tr>
         <td>Total a pagar :</td>
         <td>${montofinal}</td>
-        <td>${estado}</td>
+        <td>${producto.estado}</td>
         <td><input type="button" value="Pagar" class="btnPagarEnCarrito" data-id-Pagar=""></td>
       </tr>`;
-      
-  
+
   document.querySelector("#cuerpoCarrito").innerHTML = cuerpoTabla;
   document.querySelector("#resumenCarrito").innerHTML = resumenCarrito;
   bindearBotonEliminarDelCarrito();
@@ -212,13 +213,4 @@ function eliminarDelCarrito() {
   sis.eliminarDelCarrito(idCarrito);
   listarCarrito();
 }
-
-/* function carritoVacio(Carrito){
-  if(sis.Carrito.length === 0){
-    document.querySelector("#pCarritoVacio").innerHTML = "El carrito esta vacio, realice compras."
-  }else {
-    mostrarCarrito();
-  } 
-}*/
-
 // Fin Carrito
