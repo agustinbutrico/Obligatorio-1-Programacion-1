@@ -1,6 +1,7 @@
 // ID Precargados
 idUsuarioGlob = 3;
 idProductoGlob = 2;
+idCompraGlob = 0;
 // FIN ID Precargados
 
 class Sistema {
@@ -83,7 +84,7 @@ class Sistema {
   // Funciones productos
   // Añade un producto nuevo a Productos
   agregarProducto(pNombre, pPrecio, pDescripcion, pImagen, pStock, pEstado, pOferta) {
-    idProductoTemp = `PROD_ID_${idProductoGlob}`;
+    let idProductoTemp = `PROD_ID_${idProductoGlob}`;
     this.Productos.push(new Producto(idProductoTemp, pNombre, pPrecio, pDescripcion, pImagen, pStock, pEstado, pOferta));
     idProductoGlob++;
   }
@@ -98,8 +99,8 @@ class Sistema {
   }
   // Edita un producto existente en Productos
   editarProducto(pNombre, pPrecio, pDescripcion, pImagen, pId) {
-    let prod = this.Productos[i]
     for (let i = 0; i < this.Productos.length; i++) {
+      let prod = this.Productos[i];
       if (prod.id === pId) {
         prod.nombre = pNombre;
         prod.precio = pPrecio;
@@ -111,8 +112,8 @@ class Sistema {
   }
   // Obtiene los meta datos de un producto existente en Productos
   obtenerProductoPorId(pIdProducto) {
-    let prod = this.Productos[i]
     for (let i = 0; i < this.Productos.length; i++) {
+      let prod = this.Productos[i];
       if (pIdProducto === prod.id) {
         return prod;
       }
@@ -122,9 +123,22 @@ class Sistema {
   // FIN Funciones productos
   // Funciones compra
   agregarCompra(pIdProducto) {
-    let productoEnCompra = this.obtenerProductoPorId(pIdProducto);
-    productoEnCompra.cantUnidades = 1;
-    this.Compra.push(productoEnCompra);
+    let idCompraTemp = `PROD_ID_${idCompraGlob}`;
+    let prod = this.obtenerProductoPorId(pIdProducto);
+    this.Compra.push(
+      new Compra(
+        idCompraTemp,
+        prod.id,
+        prod.nombre,
+        prod.precio,
+        prod.imagen,
+        prod.stock,
+        prod.estado,
+        prod.oferta,
+        document.querySelector(`#numCantUnidades${prod.id}`).value
+      )
+    );
+    idCompraGlob++;
   }
   eliminarCompra(pIdCompra) {
     for (let i = 0; i < this.Compra.length; i++) {
