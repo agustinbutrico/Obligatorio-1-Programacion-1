@@ -88,14 +88,7 @@ function registro() {
   let cvc = document.querySelector("#txtCVCRegistro").value;
   document.querySelector("#pErrorRegistro").innerHTML = "";
 
-  if (
-    campoVacio(usuario) ||
-    campoVacio(contrasenia) ||
-    campoVacio(nombre) ||
-    campoVacio(apellido) ||
-    campoVacio(tarjeta) ||
-    campoVacio(cvc)
-  ) {
+  if (campoVacio(usuario) || campoVacio(contrasenia) || campoVacio(nombre) || campoVacio(apellido) || campoVacio(tarjeta) || campoVacio(cvc)) {
     document.querySelector("#pErrorRegistro").innerHTML = "No pueden haber campos vacios";
   } else {
     if (contrasenia.length <= 5) {
@@ -139,8 +132,18 @@ function ingreso() {
 // Fin Ingreso
 // Productos
 function listarProductos() {
-  let cuerpoTabla = creacionCuerpoProductos();
-
+  let cuerpoTabla = "";
+  for (i = 0; i < sis.Productos.length; i++) {
+    let prod = sis.Productos[i];
+    cuerpoTabla += `<tr>
+        <td><img src="${prod.imagen}"></td>
+        <td>${prod.nombre}</td>
+        <td>${prod.descripcion}</td>
+        <td><label for="numCantUnidades${prod.id}"><input type="number" id="numCantUnidades${prod.id}" min=1 value=1></td>
+        <td>${prod.precio}</td>
+        <td><input type="button" value="Comprar" class="btnAgregarCompra" data-id-producto="${prod.id}"></td>
+      </tr>`;
+  }
   document.querySelector("#curpoProductos").innerHTML = cuerpoTabla;
   bindearBotonComprar();
 }
@@ -151,50 +154,30 @@ function bindearBotonComprar() {
     botones[i].addEventListener("click", agregarCompra);
   }
 }
-function creacionCuerpoProductos() {
-  let cuerpoTabla = "";
-  for (i = 0; i < sis.Productos.length; i++) {
-    let producto = sis.Productos[i];
-    cuerpoTabla += `<tr>
-        <td><img src="${producto.imagen}"></td>
-        <td>${producto.nombre}</td>
-        <td>${producto.descripcion}</td>
-        <td><label for="numCantUnidades"><input type="number" id="numCantUnidades" min=1 value=1"></td>
-        <td>${producto.precio}</td>
-        <td><input type="button" value="Comprar" class="btnAgregarCompra" data-id-producto="${producto.id}"></td>
-      </tr>`;
-  }
-  return cuerpoTabla;
-}
 // FIN Productos
 // Compra
 function listarCompra() {
-  let cuerpoTabla = creacionCuerpoCompras();
-
+  let cuerpoTabla = "";
+  for (i = 0; i < sis.Compra.length; i++) {
+    let prod = sis.Compra[i];
+    cuerpoTabla += `<tr>
+        <td><img src="${prod.imagen}"></td>
+        <td>${prod.nombre}</td>
+        <td>${prod.precio * prod.cantUnidades}</td>
+        <td>${prod.cantUnidades}</td>
+        <td><input type="button" value="Cancelar Compra" class="btnCancelarCompra" data-id-Cancelar-Compra="${prod.id}">
+        <input type="button" value="Confirmar Compra" class="btnConfirmarCompra" data-id-Confirmar-Compra="${prod.id}"></td>
+      </tr>`;
+  }
   document.querySelector("#cuerpoCompra").innerHTML = cuerpoTabla;
   bindearBotonEliminarCompra();
 }
 function bindearBotonEliminarCompra() {
-  let botones = document.querySelectorAll(".btnEliminarCompra");
+  let botones = document.querySelectorAll(".btnCancelarCompra");
 
   for (let i = 0; i < botones.length; i++) {
     botones[i].addEventListener("click", eliminarCompra);
   }
-}
-function creacionCuerpoCompras() {
-  let cuerpoTabla = "";
-  for (i = 0; i < sis.Compra.length; i++) {
-    let producto = sis.Compra[i];
-    cuerpoTabla += `<tr>
-        <td><img src="${producto.imagen}"></td>
-        <td>${producto.nombre}</td>
-        <td>${producto.descripcion}</td>
-        <td>${producto.cantUnidades}</td>
-        <td>${producto.precio}</td>
-        <td><input type="button" value="Elimindar Producto" class="btnEliminarCompra" data-id-Compra="${producto.id}"></td>
-      </tr>`;
-  }
-  return cuerpoTabla;
 }
 // Editar compra
 function agregarCompra() {
@@ -203,7 +186,7 @@ function agregarCompra() {
   listarCompra();
 }
 function eliminarCompra() {
-  let idCompra = this.getAttribute("data-id-Compra");
+  let idCompra = this.getAttribute("data-id-Cancelar-Compra");
   sis.eliminarCompra(idCompra);
   listarCompra();
 }

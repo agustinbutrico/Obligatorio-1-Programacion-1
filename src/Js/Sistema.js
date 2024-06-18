@@ -1,6 +1,7 @@
 // ID Precargados
-idUsuarioPrecargado = 3;
-idProducto = 2;
+idUsuarioGlob = 3;
+idProductoGlob = 2;
+idCompraGlob = 0;
 // FIN ID Precargados
 
 class Sistema {
@@ -45,8 +46,8 @@ class Sistema {
   }
   // Permite registrar usuarios con id auto incremental y saldo base precargado
   registrarUsuario(pNombreUsuario, pContrasenia, pNombre, pApellido, pTarjeta, pCVC) {
-    this.Usuarios.push(new Usuario(idUsuarioPrecargado, 3000, pNombreUsuario, pContrasenia, pNombre, pApellido, pTarjeta, pCVC));
-    idUsuarioPrecargado++;
+    this.Usuarios.push(new Usuario(idUsuarioGlob, 3000, pNombreUsuario, pContrasenia, pNombre, pApellido, pTarjeta, pCVC));
+    idUsuarioGlob++;
   }
   // Permite saber si el nombre de usuario esta en uso por un administrador
   existeAdministrador(pNombreUsuario) {
@@ -83,9 +84,9 @@ class Sistema {
   // Funciones productos
   // Añade un producto nuevo a Productos
   agregarProducto(pNombre, pPrecio, pDescripcion, pImagen, pStock, pEstado, pOferta) {
-    idProducto = `PROD_ID_${idProducto}`;
-    this.Productos.push(new Producto(idProducto, pNombre, pPrecio, pDescripcion, pImagen, pStock, pEstado, pOferta));
-    idProducto++;
+    let idProductoTemp = `PROD_ID_${idProductoGlob}`;
+    this.Productos.push(new Producto(idProductoTemp, pNombre, pPrecio, pDescripcion, pImagen, pStock, pEstado, pOferta));
+    idProductoGlob++;
   }
   // Elimina un producto existente de Productos
   eliminarProducto(pIdProducto) {
@@ -99,11 +100,12 @@ class Sistema {
   // Edita un producto existente en Productos
   editarProducto(pNombre, pPrecio, pDescripcion, pImagen, pId) {
     for (let i = 0; i < this.Productos.length; i++) {
-      if (this.Productos[i].id === pId) {
-        this.Productos[i] = pNombre;
-        this.Productos[i] = pPrecio;
-        this.Productos[i] = pDescripcion;
-        this.Productos[i] = pImagen;
+      let prod = this.Productos[i];
+      if (prod.id === pId) {
+        prod.nombre = pNombre;
+        prod.precio = pPrecio;
+        prod.descripcion = pDescripcion;
+        prod.imagen = pImagen;
         break;
       }
     }
@@ -111,24 +113,32 @@ class Sistema {
   // Obtiene los meta datos de un producto existente en Productos
   obtenerProductoPorId(pIdProducto) {
     for (let i = 0; i < this.Productos.length; i++) {
-      if (pIdProducto === this.Productos[i].id) {
-        return this.Productos[i];
+      let prod = this.Productos[i];
+      if (pIdProducto === prod.id) {
+        return prod;
       }
     }
     return null;
   }
   // FIN Funciones productos
   // Funciones compra
-  agregarCompra(idProducto) {
-    for (let i = 0; i < this.Compra.length; i++) {
-      if (this.Compra[i].idProducto === idProducto) {
-        this.Compra[i].cantUnidades++;
-        return;
-      }
-    }
-    let productoEnCompra = this.obtenerProductoPorId(idProducto);
-    productoEnCompra.cantUnidades = 1;
-    this.Compra.push(productoEnCompra);
+  agregarCompra(pIdProducto) {
+    let idCompraTemp = `COMPRA_ID_${idCompraGlob}`;
+    let prod = this.obtenerProductoPorId(pIdProducto);
+    this.Compra.push(
+      new Compra(
+        idCompraTemp,
+        prod.id,
+        prod.nombre,
+        prod.precio,
+        prod.imagen,
+        prod.stock,
+        prod.estado,
+        prod.oferta,
+        document.querySelector(`#numCantUnidades${prod.id}`).value
+      )
+    );
+    idCompraGlob++;
   }
   eliminarCompra(pIdCompra) {
     for (let i = 0; i < this.Compra.length; i++) {
