@@ -15,9 +15,10 @@
       <header>
         <!-- Navegacion Usuario -->
         <section id="navUsuario">
-          <a id="aIrAlCarrito"><img id="logo" src="https://p1.develotion.com/cart.jpg" alt="logo" /></a>
+          <img id="logo" src="https://p1.develotion.com/cart.jpg" alt="logo" />
           <nav>
             <ul id="navPrincipal">
+              <li><a id="aIrACompras">Compras</a></li>
               <li><a id="aListarProductos">Productos</a></li>
               <li><a id="aSalirDelSistema">Salir del sistema</a></li>
             </ul>
@@ -25,9 +26,10 @@
         </section>
         <!-- Navegacio Administrador -->
         <section id="navAdministrador">
-          <a id="aIrAlCarrito"><img id="logo" src="https://p1.develotion.com/cart.jpg" alt="logo" /></a>
+          <img id="logo" src="https://p1.develotion.com/cart.jpg" alt="logo" />
           <nav>
             <ul id="navSecundaria">
+              <li><a id="aIrACompras">Compras</a></li>
               <li><a id="aListarProductos">Productos</a></li>
               <li><a id="aSalirDelSistema">Salir del sistema</a></li>
             </ul>
@@ -95,30 +97,27 @@
               <th>Producto</th>
               <th>Nombre</th>
               <th>Descripcion</th>
+              <th>Cantidad</th>
               <th>Precio</th>
             </thead>
             <tbody id="curpoProductos"></tbody>
           </table>
         </section>
-        <!-- Carrito de compras -->
-        <section id="secCarrito">
+        <!-- Compra de compras -->
+        <section id="secCompra">
           <table>
             <thead>
               <th>Producto</th>
               <th>Nombre</th>
               <th>Precio</th>
               <th>Cantidad</th>
-              <th>Estado</th>
+              <th>Acción</th>
             </thead>
-            <tbody id="cuerpoCarrito"></tbody>
+            <tbody id="cuerpoCompra"></tbody>
           </table>
           <table>
-            <thead>
-              <th></th>
-            </thead>
-            <tbody id="resumenCarrito"></tbody>
+            <tbody id="resumenCompra"></tbody>
           </table>
-          <p id="pCarritoVacio"></p>
         </section>
       </main>
     </section>
@@ -127,7 +126,7 @@
     <script src="src/Js/classes/Administrador.js"></script>
     <script src="src/Js/classes/Usuario.js"></script>
     <script src="src/Js/classes/Producto.js"></script>
-    <script src="src/Js/classes/Carrito.js"></script>
+    <script src="src/Js/classes/Compra.js"></script>
     <script src="src/Js/Sistema.js"></script>
     <script src="src/Js/codigo.js"></script>
   </body>
