@@ -23,6 +23,7 @@ function ocultarTodo() {
   ocultar("secRegistro");
   ocultar("secProductos");
   ocultar("secCompra");
+  ocultar("secProductosOferta");
 }
 function mostrarNavegacion() {
   mostrar("secNavegacion", "block");
@@ -48,6 +49,7 @@ function mostrarProductos() {
   ocultarTodo();
   mostrarNavegacion();
   mostrar("secProductos", "block");
+  mostrar("secProductosOferta", "block");
 }
 function mostrarCompra() {
   ocultarTodo();
@@ -55,6 +57,7 @@ function mostrarCompra() {
   mostrarNavegacion();
   mostrar("secCompra", "block");
 }
+
 // FIN Mostrar / Ocultar
 // Validaciones
 function campoVacio(campo) {
@@ -133,6 +136,7 @@ function ingreso() {
 // Productos
 function listarProductos() {
   let cuerpoTabla = "";
+  let cuerpoTablaOferta = "";
   for (i = 0; i < sis.Productos.length; i++) {
     let prod = sis.Productos[i];
     cuerpoTabla += `<tr>
@@ -141,10 +145,24 @@ function listarProductos() {
         <td>${prod.descripcion}</td>
         <td><label for="numCantUnidades${prod.id}"><input type="number" id="numCantUnidades${prod.id}" min=1 value=1></td>
         <td>${prod.precio}</td>
+        <td></td>
         <td><input type="button" value="Comprar" class="btnAgregarCompra" data-id-producto="${prod.id}"></td>
       </tr>`;
+    if (prod.oferta === 1) {
+      let precioConDescuento = descuentoFijo(prod.precio, 20);
+      cuerpoTablaOferta += `<tr>
+        <td><img src="${prod.imagen}"></td>
+        <td>${prod.nombre}</td>
+        <td>${prod.descripcion}</td>
+        <td><label for="numCantUnidadesOferta${prod.id}"><input type="number" id="numCantUnidadesOferta${prod.id}" min=1 value=1></td>
+        <td>${prod.precio}</td>
+        <td>20% OFF ${precioConDescuento.toFixed(0)}</td>
+        <td><input type="button" value="Comprar" class="btnAgregarCompra" data-id-producto="${prod.id}"></td>
+      </tr>`;
+    }
   }
   document.querySelector("#curpoProductos").innerHTML = cuerpoTabla;
+  document.querySelector("#curpoProductosOferta").innerHTML = cuerpoTablaOferta;
   bindearBotonComprar();
 }
 function bindearBotonComprar() {
@@ -154,13 +172,29 @@ function bindearBotonComprar() {
     botones[i].addEventListener("click", agregarCompra);
   }
 }
+
+function descuentoFijo(precio, descuento) {
+  return precio - (precio * descuento) / 100;
+}
+
 // FIN Productos
 // Compra
 function listarCompra() {
   let cuerpoTabla = "";
   for (i = 0; i < sis.Compra.length; i++) {
     let prod = sis.Compra[i];
-    cuerpoTabla += `<tr>
+    if (prod.oferta === 1) {
+      let precioConDescuento = descuentoFijo(prod.precio, 20);
+      cuerpoTabla += `<tr>
+        <td><img src="${prod.imagen}"></td>
+        <td>${prod.nombre}</td>
+        <td>${precioConDescuento.toFixed(0) * prod.cantUnidades}</td>
+        <td>${prod.cantUnidades}</td>
+        <td><input type="button" value="Cancelar Compra" class="btnCancelarCompra" data-id-Cancelar-Compra="${prod.id}">
+        <input type="button" value="Confirmar Compra" class="btnConfirmarCompra" data-id-Confirmar-Compra="${prod.id}"></td>
+      </tr>`;
+    } else {
+      cuerpoTabla += `<tr>
         <td><img src="${prod.imagen}"></td>
         <td>${prod.nombre}</td>
         <td>${prod.precio * prod.cantUnidades}</td>
@@ -168,6 +202,7 @@ function listarCompra() {
         <td><input type="button" value="Cancelar Compra" class="btnCancelarCompra" data-id-Cancelar-Compra="${prod.id}">
         <input type="button" value="Confirmar Compra" class="btnConfirmarCompra" data-id-Confirmar-Compra="${prod.id}"></td>
       </tr>`;
+    }
   }
   document.querySelector("#cuerpoCompra").innerHTML = cuerpoTabla;
   bindearBotonEliminarCompra();
@@ -179,6 +214,7 @@ function bindearBotonEliminarCompra() {
     botones[i].addEventListener("click", eliminarCompra);
   }
 }
+
 // Editar compra
 function agregarCompra() {
   let idProducto = this.getAttribute("data-id-producto");
