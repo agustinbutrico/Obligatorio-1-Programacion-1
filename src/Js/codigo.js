@@ -157,7 +157,7 @@ function listarProductos() {
         <td><label for="numCantUnidadesOferta${prod.id}"><input type="number" id="numCantUnidadesOferta${prod.id}" min=1 value=1></td>
         <td>${prod.precio}</td>
         <td>20% OFF ${precioConDescuento.toFixed(0)}</td>
-        <td><input type="button" value="Comprar" class="btnAgregarCompra" data-id-producto="${prod.id}"></td>
+        <td><input type="button" value="Comprar" class="btnAgregarCompraOferta" data-id-producto="${prod.id}"></td>
       </tr>`;
     }
   }
@@ -167,18 +167,21 @@ function listarProductos() {
 }
 function bindearBotonComprar() {
   let botones = document.querySelectorAll(".btnAgregarCompra");
-
   for (let i = 0; i < botones.length; i++) {
     botones[i].addEventListener("click", agregarCompra);
   }
 }
-
+function bindearBotonComprarOferta() {
+  let botones = document.querySelectorAll(".btnAgregarCompraOferta");
+  for (let i = 0; i < botones.length; i++) {
+    botones[i].addEventListener("click", agregarCompraOferta);
+  }
+}
+// FIN Productos
+// Compra
 function descuentoFijo(precio, descuento) {
   return precio - (precio * descuento) / 100;
 }
-
-// FIN Productos
-// Compra
 function listarCompra() {
   let cuerpoTabla = "";
   for (i = 0; i < sis.Compra.length; i++) {
@@ -219,6 +222,11 @@ function bindearBotonEliminarCompra() {
 function agregarCompra() {
   let idProducto = this.getAttribute("data-id-producto");
   sis.agregarCompra(idProducto);
+  listarCompra();
+}
+function agregarCompraOferta() {
+  let idProducto = this.getAttribute("data-id-producto");
+  sis.agregarCompraOferta(idProducto);
   listarCompra();
 }
 function eliminarCompra() {
