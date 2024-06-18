@@ -9,5 +9,6 @@ class Carrito {
         this.estado = _estado;
         this.oferta = _oferta;
         this.cantUnidades = _cantUnidades;
+
       }
     }

@@ -54,6 +54,7 @@ function mostrarCarrito() {
   ocultarTodo();
   mostrarNavegacion();
   mostrar("secCarrito", "block");
+  carritoVacio(Carrito);
 }
 // FIN Mostrar / Ocultar
 // Validaciones
@@ -157,19 +158,41 @@ function bindearBotonComprar() {
 // Carrito
 function listarCarrito() {
   let cuerpoTabla = "";
+  let resumenCarrito = "";
+  let montofinal = 0;
+  let estado = 0;
 
   for (let i = 0; i < sis.Carrito.length; i++) {
+
+    let producto =  sis.Carrito[i];
+    let sumaPrecios = producto.precio * producto.cantUnidades;
+    montofinal += sumaPrecios;
+
+
     cuerpoTabla += `<tr>
         <td><img src="${sis.Carrito[i].imagen}"></td>
         <td>${sis.Carrito[i].nombre}</td>
         <td>${sis.Carrito[i].precio}</td>
         <td>${sis.Carrito[i].cantUnidades}</td>
         <td><input type="button" value="Eliminar Producto" class="btnEliminarDelCarrito" data-id-Carrito="${sis.Carrito[i].id}"></td>
-      </tr>`;
+      </tr>`
+
+      estado = sis.Carrito[i].estado
   }
+    resumenCarrito =
+      `<tr>
+        <td>Total a pagar :</td>
+        <td>${montofinal}</td>
+        <td>${estado}</td>
+        <td><input type="button" value="Pagar" class="btnPagarEnCarrito" data-id-Pagar=""></td>
+      </tr>`;
+      
+  
   document.querySelector("#cuerpoCarrito").innerHTML = cuerpoTabla;
+  document.querySelector("#resumenCarrito").innerHTML = resumenCarrito;
   bindearBotonEliminarDelCarrito();
 }
+
 function bindearBotonEliminarDelCarrito() {
   let botones = document.querySelectorAll(".btnEliminarDelCarrito");
 
@@ -177,14 +200,25 @@ function bindearBotonEliminarDelCarrito() {
     botones[i].addEventListener("click", eliminarDelCarrito);
   }
 }
+
 function agregarAlCarrito() {
   let idProducto = Number(this.getAttribute("data-id-producto"));
   sis.agregarAlCarrito(idProducto);
   listarCarrito();
 }
+
 function eliminarDelCarrito() {
   let idCarrito = Number(this.getAttribute("data-id-Carrito"));
   sis.eliminarDelCarrito(idCarrito);
   listarCarrito();
 }
+
+/* function carritoVacio(Carrito){
+  if(sis.Carrito.length === 0){
+    document.querySelector("#pCarritoVacio").innerHTML = "El carrito esta vacio, realice compras."
+  }else {
+    mostrarCarrito();
+  } 
+}*/
+
 // Fin Carrito
