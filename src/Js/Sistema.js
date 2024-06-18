@@ -19,29 +19,29 @@ class Sistema {
 
     this.Productos = [
       new Producto(
-        0,
+        "PROD_ID_0",
         "Calzado Basket Long",
         300,
         "Calzado Basket<br>Talles: 38,39,40,41,42,43",
         "src/Img/calzado-basket-long.jpg",
         10,
-        "activo",
-        false,
+        1,
+        0,
         1
       ),
       new Producto(
-        1,
+        "PROD_ID_1",
         "Patín Artístico SANZ Profesional",
         400,
         "Bota rigida, chasis de aluminio reforzado y cuenta con rulemanes abec 7 de carbono y acero",
         "src/Img/patin-sanz.jpg",
         15,
-        "activo",
-        false,
+        1,
+        0,
         1
       ),
     ];
-    this.Carrito = [];
+    this.Compra = [];
   }
   // Permite registrar usuarios con id auto incremental y saldo base precargado
   registrarUsuario(pNombreUsuario, pContrasenia, pNombre, pApellido, pTarjeta, pCVC) {
@@ -83,6 +83,7 @@ class Sistema {
   // Funciones productos
   // Añade un producto nuevo a Productos
   agregarProducto(pNombre, pPrecio, pDescripcion, pImagen, pStock, pEstado, pOferta) {
+    idProducto = `PROD_ID_${idProducto}`;
     this.Productos.push(new Producto(idProducto, pNombre, pPrecio, pDescripcion, pImagen, pStock, pEstado, pOferta));
     idProducto++;
   }
@@ -117,25 +118,25 @@ class Sistema {
     return null;
   }
   // FIN Funciones productos
-  // Funciones carrito
-  agregarAlCarrito(idProducto) {
-    for (let i = 0; i < this.Carrito.length; i++) {
-      if (this.Carrito[i].id === idProducto) {
-        this.Carrito[i].cantUnidades++;
+  // Funciones compra
+  agregarCompra(idProducto) {
+    for (let i = 0; i < this.Compra.length; i++) {
+      if (this.Compra[i].idProducto === idProducto) {
+        this.Compra[i].cantUnidades++;
         return;
       }
     }
-    let productoEnCarrito = this.obtenerProductoPorId(idProducto);
-    productoEnCarrito.cantUnidades = 1;
-    this.Carrito.push(productoEnCarrito);
+    let productoEnCompra = this.obtenerProductoPorId(idProducto);
+    productoEnCompra.cantUnidades = 1;
+    this.Compra.push(productoEnCompra);
   }
-  eliminarDelCarrito(pIdCarrito) {
-    for (let i = 0; i < this.Carrito.length; i++) {
-      if (this.Carrito[i].id === pIdCarrito) {
-        this.Carrito.splice(i, 1);
+  eliminarCompra(pIdCompra) {
+    for (let i = 0; i < this.Compra.length; i++) {
+      if (this.Compra[i].id === pIdCompra) {
+        this.Compra.splice(i, 1);
         break;
       }
     }
   }
-  // FIN Funciones carrito
+  // FIN Funciones compra
 }

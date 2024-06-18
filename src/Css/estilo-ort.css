@@ -199,3 +199,7 @@ footer a {
   font-weight: 600;
   text-decoration: none;
 }
+
+input[type="number"] {
+  width: 55px;
+}

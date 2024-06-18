@@ -3,7 +3,7 @@ document.querySelector("#btnRegistrar").addEventListener("click", registro);
 document.querySelector("#aCrearCuenta").addEventListener("click", mostrarRegistro);
 document.querySelector("#aSalirDelSistema").addEventListener("click", mostrarIngreso);
 document.querySelector("#aListarProductos").addEventListener("click", mostrarProductos);
-document.querySelector("#aIrAlCarrito").addEventListener("click", mostrarCarrito);
+document.querySelector("#aIrACompras").addEventListener("click", mostrarCompra);
 
 let sis = new Sistema();
 let esAdministrador = false;
@@ -17,13 +17,12 @@ function mostrar(pId, estilo) {
 function ocultar(pId) {
   document.querySelector("#" + pId).style.display = "none";
 }
-
 function ocultarTodo() {
   ocultar("secNavegacion");
   ocultar("secIngreso");
   ocultar("secRegistro");
   ocultar("secProductos");
-  ocultar("secCarrito");
+  ocultar("secCompra");
 }
 function mostrarNavegacion() {
   mostrar("secNavegacion", "block");
@@ -50,11 +49,11 @@ function mostrarProductos() {
   mostrarNavegacion();
   mostrar("secProductos", "block");
 }
-function mostrarCarrito() {
+function mostrarCompra() {
   ocultarTodo();
-  listarCarrito();
+  listarCompra();
   mostrarNavegacion();
-  mostrar("secCarrito", "block");
+  mostrar("secCompra", "block");
 }
 // FIN Mostrar / Ocultar
 // Validaciones
@@ -140,77 +139,72 @@ function ingreso() {
 // Fin Ingreso
 // Productos
 function listarProductos() {
-  let cuerpoTabla = "";
-  let producto = sis.Carrito[i];
+  let cuerpoTabla = creacionCuerpoProductos();
 
-  for (i = 0; i < sis.Productos.length; i++) {
-    cuerpoTabla += `<tr>
-        <td><img src="${producto.imagen}"></td>
-        <td>${producto.nombre}</td>
-        <td>${producto.descripcion}</td>
-        <td>${producto.precio}</td>
-        <td><input type="button" value="Añadir al Carrito" class="btnAgregarAlCarrito" data-id-producto="${producto.id}"></td>
-      </tr>`;
-  }
   document.querySelector("#curpoProductos").innerHTML = cuerpoTabla;
   bindearBotonComprar();
 }
 function bindearBotonComprar() {
-  let botones = document.querySelectorAll(".btnAgregarAlCarrito");
+  let botones = document.querySelectorAll(".btnAgregarCompra");
 
   for (let i = 0; i < botones.length; i++) {
-    botones[i].addEventListener("click", agregarAlCarrito);
+    botones[i].addEventListener("click", agregarCompra);
   }
 }
-// FIN Productos
-// Carrito
-function listarCarrito() {
+function creacionCuerpoProductos() {
   let cuerpoTabla = "";
-  let resumenCarrito = "";
-  let montofinal = 0;
-  let producto = sis.Carrito[i];
-
-  for (let i = 0; i < sis.Carrito.length; i++) {
-    let sumaPrecios = producto.precio * producto.cantUnidades;
-    montofinal += sumaPrecios;
-
+  for (i = 0; i < sis.Productos.length; i++) {
+    let producto = sis.Productos[i];
     cuerpoTabla += `<tr>
         <td><img src="${producto.imagen}"></td>
         <td>${producto.nombre}</td>
+        <td>${producto.descripcion}</td>
+        <td><label for="numCantUnidades"><input type="number" id="numCantUnidades" min=1 value=1"></td>
         <td>${producto.precio}</td>
-        <td>${producto.cantUnidades}</td>
-        <td><input type="button" value="Eliminar Producto" class="btnEliminarDelCarrito" data-id-Carrito="${producto.id}"></td>
+        <td><input type="button" value="Comprar" class="btnAgregarCompra" data-id-producto="${producto.id}"></td>
       </tr>`;
   }
-  resumenCarrito = `<tr>
-        <td>Total a pagar :</td>
-        <td>${montofinal}</td>
-        <td>${producto.estado}</td>
-        <td><input type="button" value="Pagar" class="btnPagarEnCarrito" data-id-Pagar=""></td>
-      </tr>`;
-
-  document.querySelector("#cuerpoCarrito").innerHTML = cuerpoTabla;
-  document.querySelector("#resumenCarrito").innerHTML = resumenCarrito;
-  bindearBotonEliminarDelCarrito();
+  return cuerpoTabla;
 }
+// FIN Productos
+// Compra
+function listarCompra() {
+  let cuerpoTabla = creacionCuerpoCompras();
 
-function bindearBotonEliminarDelCarrito() {
-  let botones = document.querySelectorAll(".btnEliminarDelCarrito");
+  document.querySelector("#cuerpoCompra").innerHTML = cuerpoTabla;
+  bindearBotonEliminarCompra();
+}
+function bindearBotonEliminarCompra() {
+  let botones = document.querySelectorAll(".btnEliminarCompra");
 
   for (let i = 0; i < botones.length; i++) {
-    botones[i].addEventListener("click", eliminarDelCarrito);
+    botones[i].addEventListener("click", eliminarCompra);
   }
 }
-
-function agregarAlCarrito() {
-  let idProducto = Number(this.getAttribute("data-id-producto"));
-  sis.agregarAlCarrito(idProducto);
-  listarCarrito();
+function creacionCuerpoCompras() {
+  let cuerpoTabla = "";
+  for (i = 0; i < sis.Compra.length; i++) {
+    let producto = sis.Compra[i];
+    cuerpoTabla += `<tr>
+        <td><img src="${producto.imagen}"></td>
+        <td>${producto.nombre}</td>
+        <td>${producto.descripcion}</td>
+        <td>${producto.cantUnidades}</td>
+        <td>${producto.precio}</td>
+        <td><input type="button" value="Elimindar Producto" class="btnEliminarCompra" data-id-Compra="${producto.id}"></td>
+      </tr>`;
+  }
+  return cuerpoTabla;
 }
-
-function eliminarDelCarrito() {
-  let idCarrito = Number(this.getAttribute("data-id-Carrito"));
-  sis.eliminarDelCarrito(idCarrito);
-  listarCarrito();
+// Editar compra
+function agregarCompra() {
+  let idProducto = this.getAttribute("data-id-producto");
+  sis.agregarCompra(idProducto);
+  listarCompra();
 }
-// Fin Carrito
+function eliminarCompra() {
+  let idCompra = this.getAttribute("data-id-Compra");
+  sis.eliminarCompra(idCompra);
+  listarCompra();
+}
+// Fin Compra
