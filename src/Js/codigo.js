@@ -154,14 +154,14 @@ function bindearBotonComprar() {
 function creacionCuerpoProductos() {
   let cuerpoTabla = "";
   for (i = 0; i < sis.Productos.length; i++) {
-    let producto = sis.Productos[i];
+    let prod = sis.Productos[i];
     cuerpoTabla += `<tr>
-        <td><img src="${producto.imagen}"></td>
-        <td>${producto.nombre}</td>
-        <td>${producto.descripcion}</td>
+        <td><img src="${prod.imagen}"></td>
+        <td>${prod.nombre}</td>
+        <td>${prod.descripcion}</td>
         <td><label for="numCantUnidades"><input type="number" id="numCantUnidades" min=1 value=1"></td>
-        <td>${producto.precio}</td>
-        <td><input type="button" value="Comprar" class="btnAgregarCompra" data-id-producto="${producto.id}"></td>
+        <td>${prod.precio}</td>
+        <td><input type="button" value="Comprar" class="btnAgregarCompra" data-id-producto="${prod.id}"></td>
       </tr>`;
   }
   return cuerpoTabla;
