@@ -88,14 +88,7 @@ function registro() {
   let cvc = document.querySelector("#txtCVCRegistro").value;
   document.querySelector("#pErrorRegistro").innerHTML = "";
 
-  if (
-    campoVacio(usuario) ||
-    campoVacio(contrasenia) ||
-    campoVacio(nombre) ||
-    campoVacio(apellido) ||
-    campoVacio(tarjeta) ||
-    campoVacio(cvc)
-  ) {
+  if (campoVacio(usuario) || campoVacio(contrasenia) || campoVacio(nombre) || campoVacio(apellido) || campoVacio(tarjeta) || campoVacio(cvc)) {
     document.querySelector("#pErrorRegistro").innerHTML = "No pueden haber campos vacios";
   } else {
     if (contrasenia.length <= 5) {
@@ -139,8 +132,19 @@ function ingreso() {
 // Fin Ingreso
 // Productos
 function listarProductos() {
-  let cuerpoTabla = creacionCuerpoProductos();
-
+  let cuerpoTabla = "";
+  let identificadorProd = 0;
+  for (i = 0; i < sis.Productos.length; i++) {
+    let prod = sis.Productos[i];
+    cuerpoTabla += `<tr>
+        <td><img src="${prod.imagen}"></td>
+        <td>${prod.nombre}</td>
+        <td>${prod.descripcion}</td>
+        <td><label for="numCantUnidades${i}"><input type="number" id="numCantUnidades${i}" min=1 value=1></td>
+        <td>${prod.precio}</td>
+        <td><input type="button" value="Comprar" class="btnAgregarCompra" data-id-producto="${prod.id}"></td>
+      </tr>`;
+  }
   document.querySelector("#curpoProductos").innerHTML = cuerpoTabla;
   bindearBotonComprar();
 }
@@ -150,21 +154,6 @@ function bindearBotonComprar() {
   for (let i = 0; i < botones.length; i++) {
     botones[i].addEventListener("click", agregarCompra);
   }
-}
-function creacionCuerpoProductos() {
-  let cuerpoTabla = "";
-  for (i = 0; i < sis.Productos.length; i++) {
-    let prod = sis.Productos[i];
-    cuerpoTabla += `<tr>
-        <td><img src="${prod.imagen}"></td>
-        <td>${prod.nombre}</td>
-        <td>${prod.descripcion}</td>
-        <td><label for="numCantUnidades"><input type="number" id="numCantUnidades" min=1 value=1"></td>
-        <td>${prod.precio}</td>
-        <td><input type="button" value="Comprar" class="btnAgregarCompra" data-id-producto="${prod.id}"></td>
-      </tr>`;
-  }
-  return cuerpoTabla;
 }
 // FIN Productos
 // Compra

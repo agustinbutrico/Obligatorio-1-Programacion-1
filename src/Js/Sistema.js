@@ -122,12 +122,6 @@ class Sistema {
   // FIN Funciones productos
   // Funciones compra
   agregarCompra(pIdProducto) {
-    for (let i = 0; i < this.Compra.length; i++) {
-      if (this.Compra[i].idProducto === pIdProducto) {
-        this.Compra[i].cantUnidades++;
-        return;
-      }
-    }
     let productoEnCompra = this.obtenerProductoPorId(pIdProducto);
     productoEnCompra.cantUnidades = 1;
     this.Compra.push(productoEnCompra);
