@@ -145,22 +145,34 @@ function listarProductos() {
         <td><img src="${prod.imagen}"></td>
         <td>${prod.nombre}</td>
         <td>${prod.descripcion}</td>
-        <td><label for="numCantUnidades${prod.id}"><input type="number" id="numCantUnidades${prod.id}" min=1 value=1></td>
+        <td><input type="number" id="numCantUnidades${prod.id}" min=1 value=1></td>
         <td></td>
-        <td>${prod.precio}</td>
-        <td><input type="button" value="Comprar" class="btnAgregarCompra" data-id-producto="${prod.id}"></td>
-        </tr>`;
+        <td>${prod.precio}</td>`;
+      // Separa los botones de adnimistrador y usuario
+      if (esAdministrador) {
+        // Concatena un boton
+        cuerpoTabla += ``;
+      } else {
+        // Concatena un boton
+        cuerpoTabla += `<td><input type="button" value="Comprar" class="btnAgregarCompra" data-id-producto="${prod.id}"></td></tr>`;
+      }
       if (prod.oferta === 1) {
         let precioConDescuento = descuentoFijo(prod.precio, 20);
         cuerpoTablaOferta += `<tr>
           <td><img src="${prod.imagen}"></td>
           <td>${prod.nombre}</td>
           <td>${prod.descripcion}</td>
-          <td><label for="numCantUnidadesOferta${prod.id}"><input type="number" id="numCantUnidadesOferta${prod.id}" min=1 value=1></td>
+          <td><input type="number" id="numCantUnidadesOferta${prod.id}" min=1 value=1></td>
           <td>20% OFF</td>
-          <td>${precioConDescuento.toFixed(0)}</td>
-          <td><input type="button" value="Comprar" class="btnAgregarCompraOferta" data-id-producto="${prod.id}"></td>
-          </tr>`;
+          <td>${precioConDescuento.toFixed(0)}</td>`;
+        // Separa los botones de adnimistrador y usuario
+        if (esAdministrador) {
+          // Concatena un boton
+          cuerpoTablaOferta += ``;
+        } else {
+          // Concatena un boton
+          cuerpoTablaOferta += `<td><input type="button" value="Comprar" class="btnAgregarCompraOferta" data-id-producto="${prod.id}"></td></tr>`;
+        }
       }
     }
   }
@@ -169,31 +181,47 @@ function listarProductos() {
   bindearBotonComprar();
   bindearBotonComprarOferta();
 }
+function cuerpoTablaCompra(prod) {
+  let cuerpoTabla = 0;
+  let precioConDescuento = descuentoFijo(prod.precio, 20);
+  cuerpoTabla += `
+  <tr><td>${prod.estado}</td>
+  <td><img src="${prod.imagen}"></td>
+  <td>${prod.nombre}</td>`;
+  if (prod.oferta === 1) {
+    cuerpoTabla += `<td>${precioConDescuento.toFixed(0) * prod.cantUnidades}</td>`;
+  } else {
+    cuerpoTabla += `<td>${prod.precio * prod.cantUnidades}</td>`;
+  }
+  cuerpoTabla += `<td>${prod.cantUnidades}</td><td>`;
+  // Separa los botones de adnimistrador y usuario
+  if (esAdministrador) {
+    // Concatena un boton
+    cuerpoTabla += ``;
+  } else {
+    // Muestra el boton cuando el producto no está cancelado
+    if (prod.estado !== "Cancelado") {
+      // Concatena un boton
+      cuerpoTabla += `<input type="button" value="Cancelar Compra" class="btnCancelarCompra" data-id-Cancelar-Compra="${prod.id}">`;
+    }
+  }
+  return cuerpoTabla;
+}
 function listarCompra() {
+  let filtro = document.querySelector("#slcFiltroCompra").value;
   let cuerpoTabla = "";
+  // Recorre la lista Compra
   for (i = 0; i < sis.Compra.length; i++) {
     let prod = sis.Compra[i];
-    if (prod.oferta === 1) {
-      let precioConDescuento = descuentoFijo(prod.precio, 20);
-      cuerpoTabla += `<tr>
-        <td>${prod.estado}</td>
-        <td><img src="${prod.imagen}"></td>
-        <td>${prod.nombre}</td>
-        <td>${precioConDescuento.toFixed(0) * prod.cantUnidades}</td>
-        <td>${prod.cantUnidades}</td>
-        <td><input type="button" value="Cancelar Compra" class="btnCancelarCompra" data-id-Cancelar-Compra="${prod.id}">
-        <input type="button" value="Confirmar Compra" class="btnConfirmarCompra" data-id-Confirmar-Compra="${prod.id}"></td>
-      </tr>`;
-    } else {
-      cuerpoTabla += `<tr>
-        <td>${prod.estado}</td>
-        <td><img src="${prod.imagen}"></td>
-        <td>${prod.nombre}</td>
-        <td>${prod.precio * prod.cantUnidades}</td>
-        <td>${prod.cantUnidades}</td>
-        <td><input type="button" value="Cancelar Compra" class="btnCancelarCompra" data-id-Cancelar-Compra="${prod.id}">
-        <input type="button" value="Confirmar Compra" class="btnConfirmarCompra" data-id-Confirmar-Compra="${prod.id}"></td>
-      </tr>`;
+    // Recorre los filtros
+    if (filtro === "0") {
+      cuerpoTabla += cuerpoTablaCompra(prod);
+    } else if (filtro === 1 && filtro === prod.estado.charAt(0)) {
+      cuerpoTabla += cuerpoTablaCompra(prod);
+    } else if (filtro === 2 && filtro === prod.estado.charAt(0)) {
+      cuerpoTabla += cuerpoTablaCompra(prod);
+    } else if (filtro === 3 && filtro === prod.estado.charAt(0)) {
+      cuerpoTabla += cuerpoTablaCompra(prod);
     }
   }
   document.querySelector("#cuerpoCompra").innerHTML = cuerpoTabla;
