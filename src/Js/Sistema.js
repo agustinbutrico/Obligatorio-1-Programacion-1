@@ -1,21 +1,17 @@
 // ID Precargados
 idUsuarioGlob = 3;
 idProductoGlob = 4;
-idCompraGlob = 0;
+idCompraGlob = 1;
 // FIN ID Precargados
 let esOferta = false;
 
 class Sistema {
   constructor() {
-    this.Administradores = [
-      new Administrador("Valentin123", "123456"),
-      new Administrador("Agustin321", "654321"),
-      new Administrador("Instalador", "wwzz2233"),
-    ];
+    this.Administradores = [new Administrador("Valentin", "123"), new Administrador("Agustin", "321"), new Administrador("Instalador", "wwzz2233")];
 
     this.Usuarios = [
       new Usuario(0, 3000, "Nahu515", "Panda2803", "Nahuel", "Sosa", "WWWW-XXXX-YYYY-ZZZZ", "234"),
-      new Usuario(1, 3000, "Juan", "Juanico", "Jose", "Jose", "WVVW-XYYX-YGGY-ZFFZ", "967"),
+      new Usuario(1, 3000, "Juan", "Juanico1", "Jose", "Jose", "WVVW-XYYX-YGGY-ZFFZ", "967"),
       new Usuario(2, 3000, "user", "user", "Usuario", "Test", "WVVW-XYYX-YGGY-ZFFZ", "999"),
     ];
 
@@ -42,17 +38,7 @@ class Sistema {
         0,
         1
       ),
-      new Producto(
-        "PROD_ID_2",
-        "Pelota de Futbol",
-        25,
-        "Una pelota de futbol de 26 pulgadas blanca y negra",
-        "src/Img/pelota.jpg",
-        300,
-        1,
-        1,
-        1
-      ),
+      new Producto("PROD_ID_2", "Pelota de Futbol", 25, "Una pelota de futbol de 26 pulgadas blanca y negra", "src/Img/pelota.jpg", 300, 1, 1, 1),
       new Producto(
         "PROD_ID_3",
         "Pack de deporte Familiar",
@@ -65,13 +51,13 @@ class Sistema {
         1
       ),
     ];
-    this.Compra = [];
+    this.Compra = [
+      new Compra("PROD_ID_3", "COMPRA_ID_0", "Pack de deporte Familiar", 667, "src/Img/pack-deporte.jpg", 23, "2Cancelado", 1, 4, "Instalador"),
+    ];
   }
   // Permite registrar usuarios con id auto incremental y saldo base precargado
   registrarUsuario(pNombreUsuario, pContrasenia, pNombre, pApellido, pTarjeta, pCVC) {
-    this.Usuarios.push(
-      new Usuario(idUsuarioGlob, 3000, pNombreUsuario, pContrasenia, pNombre, pApellido, pTarjeta, pCVC)
-    );
+    this.Usuarios.push(new Usuario(idUsuarioGlob, 3000, pNombreUsuario, pContrasenia, pNombre, pApellido, pTarjeta, pCVC));
     idUsuarioGlob++;
   }
   // Permite saber si el nombre de usuario esta en uso por un administrador
@@ -93,10 +79,7 @@ class Sistema {
   // Verifica que el nombre de usuario y contraseña sean correctos
   verificarCredencialesAdministrador(pNombreUsuario, pContrasenia) {
     for (let i = 0; i < this.Administradores.length; i++) {
-      if (
-        this.Administradores[i].nombreUsuario === pNombreUsuario &&
-        this.Administradores[i].contrasenia === pContrasenia
-      ) {
+      if (this.Administradores[i].nombreUsuario === pNombreUsuario && this.Administradores[i].contrasenia === pContrasenia) {
         return true;
       }
     }
@@ -113,9 +96,7 @@ class Sistema {
   // Añade un producto nuevo a Productos
   agregarProducto(pNombre, pPrecio, pDescripcion, pImagen, pStock, pEstado, pOferta) {
     let idProductoTemp = `PROD_ID_${idProductoGlob}`;
-    this.Productos.push(
-      new Producto(idProductoTemp, pNombre, pPrecio, pDescripcion, pImagen, pStock, pEstado, pOferta)
-    );
+    this.Productos.push(new Producto(idProductoTemp, pNombre, pPrecio, pDescripcion, pImagen, pStock, pEstado, pOferta));
     idProductoGlob++;
   }
   // Elimina un producto existente de Productos
@@ -155,41 +136,12 @@ class Sistema {
     }
     return null;
   }
-  agregarCompra(pIdProducto) {
+  agregarCompra(pIdProducto, pIdCantUnidades, pUsuarioActivo) {
     let idCompraTemp = `COMPRA_ID_${idCompraGlob}`;
     let prod = this.obtenerProductoPorId(pIdProducto);
-    let cantUnidades = document.querySelector(`#numCantUnidades${prod.id}`).value;
+    let cantUnidades = document.querySelector(`${pIdCantUnidades}${prod.id}`).value;
     this.Compra.push(
-      new Compra(
-        idCompraTemp,
-        prod.id,
-        prod.nombre,
-        prod.precio,
-        prod.imagen,
-        prod.stock,
-        `1Pendiente`,
-        prod.oferta,
-        cantUnidades
-      )
-    );
-    idCompraGlob++;
-  }
-  agregarCompraOferta(pIdProducto) {
-    let idCompraTemp = `COMPRA_ID_${idCompraGlob}`;
-    let prod = this.obtenerProductoPorId(pIdProducto);
-    let cantUnidades = document.querySelector(`#numCantUnidadesOferta${prod.id}`).value;
-    this.Compra.push(
-      new Compra(
-        idCompraTemp,
-        prod.id,
-        prod.nombre,
-        prod.precio,
-        prod.imagen,
-        prod.stock,
-        `1Pendiente`,
-        prod.oferta,
-        cantUnidades
-      )
+      new Compra(idCompraTemp, prod.id, prod.nombre, prod.precio, prod.imagen, prod.stock, `1Pendiente`, prod.oferta, cantUnidades, pUsuarioActivo)
     );
     idCompraGlob++;
   }
