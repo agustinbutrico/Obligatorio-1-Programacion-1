@@ -98,8 +98,8 @@
               <th>Nombre</th>
               <th>Descripcion</th>
               <th>Cantidad</th>
-              <th>Precio</th>
               <th>OFERTA</th>
+              <th>Precio</th>
               <th>Acción</th>
             </thead>
             <tbody id="curpoProductosOferta"></tbody>
@@ -113,8 +113,8 @@
               <th>Nombre</th>
               <th>Descripcion</th>
               <th>Cantidad</th>
-              <th>Precio</th>
               <th></th>
+              <th>Precio</th>
               <th>Acción</th>
             </thead>
             <tbody id="curpoProductos"></tbody>
@@ -122,8 +122,16 @@
         </section>
         <!-- Compra de compras -->
         <section id="secCompra">
+          <label for="slcFiltroCompra">Filtrar por:</label>
+          <select id="slcFiltroCompra">
+            <option value="t">Todo</option>
+            <option value="p">Pendientes</option>
+            <option value="c">Canceladas</option>
+            <option value="r">Realizadas</option>
+          </select>
           <table>
             <thead>
+              <th>Estado</th>
               <th>Producto</th>
               <th>Nombre</th>
               <th>Precio</th>
