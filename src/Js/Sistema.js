@@ -148,19 +148,19 @@ class Sistema {
     let idCompraTemp = `COMPRA_ID_${idCompraGlob}`;
     let prod = this.obtenerProductoPorId(pIdProducto);
     let cantUnidades = document.querySelector(`#numCantUnidades${prod.id}`).value;
-    this.Compra.push(new Compra(idCompraTemp, prod.id, prod.nombre, prod.precio, prod.imagen, prod.stock, "Pendiente", prod.oferta, cantUnidades));
+    this.Compra.push(new Compra(idCompraTemp, prod.id, prod.nombre, prod.precio, prod.imagen, prod.stock, `1Pendiente`, prod.oferta, cantUnidades));
     idCompraGlob++;
   }
   agregarCompraOferta(pIdProducto) {
     let idCompraTemp = `COMPRA_ID_${idCompraGlob}`;
     let prod = this.obtenerProductoPorId(pIdProducto);
     let cantUnidades = document.querySelector(`#numCantUnidadesOferta${prod.id}`).value;
-    this.Compra.push(new Compra(idCompraTemp, prod.id, prod.nombre, prod.precio, prod.imagen, prod.stock, "Pendiente", prod.oferta, cantUnidades));
+    this.Compra.push(new Compra(idCompraTemp, prod.id, prod.nombre, prod.precio, prod.imagen, prod.stock, `1Pendiente`, prod.oferta, cantUnidades));
     idCompraGlob++;
   }
   cancelarCompra(pIdCompra) {
     let prod = this.obtenerCompraPorId(pIdCompra);
-    prod.estado = "Cancelado"
+    prod.estado = `2Cancelado`;
   }
 
   // FIN Funciones compra
