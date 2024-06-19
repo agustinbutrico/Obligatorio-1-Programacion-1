@@ -42,7 +42,17 @@ class Sistema {
         0,
         1
       ),
-      new Producto("PROD_ID_2", "Pelota de Futbol", 250, "Una pelota de futbol de 26 pulgadas blanca y negra", "src/Img/pelota.jpg", 300, 1, 1, 1),
+      new Producto(
+        "PROD_ID_2",
+        "Pelota de Futbol",
+        250,
+        "Una pelota de futbol de 26 pulgadas blanca y negra",
+        "src/Img/pelota.jpg",
+        300,
+        1,
+        1,
+        1
+      ),
       new Producto(
         "PROD_ID_3",
         "Pack de deporte Familiar",
@@ -59,7 +69,9 @@ class Sistema {
   }
   // Permite registrar usuarios con id auto incremental y saldo base precargado
   registrarUsuario(pNombreUsuario, pContrasenia, pNombre, pApellido, pTarjeta, pCVC) {
-    this.Usuarios.push(new Usuario(idUsuarioGlob, 3000, pNombreUsuario, pContrasenia, pNombre, pApellido, pTarjeta, pCVC));
+    this.Usuarios.push(
+      new Usuario(idUsuarioGlob, 3000, pNombreUsuario, pContrasenia, pNombre, pApellido, pTarjeta, pCVC)
+    );
     idUsuarioGlob++;
   }
   // Permite saber si el nombre de usuario esta en uso por un administrador
@@ -81,7 +93,10 @@ class Sistema {
   // Verifica que el nombre de usuario y contraseña sean correctos
   verificarCredencialesAdministrador(pNombreUsuario, pContrasenia) {
     for (let i = 0; i < this.Administradores.length; i++) {
-      if (this.Administradores[i].nombreUsuario === pNombreUsuario && this.Administradores[i].contrasenia === pContrasenia) {
+      if (
+        this.Administradores[i].nombreUsuario === pNombreUsuario &&
+        this.Administradores[i].contrasenia === pContrasenia
+      ) {
         return true;
       }
     }
@@ -98,7 +113,9 @@ class Sistema {
   // Añade un producto nuevo a Productos
   agregarProducto(pNombre, pPrecio, pDescripcion, pImagen, pStock, pEstado, pOferta) {
     let idProductoTemp = `PROD_ID_${idProductoGlob}`;
-    this.Productos.push(new Producto(idProductoTemp, pNombre, pPrecio, pDescripcion, pImagen, pStock, pEstado, pOferta));
+    this.Productos.push(
+      new Producto(idProductoTemp, pNombre, pPrecio, pDescripcion, pImagen, pStock, pEstado, pOferta)
+    );
     idProductoGlob++;
   }
   // Elimina un producto existente de Productos
@@ -111,17 +128,11 @@ class Sistema {
     }
   }
   // Edita un producto existente en Productos
-  editarProducto(pNombre, pPrecio, pDescripcion, pImagen, pId) {
-    for (let i = 0; i < this.Productos.length; i++) {
-      let prod = this.Productos[i];
-      if (prod.id === pId) {
-        prod.nombre = pNombre;
-        prod.precio = pPrecio;
-        prod.descripcion = pDescripcion;
-        prod.imagen = pImagen;
-        break;
-      }
-    }
+  modificarProducto(pId, campoStock, campoEstado, campoOferta) {
+    let prod = this.obtenerProductoPorId(pId);
+    prod.stock = campoStock;
+    prod.estado = campoEstado;
+    prod.oferta = campoOferta;
   }
   // Obtiene los meta datos de un producto existente en Productos
   obtenerProductoPorId(pIdProducto) {
@@ -148,14 +159,38 @@ class Sistema {
     let idCompraTemp = `COMPRA_ID_${idCompraGlob}`;
     let prod = this.obtenerProductoPorId(pIdProducto);
     let cantUnidades = document.querySelector(`#numCantUnidades${prod.id}`).value;
-    this.Compra.push(new Compra(idCompraTemp, prod.id, prod.nombre, prod.precio, prod.imagen, prod.stock, `1Pendiente`, prod.oferta, cantUnidades));
+    this.Compra.push(
+      new Compra(
+        idCompraTemp,
+        prod.id,
+        prod.nombre,
+        prod.precio,
+        prod.imagen,
+        prod.stock,
+        `1Pendiente`,
+        prod.oferta,
+        cantUnidades
+      )
+    );
     idCompraGlob++;
   }
   agregarCompraOferta(pIdProducto) {
     let idCompraTemp = `COMPRA_ID_${idCompraGlob}`;
     let prod = this.obtenerProductoPorId(pIdProducto);
     let cantUnidades = document.querySelector(`#numCantUnidadesOferta${prod.id}`).value;
-    this.Compra.push(new Compra(idCompraTemp, prod.id, prod.nombre, prod.precio, prod.imagen, prod.stock, `1Pendiente`, prod.oferta, cantUnidades));
+    this.Compra.push(
+      new Compra(
+        idCompraTemp,
+        prod.id,
+        prod.nombre,
+        prod.precio,
+        prod.imagen,
+        prod.stock,
+        `1Pendiente`,
+        prod.oferta,
+        cantUnidades
+      )
+    );
     idCompraGlob++;
   }
   cancelarCompra(pIdCompra) {
