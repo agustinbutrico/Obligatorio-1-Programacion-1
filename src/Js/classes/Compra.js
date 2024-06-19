@@ -1,5 +1,5 @@
 class Compra {
-    constructor(_id, _idProducto, _nombre, _precio, _imagen, _stock, _estado, _oferta, _cantUnidades) {
+    constructor(_id, _idProducto, _nombre, _precio, _imagen, _stock, _estado, _oferta, _cantUnidades, _usuarioComprador) {
         this.id = _id;
         this.idProducto = _idProducto;
         this.nombre = _nombre;
@@ -9,5 +9,6 @@ class Compra {
         this.estado = _estado;
         this.oferta = _oferta;
         this.cantUnidades = _cantUnidades;
+        this.usuarioComprador = _usuarioComprador
       }
     }
