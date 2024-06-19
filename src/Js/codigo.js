@@ -132,8 +132,8 @@ function ingreso() {
     document.querySelector("#pErrorIngreso").innerHTML = "Usario y/o contraseña incorrectos";
   }
 }
-// Fin Ingreso
-// Productos
+// FIN Ingreso
+// Listar
 function listarProductos() {
   let cuerpoTabla = "";
   let cuerpoTablaOferta = "";
@@ -169,40 +169,6 @@ function listarProductos() {
   bindearBotonComprar();
   bindearBotonComprarOferta();
 }
-function bindearBotonComprar() {
-  let botones = document.querySelectorAll(".btnAgregarCompra");
-  for (let i = 0; i < botones.length; i++) {
-    botones[i].addEventListener("click", agregarCompra);
-  }
-}
-function bindearBotonComprarOferta() {
-  let botones = document.querySelectorAll(".btnAgregarCompraOferta");
-  for (let i = 0; i < botones.length; i++) {
-    botones[i].addEventListener("click", agregarCompraOferta);
-  }
-}
-// FIN Productos
-// Editar compra
-function agregarCompra() {
-  let idProducto = this.getAttribute("data-id-producto");
-  sis.agregarCompra(idProducto);
-  listarCompra();
-}
-function agregarCompraOferta() {
-  let idProducto = this.getAttribute("data-id-producto");
-  sis.agregarCompraOferta(idProducto);
-  listarCompra();
-}
-function eliminarCompra() {
-  let idCompra = this.getAttribute("data-id-Cancelar-Compra");
-  sis.eliminarCompra(idCompra);
-  listarCompra();
-}
-// Fin Editar Compra
-// Compra
-function descuentoFijo(precio, descuento) {
-  return precio - (precio * descuento) / 100;
-}
 function listarCompra() {
   let cuerpoTabla = "";
   for (i = 0; i < sis.Compra.length; i++) {
@@ -231,13 +197,53 @@ function listarCompra() {
     }
   }
   document.querySelector("#cuerpoCompra").innerHTML = cuerpoTabla;
-  bindearBotonEliminarCompra();
+  bindearBotonCancelarCompra();
 }
-function bindearBotonEliminarCompra() {
-  let botones = document.querySelectorAll(".btnCancelarCompra");
-
+// FIN Listar
+// Bindear
+function bindearBotonComprar() {
+  let botones = document.querySelectorAll(".btnAgregarCompra");
   for (let i = 0; i < botones.length; i++) {
-    botones[i].addEventListener("click", eliminarCompra);
+    botones[i].addEventListener("click", agregarCompra);
   }
 }
-// Fin Compra
+function bindearBotonComprarOferta() {
+  let botones = document.querySelectorAll(".btnAgregarCompraOferta");
+  for (let i = 0; i < botones.length; i++) {
+    botones[i].addEventListener("click", agregarCompraOferta);
+  }
+}
+function bindearBotonCancelarCompra() {
+  let botones = document.querySelectorAll(".btnCancelarCompra");
+  for (let i = 0; i < botones.length; i++) {
+    botones[i].addEventListener("click", cancelarCompra);
+  }
+}
+// FIN Bindear
+// Agregar
+function agregarCompra() {
+  let idProducto = this.getAttribute("data-id-producto");
+  sis.agregarCompra(idProducto);
+  listarCompra();
+}
+function agregarCompraOferta() {
+  let idProducto = this.getAttribute("data-id-producto");
+  sis.agregarCompraOferta(idProducto);
+  listarCompra();
+}
+// FIN Agregar
+// Editar
+
+// FIN Editar
+// Cancelar
+function cancelarCompra() {
+  let idCompra = this.getAttribute("data-id-Cancelar-Compra");
+  sis.cancelarCompra(idCompra);
+  listarCompra();
+}
+// FIN Cancelar
+// Calculos
+function descuentoFijo(precio, descuento) {
+  return precio - (precio * descuento) / 100;
+}
+// FIN Calculos
