@@ -1,15 +1,21 @@
 document.querySelector("#btnIngresar").addEventListener("click", ingreso);
 document.querySelector("#btnRegistrar").addEventListener("click", registro);
 document.querySelector("#aCrearCuenta").addEventListener("click", mostrarRegistro);
-document.querySelector("#aSalirDelSistema").addEventListener("click", mostrarIngreso);
-document.querySelector("#aListarProductos").addEventListener("click", mostrarProductos);
+
 document.querySelector("#aIrACompras").addEventListener("click", mostrarCompra);
+document.querySelector("#aListarProductos").addEventListener("click", mostrarProductos);
+document.querySelector("#aSalirDelSistema").addEventListener("click", mostrarIngreso);
+
+document.querySelector("#aIrAComprasAdmin").addEventListener("click", mostrarCompra);
+document.querySelector("#aListarProductosAdmin").addEventListener("click", mostrarProductos);
+document.querySelector("#aAdministrarProdcutosAdmin").addEventListener("click", mostrarAdministrarProductos);
+document.querySelector("#aSalirDelSistemaAdmin").addEventListener("click", mostrarIngreso);
+
 document.querySelector("#slcFiltroCompra").addEventListener("change", listarCompra);
 
 let sis = new Sistema();
 let esAdministrador = false;
 mostrarIngreso();
-listarProductos();
 
 //  Mostrar / Ocultar
 function mostrar(pId, estilo) {
@@ -49,6 +55,7 @@ function mostrarRegistro() {
 function mostrarProductos() {
   ocultarTodo();
   mostrarNavegacion();
+  listarProductos()
   mostrar("secProductos", "block");
   mostrar("secProductosOferta", "block");
 }
@@ -57,6 +64,9 @@ function mostrarCompra() {
   listarCompra();
   mostrarNavegacion();
   mostrar("secCompra", "block");
+}
+function mostrarAdministrarProductos() {
+  // Falta llenar
 }
 
 // FIN Mostrar / Ocultar
@@ -152,8 +162,9 @@ function listarProductos() {
       // Separa los botones de adnimistrador y usuario
       if (esAdministrador) {
         // Concatena un boton
-        cuerpoTabla += ``;
-      } else {
+        cuerpoTabla += `<td><input type="button" value="Modificar" class="btnModificarProducto" data-id-producto="${prod.id}"></td>
+                        <td><input type="button" value="Eliminar" class="btnEliminarProducto" data-id-producto="${prod.id}"></td></tr>`;
+      } else if (!esAdministrador) {
         // Concatena un boton
         cuerpoTabla += `<td><input type="button" value="Comprar" class="btnAgregarCompra" data-id-producto="${prod.id}"></td></tr>`;
       }
@@ -169,8 +180,9 @@ function listarProductos() {
         // Separa los botones de adnimistrador y usuario
         if (esAdministrador) {
           // Concatena un boton
-          cuerpoTablaOferta += ``;
-        } else {
+          cuerpoTablaOferta += `<td><input type="button" value="Modificar" class="btnModificarProducto" data-id-producto="${prod.id}"></td>
+                          <td><input type="button" value="Eliminar" class="btnEliminarProducto" data-id-producto="${prod.id}"></td></tr>`;
+        } else if (!esAdministrador) {
           // Concatena un boton
           cuerpoTablaOferta += `<td><input type="button" value="Comprar" class="btnAgregarCompraOferta" data-id-producto="${prod.id}"></td></tr>`;
         }
@@ -181,6 +193,7 @@ function listarProductos() {
   document.querySelector("#curpoProductosOferta").innerHTML = cuerpoTablaOferta;
   bindearBotonComprar();
   bindearBotonComprarOferta();
+  bindearBotonEliminarProducto();
 }
 function cuerpoTablaCompra(prod) {
   let cuerpoTabla = "";
@@ -248,6 +261,12 @@ function bindearBotonCancelarCompra() {
     botones[i].addEventListener("click", cancelarCompra);
   }
 }
+function bindearBotonEliminarProducto() {
+  let botones = document.querySelectorAll(".btnEliminarProducto");
+  for (let i = 0; i < botones.length; i++) {
+    botones[i].addEventListener("click", eliminarProducto);
+  }
+}
 // FIN Bindear
 // Agregar
 function agregarCompra() {
@@ -261,6 +280,13 @@ function agregarCompraOferta() {
   listarCompra();
 }
 // FIN Agregar
+// Eliminar
+function eliminarProducto() {
+  let idProducto = this.getAttribute("data-id-producto");
+  sis.eliminarProducto(idProducto);
+  listarProductos();
+}
+// FIN Eliminar
 // Editar
 
 // FIN Editar
