@@ -135,6 +135,15 @@ class Sistema {
   }
   // FIN Funciones productos
   // Funciones compra
+  obtenerCompraPorId(pIdCompra) {
+    for (let i = 0; i < this.Compra.length; i++) {
+      let prod = this.Compra[i];
+      if (pIdCompra === prod.id) {
+        return prod;
+      }
+    }
+    return null;
+  }
   agregarCompra(pIdProducto) {
     let idCompraTemp = `COMPRA_ID_${idCompraGlob}`;
     let prod = this.obtenerProductoPorId(pIdProducto);
@@ -149,13 +158,9 @@ class Sistema {
     this.Compra.push(new Compra(idCompraTemp, prod.id, prod.nombre, prod.precio, prod.imagen, prod.stock, "Pendiente", prod.oferta, cantUnidades));
     idCompraGlob++;
   }
-  eliminarCompra(pIdCompra) {
-    for (let i = 0; i < this.Compra.length; i++) {
-      if (this.Compra[i].id === pIdCompra) {
-        this.Compra.splice(i, 1);
-        break;
-      }
-    }
+  cancelarCompra(pIdCompra) {
+    let prod = this.obtenerCompraPorId(pIdCompra);
+    prod.estado = "Cancelado"
   }
 
   // FIN Funciones compra
