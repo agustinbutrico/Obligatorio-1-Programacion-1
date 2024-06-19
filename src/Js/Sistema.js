@@ -45,7 +45,7 @@ class Sistema {
       new Producto(
         "PROD_ID_2",
         "Pelota de Futbol",
-        250,
+        25,
         "Una pelota de futbol de 26 pulgadas blanca y negra",
         "src/Img/pelota.jpg",
         300,
@@ -56,7 +56,7 @@ class Sistema {
       new Producto(
         "PROD_ID_3",
         "Pack de deporte Familiar",
-        6670,
+        667,
         "Un grupo de articulos deportivos para disfrutar en familia",
         "src/Img/pack-deporte.jpg",
         2,
