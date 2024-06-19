@@ -182,10 +182,10 @@ function listarProductos() {
   bindearBotonComprarOferta();
 }
 function cuerpoTablaCompra(prod) {
-  let cuerpoTabla = 0;
+  let cuerpoTabla = "";
   let precioConDescuento = descuentoFijo(prod.precio, 20);
   cuerpoTabla += `
-  <tr><td>${prod.estado}</td>
+  <tr><td>${prod.estado.slice(1)}</td>
   <td><img src="${prod.imagen}"></td>
   <td>${prod.nombre}</td>`;
   if (prod.oferta === 1) {
@@ -216,11 +216,11 @@ function listarCompra() {
     // Recorre los filtros
     if (filtro === "0") {
       cuerpoTabla += cuerpoTablaCompra(prod);
-    } else if (filtro === 1 && filtro === prod.estado.charAt(0)) {
+    } else if (filtro === "1" && filtro === prod.estado.charAt(0)) {
       cuerpoTabla += cuerpoTablaCompra(prod);
-    } else if (filtro === 2 && filtro === prod.estado.charAt(0)) {
+    } else if (filtro === "2" && filtro === prod.estado.charAt(0)) {
       cuerpoTabla += cuerpoTablaCompra(prod);
-    } else if (filtro === 3 && filtro === prod.estado.charAt(0)) {
+    } else if (filtro === "3" && filtro === prod.estado.charAt(0)) {
       cuerpoTabla += cuerpoTablaCompra(prod);
     }
   }
