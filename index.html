@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Obligatorio Programación 1</title>
     <meta name="description" content="Resolución al obligatorio de Analista en TI, Programación 1, año 2024 " />
-    <link rel="stylesheet" href="src/Css/estilo-login-registro.css" />
+    <link rel="stylesheet" href="src/Css/estilo-menu.css" />
     <link rel="stylesheet" href="src/Css/estilo-ort.css" />
   </head>
 
@@ -29,17 +29,17 @@
           <img id="logo" src="https://p1.develotion.com/cart.jpg" alt="logo" />
           <nav>
             <ul id="navSecundaria">
-              <li><a id="aIrACompras">Compras</a></li>
-              <li><a id="aListarProductos">Productos</a></li>
-              <li><a id="aSalirDelSistema">Salir del sistema</a></li>
+              <li><a id="aIrAComprasAdmin">Administrar Compras</a></li>
+              <li><a id="aCrearAdmin">Crear Productos</a></li>
+              <li><a id="aListarProductosAdmin">Administrar Productos</a></li>
+              <li><a id="aSalirDelSistemaAdmin">Salir del sistema</a></li>
             </ul>
           </nav>
         </section>
       </header>
     </section>
-
     <!-- Login -->
-    <section class="ingreso" id="secIngreso">
+    <section class="menu" id="secIngreso">
       <div>
         <h2>Ingresar</h2>
         <form action="#" method="post" id="fIngreso">
@@ -59,9 +59,8 @@
         </p>
       </div>
     </section>
-
     <!-- Registro -->
-    <section class="registro" id="secRegistro">
+    <section class="menu" id="secRegistro">
       <div>
         <h2>Registrarse</h2>
         <form action="#" method="post" id="fRegistro">
@@ -86,36 +85,20 @@
         <input type="button" value="Registrarse" id="btnRegistrar" />
       </div>
     </section>
-
     <!-- Contenido -->
     <section class="contenido">
       <main>
         <section id="secProductosOferta">
           <!-- tabla de las Ofertas -->
-          <table>
-            <thead>
-              <th>Producto</th>
-              <th>Nombre</th>
-              <th>Descripcion</th>
-              <th>Cantidad</th>
-              <th>OFERTA</th>
-              <th>Precio</th>
-              <th>Acción</th>
-            </thead>
+          <table style="width: 100%">
+            <thead id="tituloProductosOferta"></thead>
             <tbody id="curpoProductosOferta"></tbody>
           </table>
         </section>
         <section id="secProductos">
           <!-- tabla de los productos -->
-          <table>
-            <thead>
-              <th>Producto</th>
-              <th>Nombre</th>
-              <th>Descripcion</th>
-              <th>Cantidad</th>
-              <th></th>
-              <th>Precio</th>
-              <th>Acción</th>
+          <table style="width: 100%">
+            <thead id="tituloProductos">
             </thead>
             <tbody id="curpoProductos"></tbody>
           </table>
@@ -129,7 +112,7 @@
             <option value="2">Canceladas</option>
             <option value="3">Realizadas</option>
           </select>
-          <table>
+          <table style="width: 100%">
             <thead>
               <th>Estado</th>
               <th>Producto</th>
@@ -143,6 +126,28 @@
           <table>
             <tbody id="resumenCompra"></tbody>
           </table>
+        </section>
+        <!-- Modificar Producto -->
+        <section class="menu" id="secModificar">
+          <h2>Editar Producto</h2>
+          <form action="#" method="post">
+            <label for="txtModificarId">Id del producto</label>
+            <input type="text" id="txtModificarId" disabled />
+            <label for="txtModificarStock">Stock</label>
+            <input type="text" id="txtModificarStock" />
+            <label for="slcModificarEstado">Estado</label>
+            <select id="slcModificarEstado">
+              <option value="1">Activo</option>
+              <option value="0">Pausado</option>
+            </select>
+            <label for="slcModificarOferta">En Oferta</label>
+            <select id="slcModificarOferta">
+              <option value="0">No</option>
+              <option value="1">Sí</option>
+            </select>
+            <input type="button" value="Cancelar Edición" id="btnCancelarModificar" />
+            <input type="button" value="Confirmar Edición" id="btnConfirmarModificar" />
+          </form>
         </section>
       </main>
     </section>
