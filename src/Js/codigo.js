@@ -144,6 +144,7 @@ function ingreso() {
     mostrarNavegacion();
     mostrarProductos();
   } else if (sis.verificarCredencialesUsuario(usuario, contrasenia)) {
+    esAdministrador = false;
     ocultarTodo();
     mostrarNavegacion();
     mostrarProductos();
@@ -153,6 +154,42 @@ function ingreso() {
 }
 // FIN Ingreso
 // Listar
+function tituloTablaProductos(pEsOferta, pExistenProductos, pExistenProductosOferta) {
+  tituloTabla = `
+    <th style="width: 5%;">Producto</th>
+    <th style="width: 10%;">Nombre</th>
+    <th style="width: 50%;">Descripcion</th>
+    <th style="width: 30px;">Cantidad</th>`;
+  if (esAdministrador) {
+    if (pExistenProductos && !pEsOferta) {
+      tituloTabla += `
+        <th style="width: 5%"></th>
+        <th style="width: 5%;">Precio</th>
+        <th style="width: 5%;">Stock</th>
+        <th style="width: 5%;">Estado</th>`
+
+    } else if (pExistenProductosOferta && pEsOferta) {
+      tituloTabla += `
+        <th style="width: 5%;">OFERTA</th>
+        <th style="width: 5%;">Precio</th>
+        <th style="width: 5%;">Stock</th>
+        <th style="width: 5%;">Estado</th>`
+    }
+  } else if (!esAdministrador) {
+    if (pExistenProductos && !pEsOferta) {
+      tituloTabla += `
+        <th style="width: 5%;"></th>
+        <th style="width: 5%;">Precio</th>`
+    } else if (pExistenProductosOferta && pEsOferta) {
+      tituloTabla += `
+        <th style="width: 5%;">OFERTA</th>
+        <th style="width: 5%;">Precio</th>`
+    }
+  }
+  tituloTabla += `
+    <th style="width: 10%;">Acción</th>`
+  return tituloTabla
+}
 function listarProductos() {
   let tituloTabla = "";
   let tituloTablaOferta = "";
@@ -171,18 +208,19 @@ function listarProductos() {
         <td><img src="${prod.imagen}"></td>
         <td>${prod.nombre}</td>
         <td>${prod.descripcion}</td>
-        <td><input type="number" id="numCantUnidades${prod.id}" min=1 value=1 style="display: inline-block"></td>
+        <td><input type="number" id="numCantUnidades${prod.id}" min=1 value=1 style="display: inline-block;"></td>
+        <td></td>
         <td>${prod.precio} <small>US$</small></td>`;
       // Separa los botones de administrador y usuario
       if (esAdministrador) {
         // Concatena un boton
         cuerpoTabla += `<td>${prod.stock}</td>
                         <td>${prod.estado}</td>
-                        <td><input type="button" value="Modificar" class="btnModificarProducto" data-id-producto="${prod.id}" style="display: inline-block">
-                        <input type="button" value="Eliminar" class="btnEliminarProducto" data-id-producto="${prod.id}" style="display: inline-block"></td></tr>`;
+                        <td><input type="button" value="Modificar" class="btnModificarProducto" data-id-producto="${prod.id}" style="display: inline-block;">
+                        <input type="button" value="Eliminar" class="btnEliminarProducto" data-id-producto="${prod.id}" style="display: inline-block;"></td></tr>`;
       } else if (!esAdministrador) {
         // Concatena un boton
-        cuerpoTabla += `<td><input type="button" value="Comprar" class="btnAgregarCompra" data-id-producto="${prod.id}" style="display: inline-block"></td></tr>`;
+        cuerpoTabla += `<td><input type="button" value="Comprar" class="btnAgregarCompra" data-id-producto="${prod.id}" style="display: inline-block;"></td></tr>`;
       }
 
       // Lista Productos Oferta
@@ -193,7 +231,7 @@ function listarProductos() {
           <td><img src="${prod.imagen}"></td>
           <td>${prod.nombre}</td>
           <td>${prod.descripcion}</td>
-          <td><input type="number" id="numCantUnidadesOferta${prod.id}" min=1 value=1 style="display: inline-block"></td>
+          <td><input type="number" id="numCantUnidadesOferta${prod.id}" min=1 value=1 style="display: inline-block;"></td>
           <td>20% OFF</td>
           <td>${precioConDescuento.toFixed(0)} <small>US$</small></td>`;
         // Separa los botones de administrador y usuario
@@ -201,58 +239,20 @@ function listarProductos() {
           // Concatena un boton
           cuerpoTablaOferta += `<td>${prod.stock}</td>
                                 <td>${prod.estado}</td>
-                                <td><input type="button" value="Modificar" class="btnModificarProducto" data-id-producto="${prod.id}" style="display: inline-block">
-                                <input type="button" value="Eliminar" class="btnEliminarProducto" data-id-producto="${prod.id}" style="display: inline-block"></td></tr>`;
+                                <td><input type="button" value="Modificar" class="btnModificarProducto" data-id-producto="${prod.id}" style="display: inline-block;">
+                                <input type="button" value="Eliminar" class="btnEliminarProducto" data-id-producto="${prod.id}" style="display: inline-block;"></td></tr>`;
         } else if (!esAdministrador) {
           // Concatena un boton
-          cuerpoTablaOferta += `<td><input type="button" value="Comprar" class="btnAgregarCompraOferta" data-id-producto="${prod.id}" style="display: inline-block"></td></tr>`;
+          cuerpoTablaOferta += `<td><input type="button" value="Comprar" class="btnAgregarCompraOferta" data-id-producto="${prod.id}" style="display: inline-block;"></td></tr>`;
         }
       }
     }
   }
   if (existenProductos) {
-    if (esAdministrador) {
-      tituloTabla = `
-        <th>Producto</th>
-        <th>Nombre</th>
-        <th style="width=auto">Descripcion</th>
-        <th>Cantidad</th>
-        <th>Precio</th>
-        <th>Stock</th>
-        <th>Estado</th>
-        <th>Acción</th>`;
-    } else if (!esAdministrador) {
-      tituloTabla = `
-        <th>Producto</th>
-        <th>Nombre</th>
-        <th style="width=auto">Descripcion</th>
-        <th>Cantidad</th>
-        <th>Precio</th>
-        <th>Acción</th>`;
-    }
+    tituloTabla = tituloTablaProductos(false, existenProductos, existenProductosOferta)
   }
   if (existenProductosOferta) {
-    if (esAdministrador) {
-      tituloTablaOferta = `
-          <th>Producto</th>
-          <th>Nombre</th>
-          <th style="width=auto">Descripcion</th>
-          <th>Cantidad</th>
-          <th>OFERTA</th>
-          <th>Precio</th>
-          <th>Stock</th>
-          <th>Estado</th>
-          <th>Acción</th>`;
-    } else if (!esAdministrador) {
-      tituloTablaOferta = `
-          <th>Producto</th>
-          <th>Nombre</th>
-          <th style="width=auto">Descripcion</th>
-          <th>Cantidad</th>
-          <th>OFERTA</th>
-          <th>Precio</th>
-          <th>Acción</th>`;
-    }
+    tituloTablaOferta = tituloTablaProductos(true, existenProductos, existenProductosOferta)
   }
   document.querySelector("#tituloProductos").innerHTML = tituloTabla;
   document.querySelector("#tituloProductosOferta").innerHTML = tituloTablaOferta;
@@ -284,7 +284,7 @@ function cuerpoTablaCompra(prod) {
     // Muestra el boton cuando el producto no está cancelado
     if (prod.estado !== "2Cancelado") {
       // Concatena un boton
-      cuerpoTabla += `<input type="button" value="Cancelar Compra" class="btnCancelarCompra" data-id-Cancelar-Compra="${prod.id}" style="display: inline-block">`;
+      cuerpoTabla += `<input type="button" value="Cancelar Compra" class="btnCancelarCompra" data-id-Cancelar-Compra="${prod.id}" style="display: inline-block;">`;
     }
   }
   return cuerpoTabla;
