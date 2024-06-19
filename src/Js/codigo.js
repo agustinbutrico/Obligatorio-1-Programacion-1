@@ -170,7 +170,7 @@ function tituloTablaProductos(pEsOferta, pExistenProductos, pExistenProductosOfe
 
     } else if (pExistenProductosOferta && pEsOferta) {
       tituloTabla += `
-        <th style="width: 5%;">OFERTA</th>
+        <th style="width: 5%;">Oferta</th>
         <th style="width: 5%;">Precio</th>
         <th style="width: 5%;">Stock</th>
         <th style="width: 5%;">Estado</th>`
@@ -182,7 +182,7 @@ function tituloTablaProductos(pEsOferta, pExistenProductos, pExistenProductosOfe
         <th style="width: 5%;">Precio</th>`
     } else if (pExistenProductosOferta && pEsOferta) {
       tituloTabla += `
-        <th style="width: 5%;">OFERTA</th>
+        <th style="width: 5%;">Oferta</th>
         <th style="width: 5%;">Precio</th>`
     }
   }
