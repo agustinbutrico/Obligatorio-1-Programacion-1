@@ -4,6 +4,7 @@ document.querySelector("#aCrearCuenta").addEventListener("click", mostrarRegistr
 document.querySelector("#aSalirDelSistema").addEventListener("click", mostrarIngreso);
 document.querySelector("#aListarProductos").addEventListener("click", mostrarProductos);
 document.querySelector("#aIrACompras").addEventListener("click", mostrarCompra);
+document.querySelector("#slcFiltroCompra").addEventListener("change", listarCompra);
 
 let sis = new Sistema();
 let esAdministrador = false;
@@ -200,7 +201,7 @@ function cuerpoTablaCompra(prod) {
     cuerpoTabla += ``;
   } else {
     // Muestra el boton cuando el producto no está cancelado
-    if (prod.estado !== "Cancelado") {
+    if (prod.estado !== "2Cancelado") {
       // Concatena un boton
       cuerpoTabla += `<input type="button" value="Cancelar Compra" class="btnCancelarCompra" data-id-Cancelar-Compra="${prod.id}">`;
     }
