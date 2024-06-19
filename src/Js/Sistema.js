@@ -3,6 +3,7 @@ idUsuarioGlob = 3;
 idProductoGlob = 4;
 idCompraGlob = 0;
 // FIN ID Precargados
+let esOferta = false;
 
 class Sistema {
   constructor() {
@@ -137,13 +138,14 @@ class Sistema {
   agregarCompra(pIdProducto) {
     let idCompraTemp = `COMPRA_ID_${idCompraGlob}`;
     let prod = this.obtenerProductoPorId(pIdProducto);
-    let cantUnidades;
-    if (prod.oferta == 0) {
-      alert("hola")
-      cantUnidades = document.querySelector(`#numCantUnidades${prod.id}`).value;
-    } else if (prod.oferta === 1) {
-      cantUnidades = document.querySelector(`#numCantUnidadesOferta${prod.id}`).value;
-    }
+    let cantUnidades = document.querySelector(`#numCantUnidades${prod.id}`).value;
+    this.Compra.push(new Compra(idCompraTemp, prod.id, prod.nombre, prod.precio, prod.imagen, prod.stock, prod.estado, prod.oferta, cantUnidades));
+    idCompraGlob++;
+  }
+  agregarCompraOferta(pIdProducto) {
+    let idCompraTemp = `COMPRA_ID_${idCompraGlob}`;
+    let prod = this.obtenerProductoPorId(pIdProducto);
+    let cantUnidades = document.querySelector(`#numCantUnidadesOferta${prod.id}`).value;
     this.Compra.push(new Compra(idCompraTemp, prod.id, prod.nombre, prod.precio, prod.imagen, prod.stock, prod.estado, prod.oferta, cantUnidades));
     idCompraGlob++;
   }

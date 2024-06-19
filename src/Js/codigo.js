@@ -164,6 +164,7 @@ function listarProductos() {
   document.querySelector("#curpoProductos").innerHTML = cuerpoTabla;
   document.querySelector("#curpoProductosOferta").innerHTML = cuerpoTablaOferta;
   bindearBotonComprar();
+  bindearBotonComprarOferta();
 }
 function bindearBotonComprar() {
   let botones = document.querySelectorAll(".btnAgregarCompra");
@@ -178,6 +179,23 @@ function bindearBotonComprarOferta() {
   }
 }
 // FIN Productos
+// Editar compra
+function agregarCompra() {
+  let idProducto = this.getAttribute("data-id-producto");
+  sis.agregarCompra(idProducto);
+  listarCompra();
+}
+function agregarCompraOferta() {
+  let idProducto = this.getAttribute("data-id-producto");
+  sis.agregarCompraOferta(idProducto);
+  listarCompra();
+}
+function eliminarCompra() {
+  let idCompra = this.getAttribute("data-id-Cancelar-Compra");
+  sis.eliminarCompra(idCompra);
+  listarCompra();
+}
+// Fin Editar Compra
 // Compra
 function descuentoFijo(precio, descuento) {
   return precio - (precio * descuento) / 100;
@@ -216,22 +234,5 @@ function bindearBotonEliminarCompra() {
   for (let i = 0; i < botones.length; i++) {
     botones[i].addEventListener("click", eliminarCompra);
   }
-}
-
-// Editar compra
-function agregarCompra() {
-  let idProducto = this.getAttribute("data-id-producto");
-  sis.agregarCompra(idProducto);
-  listarCompra();
-}
-function agregarCompraOferta() {
-  let idProducto = this.getAttribute("data-id-producto");
-  sis.agregarCompraOferta(idProducto);
-  listarCompra();
-}
-function eliminarCompra() {
-  let idCompra = this.getAttribute("data-id-Cancelar-Compra");
-  sis.eliminarCompra(idCompra);
-  listarCompra();
 }
 // Fin Compra
