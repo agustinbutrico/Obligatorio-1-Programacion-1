@@ -109,30 +109,28 @@
             <thead id="tituloCompra"></thead>
             <tbody id="cuerpoCompra"></tbody>
           </table>
-          <table>
-            <tbody id="resumenCompra"></tbody>
-          </table>
+          <p id="pResumenCompra"></p>
         </section>
-        <!-- Modificar Producto -->
-        <section class="menu" id="secModificar">
+        <!-- Administrar Producto -->
+        <section class="menu" id="secAdministrar">
           <h2>Editar Producto</h2>
           <form action="#" method="post">
-            <label for="txtModificarId">Id del producto</label>
-            <input type="text" id="txtModificarId" disabled />
-            <label for="txtModificarStock">Stock</label>
-            <input type="text" id="txtModificarStock" />
-            <label for="slcModificarEstado">Estado</label>
-            <select id="slcModificarEstado">
+            <label for="txtAdministrarId">Id del producto</label>
+            <input type="text" id="txtAdministrarId" disabled />
+            <label for="txtAdministrarStock">Stock</label>
+            <input type="text" id="txtAdministrarStock" />
+            <label for="slcAdministrarEstado">Estado</label>
+            <select id="slcAdministrarEstado">
               <option value="1">Activo</option>
               <option value="0">Pausado</option>
             </select>
-            <label for="slcModificarOferta">En Oferta</label>
-            <select id="slcModificarOferta">
+            <label for="slcAdministrarOferta">En Oferta</label>
+            <select id="slcAdministrarOferta">
               <option value="0">No</option>
               <option value="1">Sí</option>
             </select>
-            <input type="button" value="Cancelar Edición" id="btnCancelarModificar" />
-            <input type="button" value="Confirmar Edición" id="btnConfirmarModificar" />
+            <input type="button" value="Cancelar Edición" id="btnCancelarAdministrar" />
+            <input type="button" value="Confirmar Edición" id="btnConfirmarAdministrar" />
           </form>
         </section>
       </main>

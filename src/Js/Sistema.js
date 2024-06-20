@@ -1,7 +1,7 @@
 // ID Precargados
-idUsuarioGlob = 3;
-idProductoGlob = 4;
-idCompraGlob = 1;
+idUsuarioGlob = 5;
+idProductoGlob = 10;
+idCompraGlob = 5
 // FIN ID Precargados
 let esOferta = false;
 
@@ -67,11 +67,11 @@ class Sistema {
     ];
 
     this.Compra = [
-      new Compra("COMPRA_ID_0", "PROD_ID_4", "Raqueta de Tenis con Pelota", 12, "src/Img/raquetaDeTenis.jpg", 40, "2Cancelada", 0, 3, "Jeremy1998"),
-      new Compra("COMPRA_ID_1", "PROD_ID_2", "Pelota de Futbol", 25, "src/Img/pelota.jpg", 300, "1Pendiente", 1, 5, "Juan"),
-      new Compra("COMPRA_ID_2", "PROD_ID_5", "Pack Ping-Pong", 87, "src/Img/pingPong.jpeg", 18, "1Pendiente", 1, 2, "Juan"),
-      new Compra("COMPRA_ID_3", "PROD_ID_4", "Raqueta de Tenis con Pelota", 12, "src/Img/raquetaDeTenis.jpg", 40, "3Aprobada", 0, 1, "user"),
-      new Compra("COMPRA_ID_4", "PROD_ID_0", "Calzado Basket Long", 300, "src/Img/calzado-basket-long.jpg", 10, "1Pendiente", 0, 1, "Juan"),
+      new Compra("COMPRA_ID_0", "PROD_ID_4", "Raqueta de Tenis con Pelota", 12, "src/Img/raquetaDeTenis.jpg", "2Cancelada", 0, 3, "Jeremy1998"),
+      new Compra("COMPRA_ID_1", "PROD_ID_2", "Pelota de Futbol", 25, "src/Img/pelota.jpg", "1Pendiente", 1, 5, "Juan"),
+      new Compra("COMPRA_ID_2", "PROD_ID_5", "Pack Ping-Pong", 87, "src/Img/pingPong.jpeg", "1Pendiente", 1, 2, "Juan"),
+      new Compra("COMPRA_ID_3", "PROD_ID_4", "Raqueta de Tenis con Pelota", 12, "src/Img/raquetaDeTenis.jpg", "1Pendiente", 0, 1, "user"),
+      new Compra("COMPRA_ID_4", "PROD_ID_0", "Calzado Basket Long", 300, "src/Img/calzado-basket-long.jpg", "1Pendiente", 0, 1, "Juan"),
     ];
   }
   // Permite registrar usuarios con id auto incremental y saldo base precargado
@@ -158,12 +158,21 @@ class Sistema {
     }
     return null;
   }
+  obtenerUsuarioPorUsuario(pUsuario) {
+    for (let i = 0; i < this.Usuarios.length; i++) {
+      let usua = this.Usuarios[i];
+      if (pUsuario === usua.nombreUsuario) {
+        return usua;
+      }
+    }
+    return null;
+  }
   agregarCompra(pIdProducto, pCantUnidades, pUsuarioActivo) {
     let idCompraTemp = `COMPRA_ID_${idCompraGlob}`;
     let prod = this.obtenerProductoPorId(pIdProducto);
     let cantUnidades = pCantUnidades;
     this.Compra.push(
-      new Compra(idCompraTemp, prod.id, prod.nombre, prod.precio, prod.imagen, prod.stock, `1Pendiente`, prod.oferta, cantUnidades, pUsuarioActivo)
+      new Compra(idCompraTemp, prod.id, prod.nombre, prod.precio, prod.imagen, `1Pendiente`, prod.oferta, cantUnidades, pUsuarioActivo)
     );
     idCompraGlob++;
   }
@@ -172,8 +181,20 @@ class Sistema {
     prod.estado = `2Cancelado`;
   }
   aprobarCompra(pIdCompra) {
-    let prod = this.obtenerCompraPorId(pIdCompra);
-    prod.estado = `3Aprobada`;
+    let comp = this.obtenerCompraPorId(pIdCompra);
+    let prod = this.obtenerProductoPorId(comp.idProducto);
+    let usua = this.obtenerUsuarioPorUsuario(comp.usuarioComprador);
+    if (comp.cantUnidades <= prod.stock && comp.precio <= prod.precio && prod.estado === 1) {
+      comp.estado = `3Aprobada`;
+      prod.stock -= comp.cantUnidades;
+      usua.saldo -= comp.precio;
+      usua.deuda += comp.precio;
+      if (prod.stock === 0) {
+        prod.estado = 0;
+      }
+    } else {
+      comp.estado = `2Cancelada`;
+    }
   }
 
   // FIN Funciones compra
