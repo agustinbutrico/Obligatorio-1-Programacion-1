@@ -21,6 +21,7 @@
               <li><a id="aIrAOfertas">Ofertas</a></li>
               <li><a id="aIrACompras">Compras</a></li>
               <li><a id="aListarProductos">Productos</a></li>
+              <li><a id="aListarProductosOferta">Oferta</a></li>
               <li><a id="aSalirDelSistema">Salir del sistema</a></li>
             </ul>
           </nav>
@@ -89,13 +90,6 @@
     <!-- Contenido -->
     <section class="contenido">
       <main>
-        <section id="secProductosOferta">
-          <!-- tabla de las Ofertas -->
-          <table style="width: 100%">
-            <thead id="tituloProductosOferta"></thead>
-            <tbody id="curpoProductosOferta"></tbody>
-          </table>
-        </section>
         <section id="secProductos">
           <!-- tabla de los productos -->
           <table style="width: 100%">
@@ -103,15 +97,15 @@
             <tbody id="curpoProductos"></tbody>
           </table>
         </section>
+        <section id="secProductosOferta">
+          <!-- tabla de las Ofertas -->
+          <table style="width: 100%">
+            <thead id="tituloProductosOferta"></thead>
+            <tbody id="curpoProductosOferta"></tbody>
+          </table>
+        </section>
         <!-- Compra de compras -->
         <section id="secCompra">
-          <label for="slcFiltroCompra">Filtrar por:</label>
-          <select id="slcFiltroCompra">
-            <option value="0">Todo</option>
-            <option value="1">Pendientes</option>
-            <option value="2">Canceladas</option>
-            <option value="3">Realizadas</option>
-          </select>
           <table style="width: 50%">
             <thead id="tituloCompra"></thead>
             <tbody id="cuerpoCompra"></tbody>

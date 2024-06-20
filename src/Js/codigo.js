@@ -5,6 +5,7 @@ document.querySelector("#aCrearCuenta").addEventListener("click", mostrarRegistr
 document.querySelector("#aIrACompras").addEventListener("click", mostrarCompra);
 document.querySelector("#aIrAOfertas").addEventListener("click", mostrarOfertas);
 document.querySelector("#aListarProductos").addEventListener("click", mostrarProductos);
+document.querySelector("#aListarProductosOferta").addEventListener("click", mostrarProductosOferta);
 document.querySelector("#aSalirDelSistema").addEventListener("click", mostrarIngreso);
 
 document.querySelector("#aIrAComprasAdmin").addEventListener("click", mostrarCompra);
@@ -15,10 +16,13 @@ document.querySelector("#aSalirDelSistemaAdmin").addEventListener("click", mostr
 document.querySelector("#btnCancelarModificar").addEventListener("click", mostrarProductos);
 document.querySelector("#btnConfirmarModificar").addEventListener("click", modificarProducto);
 
+listarFiltrosCompra();
 document.querySelector("#slcFiltroCompra").addEventListener("change", listarCompra);
+document.querySelector("#txtFiltroUsuarioCompra").addEventListener("change", listarCompra);
 
 let sis = new Sistema();
 let esAdministrador = false;
+let usuarioActivo = "";
 mostrarIngreso();
 
 //  Mostrar / Ocultar
@@ -36,33 +40,45 @@ function ocultarTodo() {
   ocultar("secCompra");
   ocultar("secProductosOferta");
   ocultar("secModificar");
+  console.log("Oultando todo");
 }
 function mostrarNavegacion() {
   mostrar("secNavegacion", "block");
   if (esAdministrador) {
     ocultar("navUsuario");
     mostrar("navAdministrador", "flex");
+    console.log("Mostrando navegación administrador");
   } else {
     mostrar("navUsuario", "flex");
     ocultar("navAdministrador");
+    console.log("Mostrando navegación usuario");
   }
 }
 function mostrarIngreso() {
   ocultarTodo();
   mostrar("secIngreso", "block");
   document.querySelector("#pErrorIngreso").innerHTML = "";
+  console.log("Mostrando pantalla de ingreso");
 }
 function mostrarRegistro() {
   ocultarTodo();
   mostrar("secRegistro", "block");
   document.querySelector("#pErrorRegistro").innerHTML = "";
+  console.log("Mostrando registro");
 }
 function mostrarProductos() {
   ocultarTodo();
   mostrarNavegacion();
   listarProductos();
   mostrar("secProductos", "block");
+  console.log("Mostrando productos");
+}
+function mostrarProductosOferta() {
+  ocultarTodo();
+  mostrarNavegacion();
+  listarProductos();
   mostrar("secProductosOferta", "block");
+  console.log("Mostrando productos en oferta");
 }
 function mostrarOfertas() {
   ocultarTodo();
@@ -76,10 +92,12 @@ function mostrarCompra() {
   listarCompra();
   mostrarNavegacion();
   mostrar("secCompra", "block");
+  console.log("Mostrando compra");
 }
 function mostrarModificarProducto() {
   ocultarTodo();
   mostrar("secModificar", "block");
+  console.log("Mostrando modificar producto");
 }
 function mostrarAdministrarProductos() {
   // Falta llenar
@@ -190,74 +208,42 @@ function ingreso() {
     document.querySelector("#pErrorIngreso").innerHTML = "No pueden haber campos vacios";
   } else if (sis.verificarCredencialesAdministrador(usuario, contrasenia)) {
     esAdministrador = true;
+    usuarioActivo = usuario;
+    administrarFiltros();
     ocultarTodo();
-    mostrarNavegacion();
     mostrarProductos();
   } else if (sis.verificarCredencialesUsuario(usuario, contrasenia)) {
     esAdministrador = false;
+    usuarioActivo = usuario;
+    administrarFiltros();
     ocultarTodo();
-    mostrarNavegacion();
     mostrarProductos();
   } else {
     document.querySelector("#pErrorIngreso").innerHTML = "Usario y/o contraseña incorrectos";
   }
+  console.log(`esAdministrador = ${esAdministrador}`);
+  console.log(`usuarioActivo = ${usuarioActivo}`);
 }
 // FIN Ingreso
-// Listar
-function tituloTablaProductos(pEsOferta, pExistenProductos, pExistenProductosOferta) {
-  tituloTabla = `
-    <th style="width: 5%;">Producto</th>
-    <th style="width: 10%;">Nombre</th>
-    <th style="width: 50%;">Descripcion</th>
-    <th style="width: 30px;">Cantidad</th>`;
-  if (esAdministrador) {
-    if (pExistenProductos && !pEsOferta) {
-      tituloTabla += `
-        <th style="width: 5%"></th>
-        <th style="width: 5%;">Precio</th>
-        <th style="width: 5%;">Stock</th>
-        <th style="width: 5%;">Estado</th>`;
-    } else if (pExistenProductosOferta && pEsOferta) {
-      tituloTabla += `
-        <th style="width: 5%;">Oferta</th>
-        <th style="width: 5%;">Precio</th>
-        <th style="width: 5%;">Stock</th>
-        <th style="width: 5%;">Estado</th>`;
-    }
-  } else if (!esAdministrador) {
-    if (pExistenProductos && !pEsOferta) {
-      tituloTabla += `
-        <th style="width: 5%;"></th>
-        <th style="width: 5%;">Precio</th>`;
-    } else if (pExistenProductosOferta && pEsOferta) {
-      tituloTabla += `
-        <th style="width: 5%;">Oferta</th>
-        <th style="width: 5%;">Precio</th>`;
-    }
-  }
-  tituloTabla += `
-    <th style="width: 10%;">Acción</th>`;
-  return tituloTabla;
-}
+// Productos
 function listarProductos() {
   let tituloTabla = "";
   let tituloTablaOferta = "";
   let cuerpoTabla = "";
   let cuerpoTablaOferta = "";
-  let existenProductos = false;
-  let existenProductosOferta = false;
+  let existenProducto = false;
+  let existenProductoOferta = false;
 
   for (i = 0; i < sis.Productos.length; i++) {
     let prod = sis.Productos[i];
-    if (prod.stock <= 0 || prod.estado === 0) {
-    } else {
+    if (prod.stock > 0 && prod.estado !== 0) {
       // Lista Productos
-      existenProductos = true;
+      existenProducto = true;
       cuerpoTabla += `<tr>
         <td><img src="${prod.imagen}"></td>
         <td>${prod.nombre}</td>
         <td>${prod.descripcion}</td>
-        <td><input type="number" id="numCantUnidades${prod.id}" min=1 value=1 style="display: inline-block;"></td>
+        <td><input type="number" id="numCantUnidades${prod.id}" value=1 min=1 style="display: inline-block;"></td>
         <td></td>
         <td>${prod.precio} <small>US$</small></td>`;
       // Separa los botones de administrador y usuario
@@ -269,18 +255,18 @@ function listarProductos() {
                         <input type="button" value="Eliminar" class="btnEliminarProducto" data-id-producto="${prod.id}" style="display: inline-block;"></td></tr>`;
       } else if (!esAdministrador) {
         // Concatena un boton
-        cuerpoTabla += `<td><input type="button" value="Comprar" class="btnAgregarCompra" data-id-producto="${prod.id}" style="display: inline-block;"></td></tr>`;
+        cuerpoTabla += `<td><input class="btnAgregarCompra" type="button" value="Comprar" data-id-producto="${prod.id}" style="display: inline-block;"></td></tr>`;
       }
 
       // Lista Productos Oferta
       if (prod.oferta === 1) {
-        existenProductosOferta = true;
+        existenProductoOferta = true;
         let precioConDescuento = descuentoFijo(prod.precio, 20);
         cuerpoTablaOferta += `<tr>
           <td><img src="${prod.imagen}"></td>
           <td>${prod.nombre}</td>
           <td>${prod.descripcion}</td>
-          <td><input type="number" id="numCantUnidadesOferta${prod.id}" min=1 value=1 style="display: inline-block;"></td>
+          <td><input type="number" id="numCantUnidadesOferta${prod.id}" value=1 min=1 style="display: inline-block;"></td>
           <td>20% OFF</td>
           <td>${precioConDescuento.toFixed(0)} <small>US$</small></td>`;
         // Separa los botones de administrador y usuario
@@ -288,20 +274,20 @@ function listarProductos() {
           // Concatena un boton
           cuerpoTablaOferta += `<td>${prod.stock}</td>
                                 <td>${prod.estado}</td>
-                                <td><input type="button" value="Modificar" class="btnModificarProducto" data-id-producto="${prod.id}" style="display: inline-block;">
-                                <input type="button" value="Eliminar" class="btnEliminarProducto" data-id-producto="${prod.id}" style="display: inline-block;"></td></tr>`;
+                                <td><input class="btnModificarProducto" type="button" value="Modificar" data-id-producto="${prod.id}" style="display: inline-block;">
+                                <input class="btnEliminarProducto" type="button" value="Eliminar" data-id-producto="${prod.id}" style="display: inline-block;"></td></tr>`;
         } else if (!esAdministrador) {
           // Concatena un boton
-          cuerpoTablaOferta += `<td><input type="button" value="Comprar" class="btnAgregarCompraOferta" data-id-producto="${prod.id}" style="display: inline-block;"></td></tr>`;
+          cuerpoTablaOferta += `<td><input class="btnAgregarCompraOferta" type="button" value="Comprar" data-id-producto="${prod.id}" style="display: inline-block;"></td></tr>`;
         }
       }
     }
   }
-  if (existenProductos) {
-    tituloTabla = tituloTablaProductos(false, existenProductos, existenProductosOferta);
+  if (existenProducto) {
+    tituloTabla = tituloTablaProductos();
   }
-  if (existenProductosOferta) {
-    tituloTablaOferta = tituloTablaProductos(true, existenProductos, existenProductosOferta);
+  if (existenProductoOferta) {
+    tituloTablaOferta = tituloTablaProductos();
   }
   document.querySelector("#tituloProductos").innerHTML = tituloTabla;
   document.querySelector("#tituloProductosOferta").innerHTML = tituloTablaOferta;
@@ -312,31 +298,75 @@ function listarProductos() {
   bindearBotonEliminarProducto();
   bindearPrecargaModificarProducto();
 }
-function cuerpoTablaCompra(prod) {
-  let cuerpoTabla = "";
-  let precioConDescuento = descuentoFijo(prod.precio, 20);
-  cuerpoTabla += `
-  <tr><td>${prod.estado.slice(1)}</td>
-  <td><img src="${prod.imagen}"></td>
-  <td>${prod.nombre}</td>`;
-  if (prod.oferta === 1) {
-    cuerpoTabla += `<td>${precioConDescuento.toFixed(0) * prod.cantUnidades} <small>US$</small></td>`;
-  } else {
-    cuerpoTabla += `<td>${prod.precio * prod.cantUnidades} <small>US$</small></td>`;
-  }
-  cuerpoTabla += `<td>${prod.cantUnidades}</td><td>`;
-  // Separa los botones de adnimistrador y usuario
+function tituloTablaProductos() {
+  tituloTabla = `
+    <th style="width: 5%;">Producto</th>
+    <th style="width: 10%;">Nombre</th>
+    <th style="width: 50%;">Descripcion</th>
+    <th style="width: 30px;">Cantidad</th>`;
   if (esAdministrador) {
-    // Concatena un boton
-    cuerpoTabla += ``;
-  } else {
-    // Muestra el boton cuando el producto no está cancelado
-    if (prod.estado !== "2Cancelado") {
-      // Concatena un boton
-      cuerpoTabla += `<input type="button" value="Cancelar Compra" class="btnCancelarCompra" data-id-Cancelar-Compra="${prod.id}" style="display: inline-block;">`;
-    }
+    tituloTabla += `
+        <th style="width: 5%;">Oferta</th>
+        <th style="width: 5%;">Precio</th>
+        <th style="width: 5%;">Stock</th>
+        <th style="width: 5%;">Estado</th>`;
+  } else if (!esAdministrador) {
+    tituloTabla += `
+        <th style="width: 5%;">Oferta</th>
+        <th style="width: 5%;">Precio</th>`;
   }
-  return cuerpoTabla;
+  tituloTabla += `
+    <th style="width: 10%;">Acción</th>`;
+  return tituloTabla;
+}
+// FIN Productos
+// Compra
+function listarCompra() {
+  let filtro = document.querySelector("#slcFiltroCompra").value;
+  let filtroUsuario = document.querySelector("#txtFiltroUsuarioCompra").value;
+  let existenProducto = false;
+  let tituloTabla = "";
+  let cuerpoTabla = "";
+  let lista1 = "";
+  let lista2 = "";
+  let lista3 = "";
+  if (sis.Compra.length > 0) {
+    // Recorre la lista Compra
+    for (i = 0; i < sis.Compra.length; i++) {
+      existenProducto = true;
+      let prod = sis.Compra[i];
+      // Recorre los filtros
+      if (filtro === "0") {
+        if (esAdministrador) {
+          if (prod.estado.charAt(0) === "1") {
+            lista1 += cuerpoTablaCompra(prod, filtroUsuario);
+          }
+          if (prod.estado.charAt(0) === "2") {
+            lista2 += cuerpoTablaCompra(prod, filtroUsuario);
+          }
+          if (prod.estado.charAt(0) === "3") {
+            lista3 += cuerpoTablaCompra(prod, filtroUsuario);
+          }
+        } else if (!esAdministrador) {
+          cuerpoTabla += cuerpoTablaCompra(prod, filtroUsuario);
+        }
+      } else if (filtro === "1" && filtro === prod.estado.charAt(0)) {
+        cuerpoTabla += cuerpoTablaCompra(prod, filtroUsuario);
+      } else if (filtro === "2" && filtro === prod.estado.charAt(0)) {
+        cuerpoTabla += cuerpoTablaCompra(prod, filtroUsuario);
+      } else if (filtro === "3" && filtro === prod.estado.charAt(0)) {
+        cuerpoTabla += cuerpoTablaCompra(prod, filtroUsuario);
+      }
+    }
+    if (existenProducto) {
+      tituloTabla = tituloTablaCompra();
+    }
+    cuerpoTabla += lista1 + lista2 + lista3;
+  }
+
+  document.querySelector("#tituloCompra").innerHTML = tituloTabla;
+  document.querySelector("#cuerpoCompra").innerHTML = cuerpoTabla;
+  bindearBotonCancelarCompra();
 }
 function tituloTablaCompra() {
   let tituloTabla = "";
@@ -345,40 +375,75 @@ function tituloTablaCompra() {
     <th>Producto</th>
     <th>Nombre</th>
     <th>Precio</th>
-    <th>Cantidad</th>
-    <th>Acción</th>`;
+    <th>Cantidad</th>`;
+  if (esAdministrador) {
+    tituloTabla += `
+      <th>Usuario</th>`;
+  }
+  tituloTabla += `<th>Acción</th>`;
   return tituloTabla;
 }
-function listarCompra() {
-  let filtro = document.querySelector("#slcFiltroCompra").value;
-  let tituloTabla = "";
+function cuerpoTablaCompra(pProd, pFiltroUsuario) {
   let cuerpoTabla = "";
-  if (sis.Compra.length > 0) {
-    // Recorre la lista Compra
-    for (i = 0; i < sis.Compra.length; i++) {
-      let prod = sis.Compra[i];
-      // Recorre los filtros
-      if (filtro === "0") {
-        tituloTabla = tituloTablaCompra();
-        cuerpoTabla += cuerpoTablaCompra(prod);
-      } else if (filtro === "1" && filtro === prod.estado.charAt(0)) {
-        tituloTabla = tituloTablaCompra();
-        cuerpoTabla += cuerpoTablaCompra(prod);
-      } else if (filtro === "2" && filtro === prod.estado.charAt(0)) {
-        tituloTabla = tituloTablaCompra();
-        cuerpoTabla += cuerpoTablaCompra(prod);
-      } else if (filtro === "3" && filtro === prod.estado.charAt(0)) {
-        tituloTabla = tituloTablaCompra();
-        cuerpoTabla += cuerpoTablaCompra(prod);
+  let precioConDescuento = descuentoFijo(pProd.precio, 20);
+  if (pProd.usuarioComprador.toLowerCase().indexOf(pFiltroUsuario.toLowerCase()) !== -1) {
+    cuerpoTabla += `
+    <tr><td>${pProd.estado.slice(1)}</td>
+    <td><img src="${pProd.imagen}"></td>
+    <td>${pProd.nombre}</td>`;
+    if (pProd.oferta === 1) {
+      cuerpoTabla += `<td>${precioConDescuento.toFixed(0) * pProd.cantUnidades} <small>US$</small></td>`;
+    } else {
+      cuerpoTabla += `<td>${pProd.precio * pProd.cantUnidades} <small>US$</small></td>`;
+    }
+    cuerpoTabla += `<td>${pProd.cantUnidades}</td>`;
+    // Separa los botones de adnimistrador y usuario
+    if (esAdministrador) {
+      // Concatena un boton
+      cuerpoTabla += `<td>${pProd.usuarioComprador}</td>`;
+      cuerpoTabla += `<td></td>`;
+    } else {
+      // Muestra el boton cuando el producto no está cancelado
+      if (pProd.estado === "1Pendiente") {
+        // Concatena un boton
+        cuerpoTabla += `<td><input type="button" value="Cancelar Compra" class="btnCancelarCompra" data-id-Cancelar-Compra="${pProd.id}" style="display: inline-block;"></td></tr>`;
+      } else {
+        cuerpoTabla += `<td></td></tr>`;
       }
     }
   }
-
-  document.querySelector("#tituloCompra").innerHTML = tituloTabla;
-  document.querySelector("#cuerpoCompra").innerHTML = cuerpoTabla;
-  bindearBotonCancelarCompra();
+  return cuerpoTabla;
 }
-// FIN Listar
+function dineroEnCuenta(pUsuario) {
+  return `Saldo disponible: ${pUsuario.saldo}<small>US$</small><br>Deuda acumulada: ${pUsuario.deuda}<small>US$</small>`;
+}
+// FIN Compra
+
+// Filtros
+function listarFiltrosCompra() {
+  let filtros = `
+    <label for="slcFiltroCompra">Filtrar por:</label>
+    <select id="slcFiltroCompra">
+      <option value="0">Todo</option>
+      <option value="1">Pendientes</option>
+      <option value="2">Canceladas</option>
+      <option value="3">Realizadas</option>
+    </select>
+    <label for="txtFiltroUsuarioCompra" id="lFiltroUsuarioCompra">Filtrar Usuario:</label>
+    <input type="text" id="txtFiltroUsuarioCompra">`;
+  document.querySelector("#secCompra").innerHTML = filtros + document.querySelector("#secCompra").innerHTML;
+}
+function administrarFiltros() {
+  if (esAdministrador) {
+    document.querySelector("#lFiltroUsuarioCompra").style.display = "block";
+    document.querySelector("#txtFiltroUsuarioCompra").style.display = "inline-block";
+  } else if (!esAdministrador) {
+    document.querySelector("#lFiltroUsuarioCompra").style.display = "none";
+    document.querySelector("#txtFiltroUsuarioCompra").style.display = "none";
+  }
+}
+// FIN Filtros
+
 // Bindear
 function bindearBotonComprar() {
   let botones = document.querySelectorAll(".btnAgregarCompra");
@@ -411,26 +476,22 @@ function bindearPrecargaModificarProducto() {
   }
 }
 // FIN Bindear
+
 // Agregar
 function agregarCompra() {
   let idProducto = this.getAttribute("data-id-producto");
-  sis.agregarCompra(idProducto);
+  let cantUnidades = document.querySelector(`#numCantUnidades${idProducto}`).value;
+  sis.agregarCompra(idProducto, cantUnidades, usuarioActivo);
   listarCompra();
 }
 function agregarCompraOferta() {
   let idProducto = this.getAttribute("data-id-producto");
-  sis.agregarCompraOferta(idProducto);
+  let cantUnidades = document.querySelector(`#numCantUnidadesOferta${idProducto}`).value;
+  sis.agregarCompra(idProducto, cantUnidades, usuarioActivo);
   listarCompra();
 }
 // FIN Agregar
-// Eliminar
-function eliminarProducto() {
-  let idProducto = this.getAttribute("data-id-producto");
-  sis.eliminarProducto(idProducto);
-  listarProductos();
-}
-// FIN Eliminar
-// Editar
+// Modificar
 function precargaModificarProducto() {
   let idProducto = this.getAttribute("data-id-producto");
   let prod = sis.obtenerProductoPorId(idProducto);
@@ -450,7 +511,7 @@ function modificarProducto() {
   }
   mostrarProductos();
 }
-// FIN Editar
+// FIN Modificar
 // Cancelar
 function cancelarCompra() {
   let idCompra = this.getAttribute("data-id-Cancelar-Compra");
@@ -458,6 +519,14 @@ function cancelarCompra() {
   listarCompra();
 }
 // FIN Cancelar
+// Eliminar
+function eliminarProducto() {
+  let idProducto = this.getAttribute("data-id-producto");
+  sis.eliminarProducto(idProducto);
+  listarProductos();
+}
+// FIN Eliminar
+
 // Calculos
 function descuentoFijo(precio, descuento) {
   return precio - (precio * descuento) / 100;

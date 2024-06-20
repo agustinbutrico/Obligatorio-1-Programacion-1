@@ -8,6 +8,6 @@ class Producto {
     this.stock = _stock;
     this.estado = _estado;
     this.oferta = _oferta;
-    this.cantUnidades = _cantUnidades
+    this.cantUnidades = _cantUnidades;
   }
 }
