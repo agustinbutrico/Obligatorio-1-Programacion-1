@@ -235,7 +235,7 @@ function listarProductos() {
     let prod = sis.Productos[i];
     let productoPausado = false;
 
-    // Permite mostrar el producto aunque el stock y su estado sea 0 al administrador
+    // Permite mostrar el producto al administrador aunque el stock y su estado sea 0 
     if (!esAdministrador) {
       if (prod.stock <= 0 || prod.estado === 0) {
         productoPausado = true;
@@ -249,13 +249,14 @@ function listarProductos() {
         <td>${prod.nombre}</td>
         <td>${prod.descripcion}</td>
         <td><input type="number" id="numCantUnidades${prod.id}" value=1 min=1 style="display: inline-block;"></td>  
-        <td>${prod.precio} <small>US$</small></td>`;
+        <td>${calcularPrecio(prod.oferta, prod.precio, prod.cantUnidades, 20)} <small>US$</small></td>`;
       // Separa los botones de administrador y usuario
       if (esAdministrador) {
         cuerpoTabla += `
           <td>${prod.oferta}</td>
           <td>${prod.estado}</td>
-          <td>${prod.stock}</td>`
+          <td>${prod.stock}</td>
+          <td>${prod.unidadesVendidas}</td>`;
         // Concatena dos botones
         cuerpoTabla += `
           <td><input type="button" value="Modificar" class="btnModificarProducto" data-id-producto="${prod.id}" style="display: inline-block;">
@@ -268,25 +269,25 @@ function listarProductos() {
       // Lista Productos Oferta
       if (prod.oferta === 1) {
         existenProductoOferta = true;
-        let precioConDescuento = descuentoFijo(prod.precio, 20);
         cuerpoTablaOferta += `<tr>
           <td><img src="${prod.imagen}"></td>
           <td>${prod.nombre}</td>
           <td>${prod.descripcion}</td>
           <td><input type="number" id="numCantUnidadesOferta${prod.id}" value=1 min=1 style="display: inline-block;"></td>
-          <td>${precioConDescuento.toFixed(0)} <small>US$</small></td>`;
+          <td>${calcularPrecio(prod.oferta, prod.precio, prod.cantUnidades, 20)} <small>US$</small></td>`;
         // Separa los botones de administrador y usuario
         if (esAdministrador) {
           cuerpoTablaOferta += `
             <td>${prod.oferta}</td>
             <td>${prod.estado}</td>
-            <td>${prod.stock}</td>`
+            <td>${prod.stock}</td>
+            <td>${prod.unidadesVendidas}</td>`;
           // Concatena dos botones
           cuerpoTablaOferta += `
             <td><input class="btnModificarProducto" type="button" value="Modificar" data-id-producto="${prod.id}" style="display: inline-block;">
             <input class="btnEliminarProducto" type="button" value="Eliminar" data-id-producto="${prod.id}" style="display: inline-block;"></td></tr>`;
         } else if (!esAdministrador) {
-          cuerpoTablaOferta += `<td>20% OFF</td>`
+          cuerpoTablaOferta += `<td>20% OFF</td>`;
           // Concatena un boton
           cuerpoTablaOferta += `<td><input class="btnAgregarCompraOferta" type="button" value="Comprar" data-id-producto="${prod.id}" style="display: inline-block;"></td></tr>`;
         }
@@ -298,6 +299,9 @@ function listarProductos() {
   }
   if (existenProductoOferta) {
     tituloTablaOferta = tituloTablaProductos(existenProductoOferta);
+  }
+  if (esAdministrador) {
+    cuerpoTabla = dineroGanancia(cuerpoTabla)
   }
   document.querySelector("#tituloProductos").innerHTML = tituloTabla;
   document.querySelector("#tituloProductosOferta").innerHTML = tituloTablaOferta;
@@ -316,10 +320,11 @@ function tituloTablaProductos(pEsOferta) {
     <th style="width: 30px;">Cantidad</th>`;
   if (esAdministrador) {
     tituloTabla += `
-      <th style="width: 5%;">Precio</th>
+      <th style="width: 10%;">Precio</th>
       <th style="width: 5%;">Oferta</th>
       <th style="width: 5%;">Estado</th>
-      <th style="width: 5%;">Stock</th>`;
+      <th style="width: 5%;">Stock</th>
+      <th style="width: 5%;">Vendidas</th>`;
   } else if (!esAdministrador) {
     tituloTabla += `
       <th style="width: 10%;">Precio</th>`;
@@ -400,19 +405,14 @@ function tituloTablaCompra() {
 }
 function cuerpoTablaCompra(pProd, pFiltroUsuario) {
   let cuerpoTabla = "";
-  let precioConDescuento = descuentoFijo(pProd.precio, 20);
   if (pProd.usuarioComprador === usuarioActivo || esAdministrador) {
     if (pProd.usuarioComprador.toLowerCase().indexOf(pFiltroUsuario.toLowerCase()) !== -1) {
       cuerpoTabla += `
-      <tr><td>${pProd.estado.slice(1)}</td>
-      <td><img src="${pProd.imagen}"></td>
-      <td>${pProd.nombre}</td>`;
-      if (pProd.oferta === 1) {
-        cuerpoTabla += `<td>${precioConDescuento.toFixed(0) * pProd.cantUnidades} <small>US$</small></td>`;
-      } else if (pProd.oferta === 0) {
-        cuerpoTabla += `<td>${pProd.precio * pProd.cantUnidades} <small>US$</small></td>`;
-      }
-      cuerpoTabla += `<td>${pProd.cantUnidades}</td>`;
+        <tr><td>${pProd.estado.slice(1)}</td>
+        <td><img src="${pProd.imagen}"></td>
+        <td>${pProd.nombre}</td>
+        <td>${calcularPrecio(pProd.oferta, pProd.precio, pProd.cantUnidades, 20)} <small>US$</small></td>
+        <td>${pProd.cantUnidades}</td>`;
       // Separa los botones de adnimistrador y usuario
       if (esAdministrador) {
         // Concatena un boton
@@ -441,6 +441,16 @@ function dineroEnCuenta(pUsua) {
   return `
     <tr><td colspan="6">Saldo disponible: ${pUsua.saldo} <small>US$</small></td></tr>
     </tr><td colspan="6">Resumen de cuenta: ${pUsua.deuda} <small>US$</small></td></tr>`;
+}
+function dineroGanancia(pCuerpoTabla) {
+  let ganancias = 0;
+  for (let i = 0; i < sis.Compra.length; i++) {
+    let comp = sis.Compra[i];
+    if (comp.estado.charAt(0) === "3") {
+      ganancias += calcularPrecio(comp.oferta, comp.precio, comp.cantUnidades, 20);
+    }
+  }
+  return pCuerpoTabla.slice(0, -5) + `<tr><td colspan="10">Ganancias: ${ganancias} <small>US$</small></td></tr>`;
 }
 // FIN Compra
 
@@ -566,7 +576,14 @@ function eliminarProducto() {
 // FIN Eliminar
 
 // Calculos
-function descuentoFijo(precio, descuento) {
-  return precio - (precio * descuento) / 100;
+function calcularPrecio(pOferta, pPrecio, pCantUnidades,pDescuento) {
+  let valor = 0;
+  if (pOferta === 1) {
+    valor = pPrecio - (pPrecio * pDescuento) / 100;
+    valor = valor.toFixed(0);
+  } else if (pOferta === 0) {
+    valor = pPrecio;
+  }
+  return valor * pCantUnidades;
 }
 // FIN Calculos

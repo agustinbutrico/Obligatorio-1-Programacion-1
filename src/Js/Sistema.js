@@ -1,7 +1,7 @@
 // ID Precargados
 idUsuarioGlob = 5;
 idProductoGlob = 10;
-idCompraGlob = 5
+idCompraGlob = 5;
 // FIN ID Precargados
 let esOferta = false;
 
@@ -33,7 +33,8 @@ class Sistema {
         10,
         1,
         0,
-        1
+        1,
+        5
       ),
       new Producto(
         "PROD_ID_1",
@@ -44,9 +45,21 @@ class Sistema {
         15,
         1,
         0,
-        1
+        1,
+        6
       ),
-      new Producto("PROD_ID_2", "Pelota de Futbol", 25, "Una pelota de futbol de 26 pulgadas blanca y negra", "src/Img/pelota.jpg", 300, 1, 1, 1),
+      new Producto(
+        "PROD_ID_2",
+        "Pelota de Futbol",
+        25,
+        "Una pelota de futbol de 26 pulgadas blanca y negra",
+        "src/Img/pelota.jpg",
+        300,
+        1,
+        1,
+        1,
+        150
+      ),
       new Producto(
         "PROD_ID_3",
         "Pack de deporte Familiar",
@@ -56,14 +69,37 @@ class Sistema {
         2,
         1,
         1,
-        1
+        1,
+        3
       ),
-      new Producto("PROD_ID_4", "Raqueta de Tenis con Pelota", 12, "Una Raqueta de tenis con una pelota", "src/Img/raquetaDeTenis.jpg", 40, 1, 0, 1),
-      new Producto("PROD_ID_5", "Pack Ping-Pong", 87, "Un juego de Ping-Pong", "src/Img/pingPong.jpeg", 18, 1, 1, 1),
-      new Producto("PROD_ID_6", "Guantes de Boxeo", 99, "Par de guantes de Boxeo", "src/Img/guantes.jpg", 5, 1, 1, 1),
-      new Producto("PROD_ID_7", "Mountain Bike", 800, "Bicicleta ideal para offroad", "src/Img/bici.jpeg", 3, 1, 0, 1),
-      new Producto("PROD_ID_8", "Bate de Baisball", 667, "Un Bate de Baisball Metalico", "src/Img/bate.jpg", 2, 1, 0, 1),
-      new Producto("PROD_ID_9", "Traje de Futbol Americano", 2890, "Traje de 3 piezas para Futbol Americano", "src/Img/Americano.jpg", 1, 1, 0, 1),
+      new Producto(
+        "PROD_ID_4",
+        "Raqueta de Tenis con Pelota",
+        12,
+        "Una Raqueta de tenis con una pelota",
+        "src/Img/raquetaDeTenis.jpg",
+        40,
+        1,
+        0,
+        1,
+        34
+      ),
+      new Producto("PROD_ID_5", "Pack Ping-Pong", 87, "Un juego de Ping-Pong", "src/Img/pingPong.jpeg", 18, 1, 1, 1, 12),
+      new Producto("PROD_ID_6", "Guantes de Boxeo", 99, "Par de guantes de Boxeo", "src/Img/guantes.jpg", 5, 1, 1, 1, 9),
+      new Producto("PROD_ID_7", "Mountain Bike", 800, "Bicicleta ideal para offroad", "src/Img/bici.jpeg", 3, 1, 0, 1, 16),
+      new Producto("PROD_ID_8", "Bate de Baisball", 667, "Un Bate de Baisball Metalico", "src/Img/bate.jpg", 2, 1, 0, 1, 11),
+      new Producto(
+        "PROD_ID_9",
+        "Traje de Futbol Americano",
+        2890,
+        "Traje de 3 piezas para Futbol Americano",
+        "src/Img/Americano.jpg",
+        1,
+        1,
+        0,
+        1,
+        20
+      ),
     ];
 
     this.Compra = [
@@ -118,7 +154,7 @@ class Sistema {
   // Añade un producto nuevo a Productos
   agregarProducto(pNombre, pPrecio, pDescripcion, pImagen, pStock, pEstado, pOferta) {
     let idProductoTemp = `PROD_ID_${idProductoGlob}`;
-    this.Productos.push(new Producto(idProductoTemp, pNombre, pPrecio, pDescripcion, pImagen, pStock, pEstado, pOferta));
+    this.Productos.push(new Producto(idProductoTemp, pNombre, pPrecio, pDescripcion, pImagen, pStock, pEstado, pOferta, 0));
     idProductoGlob++;
   }
   // Elimina un producto existente de Productos
@@ -134,8 +170,8 @@ class Sistema {
   modificarProducto(pId, campoStock, campoEstado, campoOferta) {
     let prod = this.obtenerProductoPorId(pId);
     if (campoStock <= 0) {
-      campoStock = 0
-      campoEstado = 0
+      campoStock = 0;
+      campoEstado = 0;
     }
     prod.stock = campoStock;
     prod.estado = campoEstado;
@@ -193,6 +229,7 @@ class Sistema {
       prod.stock -= comp.cantUnidades;
       usua.saldo -= comp.precio;
       usua.deuda += comp.precio;
+      prod.unidadesVendidas += comp.cantUnidades;
       if (prod.stock === 0) {
         prod.estado = 0;
       }
