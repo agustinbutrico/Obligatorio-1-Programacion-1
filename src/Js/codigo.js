@@ -171,46 +171,25 @@ function ingreso() {
   } else {
     document.querySelector("#pErrorIngreso").innerHTML = "Usario y/o contraseña incorrectos";
   }
-  console.log(`esAdministrador = ${esAdministrador}`)
-  console.log(`usuarioActivo = ${usuarioActivo}`)
+  console.log(`esAdministrador = ${esAdministrador}`);
+  console.log(`usuarioActivo = ${usuarioActivo}`);
 }
 // FIN Ingreso
-// Listar
+
 // Productos
-function tituloTablaProductos() {
-  tituloTabla = `
-    <th style="width: 5%;">Producto</th>
-    <th style="width: 10%;">Nombre</th>
-    <th style="width: 50%;">Descripcion</th>
-    <th style="width: 30px;">Cantidad</th>`;
-  if (esAdministrador) {
-    tituloTabla += `
-        <th style="width: 5%;">Oferta</th>
-        <th style="width: 5%;">Precio</th>
-        <th style="width: 5%;">Stock</th>
-        <th style="width: 5%;">Estado</th>`;
-  } else if (!esAdministrador) {
-    tituloTabla += `
-        <th style="width: 5%;">Oferta</th>
-        <th style="width: 5%;">Precio</th>`;
-  }
-  tituloTabla += `
-    <th style="width: 10%;">Acción</th>`;
-  return tituloTabla;
-}
 function listarProductos() {
   let tituloTabla = "";
   let tituloTablaOferta = "";
   let cuerpoTabla = "";
   let cuerpoTablaOferta = "";
-  let existenProductos = false;
-  let existenProductosOferta = false;
+  let existenProducto = false;
+  let existenProductoOferta = false;
 
   for (i = 0; i < sis.Productos.length; i++) {
     let prod = sis.Productos[i];
     if (prod.stock > 0 && prod.estado !== 0) {
       // Lista Productos
-      existenProductos = true;
+      existenProducto = true;
       cuerpoTabla += `<tr>
         <td><img src="${prod.imagen}"></td>
         <td>${prod.nombre}</td>
@@ -232,7 +211,7 @@ function listarProductos() {
 
       // Lista Productos Oferta
       if (prod.oferta === 1) {
-        existenProductosOferta = true;
+        existenProductoOferta = true;
         let precioConDescuento = descuentoFijo(prod.precio, 20);
         cuerpoTablaOferta += `<tr>
           <td><img src="${prod.imagen}"></td>
@@ -255,10 +234,10 @@ function listarProductos() {
       }
     }
   }
-  if (existenProductos) {
+  if (existenProducto) {
     tituloTabla = tituloTablaProductos();
   }
-  if (existenProductosOferta) {
+  if (existenProductoOferta) {
     tituloTablaOferta = tituloTablaProductos();
   }
   document.querySelector("#tituloProductos").innerHTML = tituloTabla;
@@ -270,33 +249,143 @@ function listarProductos() {
   bindearBotonEliminarProducto();
   bindearPrecargaModificarProducto();
 }
-// Filtros
-function listarFiltrosCompra() {
-  let filtros = `
-    <label for="slcFiltroCompra">Filtrar por:</label>
-    <select id="slcFiltroCompra">
-      <option value="0">Todo</option>
-      <option value="1">Pendientes</option>
-      <option value="2">Canceladas</option>
-      <option value="3">Realizadas</option>
-    </select>
-    <label for="txtFiltroUsuarioCompra" id="lFiltroUsuarioCompra">Filtrar Usuario:</label>
-    <input type="text" id="txtFiltroUsuarioCompra">`;
-  document.querySelector("#secCompra").innerHTML = filtros + document.querySelector("#secCompra").innerHTML;
-}
-function administrarFiltros() {
+function tituloTablaProductos() {
+  tituloTabla = `
+    <th style="width: 5%;">Producto</th>
+    <th style="width: 10%;">Nombre</th>
+    <th style="width: 50%;">Descripcion</th>
+    <th style="width: 30px;">Cantidad</th>`;
   if (esAdministrador) {
-    document.querySelector("#lFiltroUsuarioCompra").style.display = "block";
-    document.querySelector("#txtFiltroUsuarioCompra").style.display = "inline-block";
+    tituloTabla += `
+        <th style="width: 5%;">Oferta</th>
+        <th style="width: 5%;">Precio</th>
+        <th style="width: 5%;">Stock</th>
+        <th style="width: 5%;">Estado</th>`;
   } else if (!esAdministrador) {
-    document.querySelector("#lFiltroUsuarioCompra").style.display = "none";
-    document.querySelector("#txtFiltroUsuarioCompra").style.display = "none";
+    tituloTabla += `
+        <th style="width: 5%;">Oferta</th>
+        <th style="width: 5%;">Precio</th>`;
   }
+  tituloTabla += `
+    <th style="width: 10%;">Acción</th>`;
+  return tituloTabla;
 }
-// FIN Filtros
+// FIN Productos
+
 // Compra
-function dineroEnCuenta(pUsuario) {
-  return `Saldo disponible: ${pUsuario.saldo}<small>US$</small><br>Deuda acumulada: ${pUsuario.deuda}<small>US$</small>`;
+/*
+function listarCompraAdministrador() {
+  let filtro = document.querySelector("#slcFiltroCompra").value;
+  let filtroUsuario = document.querySelector("#txtFiltroUsuarioCompra").value;
+  let tituloTabla = "";
+  let cuerpoTabla = "";
+  if (sis.Compra.length > 0) {
+    // Recorre la lista Compra
+    for (i = 0; i < sis.Compra.length; i++) {
+      let prod = sis.Compra[i];
+      // Recorre los filtros
+      if (filtro === "0") {
+        tituloTabla = tituloTablaCompra();
+        cuerpoTabla += cuerpoTablaCompra(prod, filtroUsuario);
+      } else if (filtro === "1" && filtro === prod.estado.charAt(0)) {
+        tituloTabla = tituloTablaCompra();
+        cuerpoTabla += cuerpoTablaCompra(prod, filtroUsuario);
+      } else if (filtro === "2" && filtro === prod.estado.charAt(0)) {
+        tituloTabla = tituloTablaCompra();
+        cuerpoTabla += cuerpoTablaCompra(prod, filtroUsuario);
+      } else if (filtro === "3" && filtro === prod.estado.charAt(0)) {
+        tituloTabla = tituloTablaCompra();
+        cuerpoTabla += cuerpoTablaCompra(prod, filtroUsuario);
+      }
+    }
+  }
+
+  document.querySelector("#tituloCompra").innerHTML = tituloTabla;
+  document.querySelector("#cuerpoCompra").innerHTML = cuerpoTabla;
+  bindearBotonCancelarCompra();
+}
+*/
+/*
+function listarCompra() {
+  let filtro = document.querySelector("#slcFiltroCompra").value;
+  let filtroUsuario = document.querySelector("#txtFiltroUsuarioCompra").value;
+  let tituloTabla = "";
+  let cuerpoTabla = "";
+  if (sis.Compra.length > 0) {
+    // Recorre la lista Compra
+    for (i = 0; i < sis.Compra.length; i++) {
+      let prod = sis.Compra[i];
+      // Recorre los filtros
+      if (filtro === "0") {
+        tituloTabla = tituloTablaCompra();
+        cuerpoTabla += cuerpoTablaCompra(prod, filtroUsuario);
+      } else if (filtro === "1" && filtro === prod.estado.charAt(0)) {
+        tituloTabla = tituloTablaCompra();
+        cuerpoTabla += cuerpoTablaCompra(prod, filtroUsuario);
+      } else if (filtro === "2" && filtro === prod.estado.charAt(0)) {
+        tituloTabla = tituloTablaCompra();
+        cuerpoTabla += cuerpoTablaCompra(prod, filtroUsuario);
+      } else if (filtro === "3" && filtro === prod.estado.charAt(0)) {
+        tituloTabla = tituloTablaCompra();
+        cuerpoTabla += cuerpoTablaCompra(prod, filtroUsuario);
+      }
+    }
+  }
+
+  document.querySelector("#tituloCompra").innerHTML = tituloTabla;
+  document.querySelector("#cuerpoCompra").innerHTML = cuerpoTabla;
+  bindearBotonCancelarCompra();
+}
+*/
+function listarCompra() {
+  let filtro = document.querySelector("#slcFiltroCompra").value;
+  let filtroUsuario = document.querySelector("#txtFiltroUsuarioCompra").value;
+  let existenProducto = false;
+  let tituloTabla = "";
+  let cuerpoTabla = "";
+  let lista1 = "";
+  let lista2 = "";
+  let lista3 = "";
+  if (sis.Compra.length > 0) {
+    // Recorre la lista Compra
+    for (i = 0; i < sis.Compra.length; i++) {
+      existenProducto = true;
+      let prod = sis.Compra[i];
+      // Recorre los filtros
+      if (esAdministrador) {
+        if (filtro === "0") {
+          console.log(prod.estado.charAt(0));
+          if (prod.estado.charAt(0) === "1") {
+            lista1 += cuerpoTablaCompra(prod, filtroUsuario);
+          }
+          if (prod.estado.charAt(0) === "2") {
+            lista2 += cuerpoTablaCompra(prod, filtroUsuario);
+          }
+          if (prod.estado.charAt(0) === "3") {
+            lista3 += cuerpoTablaCompra(prod, filtroUsuario);
+          }
+        }
+      } else if (!esAdministrador) {
+        if (filtro === "0") {
+          cuerpoTabla += cuerpoTablaCompra(prod, filtroUsuario);
+        } else if (filtro === "1" && filtro === prod.estado.charAt(0)) {
+          cuerpoTabla += cuerpoTablaCompra(prod, filtroUsuario);
+        } else if (filtro === "2" && filtro === prod.estado.charAt(0)) {
+          cuerpoTabla += cuerpoTablaCompra(prod, filtroUsuario);
+        } else if (filtro === "3" && filtro === prod.estado.charAt(0)) {
+          cuerpoTabla += cuerpoTablaCompra(prod, filtroUsuario);
+        }
+      }
+    }
+    if (existenProducto) {
+      tituloTabla = tituloTablaCompra();
+    }
+    cuerpoTabla += lista1 + lista2 + lista3;
+  }
+
+  document.querySelector("#tituloCompra").innerHTML = tituloTabla;
+  document.querySelector("#cuerpoCompra").innerHTML = cuerpoTabla;
+  bindearBotonCancelarCompra();
 }
 function tituloTablaCompra() {
   let tituloTabla = "";
@@ -344,37 +433,36 @@ function cuerpoTablaCompra(pProd, pFiltroUsuario) {
   }
   return cuerpoTabla;
 }
-function listarCompra() {
-  let filtro = document.querySelector("#slcFiltroCompra").value;
-  let filtroUsuario = document.querySelector("#txtFiltroUsuarioCompra").value;
-  let tituloTabla = "";
-  let cuerpoTabla = "";
-  if (sis.Compra.length > 0) {
-    // Recorre la lista Compra
-    for (i = 0; i < sis.Compra.length; i++) {
-      let prod = sis.Compra[i];
-      // Recorre los filtros
-      if (filtro === "0") {
-        tituloTabla = tituloTablaCompra();
-        cuerpoTabla += cuerpoTablaCompra(prod, filtroUsuario);
-      } else if (filtro === "1" && filtro === prod.estado.charAt(0)) {
-        tituloTabla = tituloTablaCompra();
-        cuerpoTabla += cuerpoTablaCompra(prod, filtroUsuario);
-      } else if (filtro === "2" && filtro === prod.estado.charAt(0)) {
-        tituloTabla = tituloTablaCompra();
-        cuerpoTabla += cuerpoTablaCompra(prod, filtroUsuario);
-      } else if (filtro === "3" && filtro === prod.estado.charAt(0)) {
-        tituloTabla = tituloTablaCompra();
-        cuerpoTabla += cuerpoTablaCompra(prod, filtroUsuario);
-      }
-    }
-  }
-
-  document.querySelector("#tituloCompra").innerHTML = tituloTabla;
-  document.querySelector("#cuerpoCompra").innerHTML = cuerpoTabla;
-  bindearBotonCancelarCompra();
+function dineroEnCuenta(pUsuario) {
+  return `Saldo disponible: ${pUsuario.saldo}<small>US$</small><br>Deuda acumulada: ${pUsuario.deuda}<small>US$</small>`;
 }
-// FIN Listar
+// FIN Compra
+
+// Filtros
+function listarFiltrosCompra() {
+  let filtros = `
+    <label for="slcFiltroCompra">Filtrar por:</label>
+    <select id="slcFiltroCompra">
+      <option value="0">Todo</option>
+      <option value="1">Pendientes</option>
+      <option value="2">Canceladas</option>
+      <option value="3">Realizadas</option>
+    </select>
+    <label for="txtFiltroUsuarioCompra" id="lFiltroUsuarioCompra">Filtrar Usuario:</label>
+    <input type="text" id="txtFiltroUsuarioCompra">`;
+  document.querySelector("#secCompra").innerHTML = filtros + document.querySelector("#secCompra").innerHTML;
+}
+function administrarFiltros() {
+  if (esAdministrador) {
+    document.querySelector("#lFiltroUsuarioCompra").style.display = "block";
+    document.querySelector("#txtFiltroUsuarioCompra").style.display = "inline-block";
+  } else if (!esAdministrador) {
+    document.querySelector("#lFiltroUsuarioCompra").style.display = "none";
+    document.querySelector("#txtFiltroUsuarioCompra").style.display = "none";
+  }
+}
+// FIN Filtros
+
 // Bindear
 function bindearBotonComprar() {
   let botones = document.querySelectorAll(".btnAgregarCompra");
@@ -407,28 +495,22 @@ function bindearPrecargaModificarProducto() {
   }
 }
 // FIN Bindear
+
 // Agregar
 function agregarCompra() {
   let idProducto = this.getAttribute("data-id-producto");
-  let cantUnidades = document.querySelector(`#numCantUnidades${idProducto}`).value
+  let cantUnidades = document.querySelector(`#numCantUnidades${idProducto}`).value;
   sis.agregarCompra(idProducto, cantUnidades, usuarioActivo);
   listarCompra();
 }
 function agregarCompraOferta() {
   let idProducto = this.getAttribute("data-id-producto");
-  let cantUnidades = document.querySelector(`#numCantUnidadesOferta${idProducto}`).value
+  let cantUnidades = document.querySelector(`#numCantUnidadesOferta${idProducto}`).value;
   sis.agregarCompra(idProducto, cantUnidades, usuarioActivo);
   listarCompra();
 }
 // FIN Agregar
-// Eliminar
-function eliminarProducto() {
-  let idProducto = this.getAttribute("data-id-producto");
-  sis.eliminarProducto(idProducto);
-  listarProductos();
-}
-// FIN Eliminar
-// Editar
+// Modificar
 function precargaModificarProducto() {
   let idProducto = this.getAttribute("data-id-producto");
   let prod = sis.obtenerProductoPorId(idProducto);
@@ -448,7 +530,7 @@ function modificarProducto() {
   }
   mostrarProductos();
 }
-// FIN Editar
+// FIN Modificar
 // Cancelar
 function cancelarCompra() {
   let idCompra = this.getAttribute("data-id-Cancelar-Compra");
@@ -456,6 +538,14 @@ function cancelarCompra() {
   listarCompra();
 }
 // FIN Cancelar
+// Eliminar
+function eliminarProducto() {
+  let idProducto = this.getAttribute("data-id-producto");
+  sis.eliminarProducto(idProducto);
+  listarProductos();
+}
+// FIN Eliminar
+
 // Calculos
 function descuentoFijo(precio, descuento) {
   return precio - (precio * descuento) / 100;
