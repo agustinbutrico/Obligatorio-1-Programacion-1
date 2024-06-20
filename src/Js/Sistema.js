@@ -67,11 +67,11 @@ class Sistema {
     ];
 
     this.Compra = [
-      new Compra("COMPRA_ID_4", "PROD_ID_4", "Raqueta de Tenis con Pelota", 12, "src/Img/raquetaDeTenis.jpg", 40, "1Pendiente", 0, 3),
-      new Compra("COMPRA_ID_2", "PROD_ID_2", "Pelota de Futbol", 25, "src/Img/pelota.jpg", 300, "1Pendiente", 1, 5),
-      new Compra("COMPRA_ID_5", "PROD_ID_5", "Pack Ping-Pong", 87, "src/Img/pingPong.jpeg", 18, "1Pendiente", 1, 2),
-      new Compra("COMPRA_ID_4", "PROD_ID_4", "Raqueta de Tenis con Pelota", 12, "src/Img/raquetaDeTenis.jpg", 40, "1Pendiente", 0, 1),
-      new Compra("COMPRA_ID_0", "PROD_ID_0", "Calzado Basket Long", 300, "src/Img/calzado-basket-long.jpg", 10, "1Pendiente", 0, 1),
+      new Compra("COMPRA_ID_4", "PROD_ID_4", "Raqueta de Tenis con Pelota", 12, "src/Img/raquetaDeTenis.jpg", 40, "2Cancelada", 0, 3, "Jeremy1998"),
+      new Compra("COMPRA_ID_2", "PROD_ID_2", "Pelota de Futbol", 25, "src/Img/pelota.jpg", 300, "1Pendiente", 1, 5, "Juan"),
+      new Compra("COMPRA_ID_5", "PROD_ID_5", "Pack Ping-Pong", 87, "src/Img/pingPong.jpeg", 18, "1Pendiente", 1, 2, "Juan"),
+      new Compra("COMPRA_ID_4", "PROD_ID_4", "Raqueta de Tenis con Pelota", 12, "src/Img/raquetaDeTenis.jpg", 40, "3Realizada", 0, 1, "user"),
+      new Compra("COMPRA_ID_0", "PROD_ID_0", "Calzado Basket Long", 300, "src/Img/calzado-basket-long.jpg", 10, "1Pendiente", 0, 1, "Juan"),
     ];
   }
   // Permite registrar usuarios con id auto incremental y saldo base precargado
