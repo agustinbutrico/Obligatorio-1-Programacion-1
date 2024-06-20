@@ -604,11 +604,11 @@ function eliminarProducto() {
 // Calculos
 function calcularPrecio(pOferta, pPrecio, pCantUnidades, pDescuento) {
   let valor = 0;
-  if (pOferta === 1) {
-    valor = pPrecio - (pPrecio * pDescuento) / 100;
+  if (Number(pOferta) === 1) {
+    valor = Number(pPrecio) - (Number(pPrecio) * Number(pDescuento)) / 100;
     valor = valor.toFixed(0);
-  } else if (pOferta === 0) {
-    valor = pPrecio;
+  } else if (Number(pOferta) === 0) {
+    valor = Number(pPrecio);
   }
   return valor * pCantUnidades;
 }
