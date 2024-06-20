@@ -7,13 +7,14 @@ document.querySelector("#aListarProductos").addEventListener("click", mostrarPro
 document.querySelector("#aListarProductosOferta").addEventListener("click", mostrarProductosOferta);
 document.querySelector("#aSalirDelSistema").addEventListener("click", mostrarIngreso);
 
-document.querySelector("#aIrAComprasAdmin").addEventListener("click", mostrarCompra);
-document.querySelector("#aListarProductosAdmin").addEventListener("click", mostrarProductos);
-document.querySelector("#aCrearAdmin").addEventListener("click", mostrarAdministrarProductos);
+document.querySelector("#aAdministrarCompras").addEventListener("click", mostrarCompra);
+document.querySelector("#aAdministrarProductos").addEventListener("click", mostrarProductos);
+document.querySelector("#aAdministrarsOferta").addEventListener("click", mostrarOfertas);
+document.querySelector("#aCrearProductos").addEventListener("click", mostrarCrearProductos);
 document.querySelector("#aSalirDelSistemaAdmin").addEventListener("click", mostrarIngreso);
 
-document.querySelector("#btnCancelarAdministrar").addEventListener("click", mostrarProductos);
-document.querySelector("#btnConfirmarAdministrar").addEventListener("click", modificarProducto);
+document.querySelector("#btnCancelarModificar").addEventListener("click", mostrarProductos);
+document.querySelector("#btnConfirmarModificar").addEventListener("click", modificarProducto);
 
 listarFiltrosCompra();
 document.querySelector("#slcFiltroCompra").addEventListener("change", listarCompra);
@@ -38,7 +39,7 @@ function ocultarTodo() {
   ocultar("secProductos");
   ocultar("secCompra");
   ocultar("secProductosOferta");
-  ocultar("secAdministrar");
+  ocultar("secModificar");
   console.log("Oultando todo");
 }
 function mostrarNavegacion() {
@@ -93,12 +94,12 @@ function mostrarCompra() {
   mostrar("secCompra", "block");
   console.log("Mostrando compra");
 }
-function mostrarAdministrarProducto() {
+function mostrarModificarProducto() {
   ocultarTodo();
-  mostrar("secAdministrar", "block");
+  mostrar("secModificar", "block");
   console.log("Mostrando modificar producto");
 }
-function mostrarAdministrarProductos() {
+function mostrarCrearProductos() {
   // Falta llenar
 }
 
@@ -152,8 +153,7 @@ function registro() {
   let contrasenia = document.querySelector("#txtPassRegistro").value;
   let nombre = document.querySelector("#txtNombreRegistro").value;
   let apellido = document.querySelector("#txtApellidoRegistro").value;
-  let tarjeta = document.querySelector("#numTarjetaRegistro").value;
-  tarjeta = limpiarTarjeta(tarjeta);
+  let tarjeta = limpiarTarjeta(document.querySelector("#numTarjetaRegistro").value);
   let cvc = Number(document.querySelector("#txtCVCRegistro").value);
   document.querySelector("#pErrorRegistro").innerHTML = "";
 
@@ -248,15 +248,17 @@ function listarProductos() {
         <td><img src="${prod.imagen}"></td>
         <td>${prod.nombre}</td>
         <td>${prod.descripcion}</td>
-        <td><input type="number" id="numCantUnidades${prod.id}" value=1 min=1 style="display: inline-block;"></td>
-        <td></td>
-        <td>${prod.precio} <small>US$</small></td>`;
+        <td><input type="number" id="numCantUnidades${prod.id}" value=1 min=1 style="display: inline-block;"></td>`
+      if (esAdministrador) {
+        cuerpoTabla += `<td>${prod.oferta}</td>`
+      }
+        cuerpoTabla += `<td>${prod.precio} <small>US$</small></td>`;
       // Separa los botones de administrador y usuario
       if (esAdministrador) {
         // Concatena un boton
         cuerpoTabla += `<td>${prod.stock}</td>
                         <td>${prod.estado}</td>
-                        <td><input type="button" value="Administrar" class="btnAdministrarProducto" data-id-producto="${prod.id}" style="display: inline-block;">
+                        <td><input type="button" value="Modificar" class="btnModificarProducto" data-id-producto="${prod.id}" style="display: inline-block;">
                         <input type="button" value="Eliminar" class="btnEliminarProducto" data-id-producto="${prod.id}" style="display: inline-block;"></td></tr>`;
       } else if (!esAdministrador) {
         // Concatena un boton
@@ -279,7 +281,7 @@ function listarProductos() {
           // Concatena un boton
           cuerpoTablaOferta += `<td>${prod.stock}</td>
                                 <td>${prod.estado}</td>
-                                <td><input class="btnAdministrarProducto" type="button" value="Administrar" data-id-producto="${prod.id}" style="display: inline-block;">
+                                <td><input class="btnModificarProducto" type="button" value="Modificar" data-id-producto="${prod.id}" style="display: inline-block;">
                                 <input class="btnEliminarProducto" type="button" value="Eliminar" data-id-producto="${prod.id}" style="display: inline-block;"></td></tr>`;
         } else if (!esAdministrador) {
           // Concatena un boton
@@ -301,7 +303,7 @@ function listarProductos() {
   bindearBotonComprar();
   bindearBotonComprarOferta();
   bindearBotonEliminarProducto();
-  bindearPrecargaAdministrarProducto();
+  bindearPrecargaModificarProducto();
 }
 function tituloTablaProductos() {
   tituloTabla = `
@@ -492,10 +494,10 @@ function bindearBotonEliminarProducto() {
     botones[i].addEventListener("click", eliminarProducto);
   }
 }
-function bindearPrecargaAdministrarProducto() {
-  let botones = document.querySelectorAll(".btnAdministrarProducto");
+function bindearPrecargaModificarProducto() {
+  let botones = document.querySelectorAll(".btnModificarProducto");
   for (let i = 0; i < botones.length; i++) {
-    botones[i].addEventListener("click", precargaAdministrarProducto);
+    botones[i].addEventListener("click", precargaModificarProducto);
   }
 }
 // FIN Bindear
@@ -503,38 +505,38 @@ function bindearPrecargaAdministrarProducto() {
 // Agregar
 function agregarCompra() {
   let idProducto = this.getAttribute("data-id-producto");
-  let cantUnidades = document.querySelector(`#numCantUnidades${idProducto}`).value;
+  let cantUnidades = Number(document.querySelector(`#numCantUnidades${idProducto}`).value);
   sis.agregarCompra(idProducto, cantUnidades, usuarioActivo);
   listarCompra();
 }
 function agregarCompraOferta() {
   let idProducto = this.getAttribute("data-id-producto");
-  let cantUnidades = document.querySelector(`#numCantUnidadesOferta${idProducto}`).value;
+  let cantUnidades = Number(document.querySelector(`#numCantUnidadesOferta${idProducto}`).value);
   sis.agregarCompra(idProducto, cantUnidades, usuarioActivo);
   listarCompra();
 }
 // FIN Agregar
-// Administrar
-function precargaAdministrarProducto() {
+// Modificar
+function precargaModificarProducto() {
   let idProducto = this.getAttribute("data-id-producto");
   let prod = sis.obtenerProductoPorId(idProducto);
-  document.querySelector("#txtAdministrarId").value = prod.id;
-  document.querySelector("#txtAdministrarStock").value = prod.stock;
-  document.querySelector("#slcAdministrarEstado").value = prod.estado;
-  document.querySelector("#slcAdministrarOferta").value = prod.oferta;
-  mostrarAdministrarProducto();
+  document.querySelector("#txtModificarId").value = prod.id;
+  document.querySelector("#txtModificarStock").value = prod.stock;
+  document.querySelector("#slcModificarEstado").value = prod.estado;
+  document.querySelector("#slcModificarOferta").value = prod.oferta;
+  mostrarModificarProducto();
 }
 function modificarProducto() {
-  let idProducto = document.querySelector("#txtAdministrarId").value;
-  let campoStock = document.querySelector("#txtAdministrarStock").value;
-  let campoEstado = document.querySelector("#slcAdministrarEstado").value;
-  let campoOferta = document.querySelector("#slcAdministrarOferta").value;
-  if (txtAdministrarId !== "") {
+  let idProducto = document.querySelector("#txtModificarId").value;
+  let campoStock = Number(document.querySelector("#txtModificarStock").value);
+  let campoEstado = Number(document.querySelector("#slcModificarEstado").value);
+  let campoOferta = Number(document.querySelector("#slcModificarOferta").value);
+  if (txtModificarId !== "") {
     sis.modificarProducto(idProducto, campoStock, campoEstado, campoOferta);
   }
   mostrarProductos();
 }
-// FIN Administrar
+// FIN Modificar
 // Cancelar
 function cancelarCompra() {
   let idCompra = this.getAttribute("data-id-Cancelar-Compra");
