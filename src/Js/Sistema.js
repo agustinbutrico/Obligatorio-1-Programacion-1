@@ -119,6 +119,17 @@ class Sistema {
       "src/Img/Americano.jpg",
     ]
   }
+  // Funciones usuario
+  // Permite obtener los datos del usuario por el usuario
+  obtenerUsuarioPorUsuario(pUsuario) {
+    for (let i = 0; i < this.Usuarios.length; i++) {
+      let usua = this.Usuarios[i];
+      if (pUsuario === usua.nombreUsuario) {
+        return usua;
+      }
+    }
+    return null;
+  }
   // Permite registrar usuarios con id auto incremental y saldo base precargado
   registrarUsuario(pNombreUsuario, pContrasenia, pNombre, pApellido, pTarjeta, pCVC) {
     this.Usuarios.push(new Usuario(idUsuarioGlob, 3000, pNombreUsuario, pContrasenia, pNombre, pApellido, pTarjeta, pCVC, 0));
@@ -159,6 +170,7 @@ class Sistema {
       }
     }
   }
+  // FIN Funciones usuario
   // Funciones productos
   // Añade un producto nuevo a Productos
   crearProducto(pNombre, pPrecio, pDescripcion, pImagen, pStock) {
@@ -207,15 +219,6 @@ class Sistema {
     }
     return null;
   }
-  obtenerUsuarioPorUsuario(pUsuario) {
-    for (let i = 0; i < this.Usuarios.length; i++) {
-      let usua = this.Usuarios[i];
-      if (pUsuario === usua.nombreUsuario) {
-        return usua;
-      }
-    }
-    return null;
-  }
   agregarCompra(pIdProducto, pCantUnidades, pUsuarioActivo) {
     let idCompraTemp = `COMPRA_ID_${idCompraGlob}`;
     let prod = this.obtenerProductoPorId(pIdProducto);
@@ -246,6 +249,5 @@ class Sistema {
       comp.estado = `2Cancelada`;
     }
   }
-
   // FIN Funciones compra
 }
