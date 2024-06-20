@@ -10,9 +10,9 @@ class Sistema {
     this.Administradores = [new Administrador("Valentin", "123"), new Administrador("Agustin", "321"), new Administrador("Instalador", "wwzz2233")];
 
     this.Usuarios = [
-      new Usuario(0, 3000, "Nahu515", "Panda2803", "Nahuel", "Sosa", "WWWW-XXXX-YYYY-ZZZZ", "234"),
-      new Usuario(1, 3000, "Juan", "Juanico1", "Jose", "Jose", "WVVW-XYYX-YGGY-ZFFZ", "967"),
-      new Usuario(2, 3000, "user", "user", "Usuario", "Test", "WVVW-XYYX-YGGY-ZFFZ", "999"),
+      new Usuario(0, 3000, "Nahu515", "Panda2803", "Nahuel", "Sosa", "WWWW-XXXX-YYYY-ZZZZ", "234", 0),
+      new Usuario(1, 3000, "Juan", "Juanico1", "Jose", "Jose", "WVVW-XYYX-YGGY-ZFFZ", "967", 0),
+      new Usuario(2, 3000, "user", "user", "Usuario", "Test", "WVVW-XYYX-YGGY-ZFFZ", "999", 0),
     ];
 
     this.Productos = [
@@ -57,7 +57,7 @@ class Sistema {
   }
   // Permite registrar usuarios con id auto incremental y saldo base precargado
   registrarUsuario(pNombreUsuario, pContrasenia, pNombre, pApellido, pTarjeta, pCVC) {
-    this.Usuarios.push(new Usuario(idUsuarioGlob, 3000, pNombreUsuario, pContrasenia, pNombre, pApellido, pTarjeta, pCVC));
+    this.Usuarios.push(new Usuario(idUsuarioGlob, 3000, pNombreUsuario, pContrasenia, pNombre, pApellido, pTarjeta, pCVC, 0));
     idUsuarioGlob++;
   }
   // Permite saber si el nombre de usuario esta en uso por un administrador
@@ -136,10 +136,10 @@ class Sistema {
     }
     return null;
   }
-  agregarCompra(pIdProducto, pIdCantUnidades, pUsuarioActivo) {
+  agregarCompra(pIdProducto, pCantUnidades, pUsuarioActivo) {
     let idCompraTemp = `COMPRA_ID_${idCompraGlob}`;
     let prod = this.obtenerProductoPorId(pIdProducto);
-    let cantUnidades = document.querySelector(`${pIdCantUnidades}${prod.id}`).value;
+    let cantUnidades = pCantUnidades;
     this.Compra.push(
       new Compra(idCompraTemp, prod.id, prod.nombre, prod.precio, prod.imagen, prod.stock, `1Pendiente`, prod.oferta, cantUnidades, pUsuarioActivo)
     );
