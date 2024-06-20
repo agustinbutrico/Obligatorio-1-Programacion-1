@@ -19,7 +19,7 @@ class Sistema {
       new Usuario(1, 3000, "Juan", "Juanico", "Jose", "Jose", "9823874597452378", "967", 0),
       new Usuario(2, 3000, "user", "user", "Usuario", "Test", "3279873429876723", "999", 0),
       new Usuario(3, 3000, "Jeremy1998", "HolaMundo", "Jeremy", "McLovin", "5192009489684942", "336", 0),
-      new Usuario(4, 3000, "Albert1889", "Albert123", "Albert", "Einstein", "5192009489684942", "336", 0),
+      new Usuario(4, 3000, "Albert1889", "Albert123", "Albert", "Einstein", "9589230289684048", "875", 0),
     ];
     this.Productos = [
       new Producto(
