@@ -133,6 +133,10 @@ class Sistema {
   // Edita un producto existente en Productos
   modificarProducto(pId, campoStock, campoEstado, campoOferta) {
     let prod = this.obtenerProductoPorId(pId);
+    if (campoStock <= 0) {
+      campoStock = 0
+      campoEstado = 0
+    }
     prod.stock = campoStock;
     prod.estado = campoEstado;
     prod.oferta = campoOferta;

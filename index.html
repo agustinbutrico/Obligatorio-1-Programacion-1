@@ -30,9 +30,10 @@
           <img id="logo" src="https://p1.develotion.com/cart.jpg" alt="logo" />
           <nav>
             <ul id="navSecundaria">
-              <li><a id="aIrAComprasAdmin">Administrar Compras</a></li>
-              <li><a id="aCrearAdmin">Crear Productos</a></li>
-              <li><a id="aListarProductosAdmin">Administrar Productos</a></li>
+              <li><a id="aAdministrarCompras">Administrar Compras</a></li>
+              <li><a id="aAdministrarProductos">Administrar Productos</a></li>
+              <li><a id="aAdministrarsOferta">Administrar Ofertas</a></li>
+              <li><a id="aCrearProductos">Crear Productos</a></li>
               <li><a id="aSalirDelSistemaAdmin">Salir del sistema</a></li>
             </ul>
           </nav>
@@ -111,26 +112,26 @@
           </table>
           <p id="pResumenCompra"></p>
         </section>
-        <!-- Administrar Producto -->
-        <section class="menu" id="secAdministrar">
+        <!-- Modificar Producto -->
+        <section class="menu" id="secModificar">
           <h2>Editar Producto</h2>
           <form action="#" method="post">
-            <label for="txtAdministrarId">Id del producto</label>
-            <input type="text" id="txtAdministrarId" disabled />
-            <label for="txtAdministrarStock">Stock</label>
-            <input type="text" id="txtAdministrarStock" />
-            <label for="slcAdministrarEstado">Estado</label>
-            <select id="slcAdministrarEstado">
+            <label for="txtModificarId">Id del producto</label>
+            <input type="text" id="txtModificarId" disabled />
+            <label for="txtModificarStock">Stock</label>
+            <input type="text" id="txtModificarStock" />
+            <label for="slcModificarEstado">Estado</label>
+            <select id="slcModificarEstado">
               <option value="1">Activo</option>
               <option value="0">Pausado</option>
             </select>
-            <label for="slcAdministrarOferta">En Oferta</label>
-            <select id="slcAdministrarOferta">
+            <label for="slcModificarOferta">En Oferta</label>
+            <select id="slcModificarOferta">
               <option value="0">No</option>
               <option value="1">Sí</option>
             </select>
-            <input type="button" value="Cancelar Edición" id="btnCancelarAdministrar" />
-            <input type="button" value="Confirmar Edición" id="btnConfirmarAdministrar" />
+            <input type="button" value="Cancelar Edición" id="btnCancelarModificar" />
+            <input type="button" value="Confirmar Edición" id="btnConfirmarModificar" />
           </form>
         </section>
       </main>
