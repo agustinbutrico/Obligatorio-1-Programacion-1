@@ -101,6 +101,7 @@ function mostrarCompra() {
 }
 function mostrarModificarProducto() {
   ocultarTodo();
+  mostrarNavegacion();
   mostrar("secModificar", "block");
   console.log("Mostrando modificar producto");
 }
