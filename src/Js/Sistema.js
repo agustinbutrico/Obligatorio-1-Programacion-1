@@ -9,14 +9,18 @@ class Sistema {
   constructor() {
     this.Administradores = [
       new Administrador("Valentin123", "123456"),
-      new Administrador("Agustin321", "654321"),
+      new Administrador("Agustin", "321"),
       new Administrador("Instalador", "wwzz2233"),
+      new Administrador("asd", "asd"),
+      new Administrador("hola", "hola"),
     ];
 
     this.Usuarios = [
-      new Usuario(0, 3000, "Nahu515", "Panda2803", "Nahuel", "Sosa", "WWWW-XXXX-YYYY-ZZZZ", "234"),
+      new Usuario(0, 3000, "Nahu51", "Panda28", "Nahuel", "Sosa", "WWWW-XXXX-YYYY-ZZZZ", "234"),
       new Usuario(1, 3000, "Juan", "Juanico", "Jose", "Jose", "WVVW-XYYX-YGGY-ZFFZ", "967"),
       new Usuario(2, 3000, "user", "user", "Usuario", "Test", "WVVW-XYYX-YGGY-ZFFZ", "999"),
+      new Usuario(3, 3000, "Jeremy1998", "HolaMundo", "Jeremy", "McLovin", "5192009489684942", "336"),
+      new Usuario(4, 3000, "Albert1889", "Albert123", "Albert", "Einstein", "5192009489684942", "336", 0), //_deuda
     ];
 
     this.Productos = [
@@ -64,8 +68,131 @@ class Sistema {
         1,
         1
       ),
+      new Producto(
+        "PROD_ID_4",
+        "Raqueta de Tenis con Pelota",
+        12,
+        "Una Raqueta de tenis con una pelota",
+        "src/Img/raquetaDeTenis.jpg",
+        40,
+        1,
+        0,
+        1
+      ),
+      new Producto(
+        "PROD_ID_5",
+        "Pack Ping-Pong",
+        87,
+        "Un juego de Ping-Pong",
+        "src/Img/pingPong.jpeg",
+        18,
+        1,
+        1,
+        1
+      ),
+      new Producto(
+        "PROD_ID_6",
+        "Guantes de Boxeo",
+        99,
+        "Par de guantes de Boxeo",
+        "src/Img/guantes.jpg",
+        5,
+        1,
+        1,
+        1
+      ),
+      new Producto(
+        "PROD_ID_7",
+        "Mountain Bike",
+        800,
+        "Bicicleta ideal para offroad",
+        "src/Img/bici.jpeg",
+        3,
+        1,
+        0,
+        1
+      ),
+      new Producto(
+        "PROD_ID_8",
+        "Bate de Baisball",
+        667,
+        "Un Bate de Baisball Metalico",
+        "src/Img/bate.jpg",
+        2,
+        1,
+        0,
+        1
+      ),
+      new Producto(
+        "PROD_ID_9",
+        "Traje de Futbol Americano",
+        2890,
+        "Traje de 3 piezas para Futbol Americano",
+        "src/Img/Americano.jpg",
+        1,
+        1,
+        0,
+        1
+      ),
     ];
-    this.Compra = [];
+
+    this.Compra = [
+      new Compra(
+        "COMPRA_ID_4",
+        "PROD_ID_4",
+        "Raqueta de Tenis con Pelota",
+        12,
+        "src/Img/raquetaDeTenis.jpg",
+        40,
+        '1Pendiente',
+        0,
+        3
+      ),
+      new Compra(
+        "COMPRA_ID_2",
+        "PROD_ID_2",
+        "Pelota de Futbol",
+        25,
+        "src/Img/pelota.jpg",
+        300,
+        '1Pendiente',
+        1,
+        5
+      ),
+      new Compra(
+        "COMPRA_ID_5",
+        "PROD_ID_5",
+        "Pack Ping-Pong",
+        87,
+        "src/Img/pingPong.jpeg",
+        18,
+        '1Pendiente',
+        1,
+        2
+      ),
+      new Compra(
+        "COMPRA_ID_4",
+        "PROD_ID_4",
+        "Raqueta de Tenis con Pelota",
+        12,
+        "src/Img/raquetaDeTenis.jpg",
+        40,
+        '1Pendiente',
+        0,
+        1
+      ),
+      new Compra(
+        "COMPRA_ID_0",
+        "PROD_ID_0",
+        "Calzado Basket Long",
+        300,
+        "src/Img/calzado-basket-long.jpg",
+        10,
+        '1Pendiente',
+        0,
+        1
+      )
+    ];
   }
   // Permite registrar usuarios con id auto incremental y saldo base precargado
   registrarUsuario(pNombreUsuario, pContrasenia, pNombre, pApellido, pTarjeta, pCVC) {
