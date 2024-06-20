@@ -1,3 +1,10 @@
+let sis = new Sistema();
+let esAdministrador = false;
+let usuarioActivo = "";
+mostrarIngreso();
+cargarImagenes();
+cargarFiltrosCompra();
+
 document.querySelector("#btnIngresar").addEventListener("click", ingreso);
 document.querySelector("#btnRegistrar").addEventListener("click", registro);
 document.querySelector("#aCrearCuenta").addEventListener("click", mostrarRegistro);
@@ -16,14 +23,11 @@ document.querySelector("#aSalirDelSistemaAdmin").addEventListener("click", mostr
 document.querySelector("#btnCancelarModificar").addEventListener("click", mostrarProductos);
 document.querySelector("#btnConfirmarModificar").addEventListener("click", modificarProducto);
 
-listarFiltrosCompra();
+document.querySelector("#btnCancelarCrear").addEventListener("click", mostrarProductos);
+document.querySelector("#btnConfirmarCrear").addEventListener("click", crearProducto);
+
 document.querySelector("#slcFiltroCompra").addEventListener("change", listarCompra);
 document.querySelector("#txtFiltroUsuarioCompra").addEventListener("change", listarCompra);
-
-let sis = new Sistema();
-let esAdministrador = false;
-let usuarioActivo = "";
-mostrarIngreso();
 
 //  Mostrar / Ocultar
 function mostrar(pId, estilo) {
@@ -40,6 +44,7 @@ function ocultarTodo() {
   ocultar("secCompra");
   ocultar("secProductosOferta");
   ocultar("secModificar");
+  ocultar("secCrearProducto");
   console.log("Oultando todo");
 }
 function mostrarNavegacion() {
@@ -85,8 +90,8 @@ function mostrarOfertas() {
   mostrarNavegacion();
   listarProductos();
   mostrar("secProductosOferta", "block");
+  console.log("Mostrando ofertas");
 }
-
 function mostrarCompra() {
   ocultarTodo();
   listarCompra();
@@ -100,9 +105,11 @@ function mostrarModificarProducto() {
   console.log("Mostrando modificar producto");
 }
 function mostrarCrearProductos() {
-  // Falta llenar
+  ocultarTodo();
+  mostrarNavegacion();
+  mostrar("secCrearProducto", "block");
+  console.log("Mostrando creación de productos");
 }
-
 // FIN Mostrar / Ocultar
 // Validaciones
 function campoVacio(campo) {
@@ -159,30 +166,28 @@ function registro() {
 
   if (campoVacio(usuario) || campoVacio(contrasenia) || campoVacio(nombre) || campoVacio(apellido) || campoVacio(tarjeta) || campoVacio(cvc)) {
     document.querySelector("#pErrorRegistro").innerHTML = "No pueden haber campos vacios";
+  } else if (contrasenia.length <= 5) {
+    document.querySelector("#pErrorRegistro").innerHTML = "La contraseña debe tener más de 5 caracteres";
+  } else if (!validacionCampo(contrasenia)[0]) {
+    document.querySelector("#pErrorRegistro").innerHTML = "La contraseña debe tener al menos una mayúscula";
+  } else if (!validacionCampo(contrasenia)[1]) {
+    document.querySelector("#pErrorRegistro").innerHTML = "La contraseña debe tener al menos una minúscula";
+  } else if (!validacionCampo(contrasenia)[2]) {
+    document.querySelector("#pErrorRegistro").innerHTML = "La contraseña debe tener al menos un número";
+  } else if (sis.existeAdministrador(usuario) || sis.existeUsuario(usuario)) {
+    document.querySelector("#pErrorRegistro").innerHTML = "Nombre de usuario en uso";
+  } else if (tarjeta.length !== 16) {
+    document.querySelector("#pErrorRegistro").innerHTML = "La Tarjeta de credito debe tener 16 números";
+  } else if (!validarTarjeta(tarjeta)) {
+    document.querySelector("#pErrorRegistro").innerHTML = "La Tarjeta de credito tiene un formato incorrecto";
+  } else if (cvc < 0) {
+    document.querySelector("#pErrorRegistro").innerHTML = "El código cvc debe un número positivo";
+  } else if (isNaN(cvc) || cvc.length === 3) {
+    document.querySelector("#pErrorRegistro").innerHTML = "El código cvc debe tener 3 números";
   } else {
-    if (contrasenia.length <= 5) {
-      document.querySelector("#pErrorRegistro").innerHTML = "La contraseña debe tener más de 5 caracteres";
-    } else if (!validacionCampo(contrasenia)[0]) {
-      document.querySelector("#pErrorRegistro").innerHTML = "La contraseña debe tener al menos una mayúscula";
-    } else if (!validacionCampo(contrasenia)[1]) {
-      document.querySelector("#pErrorRegistro").innerHTML = "La contraseña debe tener al menos una minúscula";
-    } else if (!validacionCampo(contrasenia)[2]) {
-      document.querySelector("#pErrorRegistro").innerHTML = "La contraseña debe tener al menos un número";
-    } else if (sis.existeAdministrador(usuario) || sis.existeUsuario(usuario)) {
-      document.querySelector("#pErrorRegistro").innerHTML = "Nombre de usuario en uso";
-    } else if (tarjeta.length !== 16) {
-      document.querySelector("#pErrorRegistro").innerHTML = "La Tarjeta de credito debe tener 16 números";
-    } else if (!validarTarjeta(tarjeta)) {
-      document.querySelector("#pErrorRegistro").innerHTML = "La Tarjeta de credito tiene un formato incorrecto";
-    } else if (cvc < 0) {
-      document.querySelector("#pErrorRegistro").innerHTML = "El código cvc debe un número positivo";
-    } else if (validacionCampo(cvc)[2] || cvc.length === 3) {
-      document.querySelector("#pErrorRegistro").innerHTML = "El código cvc debe tener 3 números";
-    } else {
-      sis.registrarUsuario(usuario, contrasenia, nombre, apellido, tarjeta, cvc);
-      // Mostrar
-      mostrarIngreso();
-    }
+    sis.registrarUsuario(usuario, contrasenia, nombre, apellido, tarjeta, cvc);
+    // Mostrar
+    mostrarIngreso();
   }
 }
 function limpiarTarjeta(pTarjeta) {
@@ -235,7 +240,7 @@ function listarProductos() {
     let prod = sis.Productos[i];
     let productoPausado = false;
 
-    // Permite mostrar el producto al administrador aunque el stock y su estado sea 0 
+    // Permite mostrar el producto al administrador aunque el stock y su estado sea 0
     if (!esAdministrador) {
       if (prod.stock <= 0 || prod.estado === 0) {
         productoPausado = true;
@@ -301,7 +306,7 @@ function listarProductos() {
     tituloTablaOferta = tituloTablaProductos(existenProductoOferta);
   }
   if (esAdministrador) {
-    cuerpoTabla = dineroGanancia(cuerpoTabla)
+    cuerpoTabla = dineroGanancia(cuerpoTabla);
   }
   document.querySelector("#tituloProductos").innerHTML = tituloTabla;
   document.querySelector("#tituloProductosOferta").innerHTML = tituloTablaOferta;
@@ -455,19 +460,6 @@ function dineroGanancia(pCuerpoTabla) {
 // FIN Compra
 
 // Filtros
-function listarFiltrosCompra() {
-  let filtros = `
-    <label for="slcFiltroCompra">Filtrar por:</label>
-    <select id="slcFiltroCompra">
-      <option value="0">Todo</option>
-      <option value="1">Pendientes</option>
-      <option value="2">Canceladas</option>
-      <option value="3">Realizadas</option>
-    </select>
-    <label for="txtFiltroUsuarioCompra" id="lFiltroUsuarioCompra">Filtrar Usuario:</label>
-    <input type="text" id="txtFiltroUsuarioCompra">`;
-  document.querySelector("#secCompra").innerHTML = filtros + document.querySelector("#secCompra").innerHTML;
-}
 function administrarFiltros() {
   if (esAdministrador) {
     document.querySelector("#lFiltroUsuarioCompra").style.display = "block";
@@ -531,6 +523,29 @@ function agregarCompraOferta() {
   sis.agregarCompra(idProducto, cantUnidades, usuarioActivo);
   listarCompra();
 }
+function crearProducto() {
+  let nombre = document.querySelector("#txtCrearNombre").value;
+  let precio = Number(document.querySelector("#txtCrearPrecio").value);
+  let descripcion = document.querySelector("#txtCrearDescripcion").value;
+  let imagen = document.querySelector("#slcCrearImagen").value;
+  let stock = Number(document.querySelector("#txtCrearStock").value);
+  document.querySelector("#pErrorCrear").innerHTML = "";
+
+  if (campoVacio(nombre) || campoVacio(precio) || campoVacio(descripcion) || imagen === "-1" || campoVacio(stock)) {
+    document.querySelector("#pErrorCrear").innerHTML = "No pueden haber campos vacios";
+  } else if (isNaN(precio)) {
+    document.querySelector("#pErrorCrear").innerHTML = "El precio debe ser numérico";
+  } else if (precio <= 0) {
+    document.querySelector("#pErrorCrear").innerHTML = "El precio debe ser mayor que 0";
+  } else if (isNaN(stock)) {
+    document.querySelector("#pErrorCrear").innerHTML = "El stock debe ser numérico";
+  } else if (stock <= 0) {
+    document.querySelector("#pErrorCrear").innerHTML = "El stock debe ser mayor que 0";
+  } else {
+    sis.crearProducto(nombre, precio, descripcion, imagen, stock);
+    mostrarProductos();
+  }
+}
 // FIN Agregar
 // Modificar
 function precargaModificarProducto() {
@@ -540,17 +555,27 @@ function precargaModificarProducto() {
   document.querySelector("#txtModificarStock").value = prod.stock;
   document.querySelector("#slcModificarEstado").value = prod.estado;
   document.querySelector("#slcModificarOferta").value = prod.oferta;
+  document.querySelector("#pErrorModificar").innerHTML = "";
   mostrarModificarProducto();
 }
 function modificarProducto() {
   let idProducto = document.querySelector("#txtModificarId").value;
-  let campoStock = Number(document.querySelector("#txtModificarStock").value);
-  let campoEstado = Number(document.querySelector("#slcModificarEstado").value);
-  let campoOferta = Number(document.querySelector("#slcModificarOferta").value);
-  if (txtModificarId !== "") {
+  let campoStock = document.querySelector("#txtModificarStock").value;
+  let campoEstado = document.querySelector("#slcModificarEstado").value;
+  let campoOferta = document.querySelector("#slcModificarOferta").value;
+  document.querySelector("#pErrorModificar").innerHTML = "";
+
+  if (campoVacio(idProducto) || campoVacio(campoStock) || campoVacio(campoEstado) || campoVacio(campoOferta)) {
+    document.querySelector("#pErrorModificar").innerHTML = "No pueden haber campos vacios";
+  } else if (isNaN(Number(campoStock))) {
+    document.querySelector("#pErrorModificar").innerHTML = "El stock debe ser numérico";
+  } else if (campoStock < 0) {
+    document.querySelector("#pErrorModificar").innerHTML = "El stock debe ser positivo";
+  } else {
+    campoStock = Number(campoStock);
     sis.modificarProducto(idProducto, campoStock, campoEstado, campoOferta);
+    mostrarProductos();
   }
-  mostrarProductos();
 }
 // FIN Modificar
 // Cancelar
@@ -576,7 +601,7 @@ function eliminarProducto() {
 // FIN Eliminar
 
 // Calculos
-function calcularPrecio(pOferta, pPrecio, pCantUnidades,pDescuento) {
+function calcularPrecio(pOferta, pPrecio, pCantUnidades, pDescuento) {
   let valor = 0;
   if (pOferta === 1) {
     valor = pPrecio - (pPrecio * pDescuento) / 100;
@@ -587,3 +612,28 @@ function calcularPrecio(pOferta, pPrecio, pCantUnidades,pDescuento) {
   return valor * pCantUnidades;
 }
 // FIN Calculos
+
+// Cargar datos
+function cargarFiltrosCompra() {
+  let filtros = `
+    <label for="slcFiltroCompra">Filtrar por:</label>
+    <select id="slcFiltroCompra">
+      <option value="0">Todo</option>
+      <option value="1">Pendientes</option>
+      <option value="2">Canceladas</option>
+      <option value="3">Realizadas</option>
+    </select>
+    <label for="txtFiltroUsuarioCompra" id="lFiltroUsuarioCompra">Filtrar Usuario:</label>
+    <input type="text" id="txtFiltroUsuarioCompra">`;
+  document.querySelector("#secCompra").innerHTML = filtros + document.querySelector("#secCompra").innerHTML;
+}
+function cargarImagenes() {
+  let combo = '<option value="-1">Seleccione...</option>';
+  for (let i = 0; i < sis.Imagenes.length; i++) {
+    let img = sis.Imagenes[i];
+    let nombreImg = img.substring(img.lastIndexOf("/") + 1);
+    combo += `<option value="${img}">${nombreImg}</option>`;
+  }
+  document.querySelector("#slcCrearImagen").innerHTML = combo;
+}
+// FIN Cargar datos
