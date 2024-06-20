@@ -14,7 +14,6 @@ class Sistema {
       new Administrador("asd", "asd"),
       new Administrador("hola", "hola"),
     ];
-
     this.Usuarios = [
       new Usuario(0, 3000, "Nahu51", "Panda28", "Nahuel", "Sosa", "8723874590452378", "234", 0),
       new Usuario(1, 3000, "Juan", "Juanico", "Jose", "Jose", "9823874597452378", "967", 0),
@@ -22,7 +21,6 @@ class Sistema {
       new Usuario(3, 3000, "Jeremy1998", "HolaMundo", "Jeremy", "McLovin", "5192009489684942", "336", 0),
       new Usuario(4, 3000, "Albert1889", "Albert123", "Albert", "Einstein", "5192009489684942", "336", 0),
     ];
-
     this.Productos = [
       new Producto(
         "PROD_ID_0",
@@ -101,7 +99,6 @@ class Sistema {
         20
       ),
     ];
-
     this.Compra = [
       new Compra("COMPRA_ID_0", "PROD_ID_4", "Raqueta de Tenis con Pelota", 12, "src/Img/raquetaDeTenis.jpg", "2Cancelada", 0, 3, "Jeremy1998"),
       new Compra("COMPRA_ID_1", "PROD_ID_2", "Pelota de Futbol", 25, "src/Img/pelota.jpg", "1Pendiente", 1, 5, "Juan"),
@@ -109,6 +106,18 @@ class Sistema {
       new Compra("COMPRA_ID_3", "PROD_ID_4", "Raqueta de Tenis con Pelota", 12, "src/Img/raquetaDeTenis.jpg", "1Pendiente", 0, 1, "user"),
       new Compra("COMPRA_ID_4", "PROD_ID_0", "Calzado Basket Long", 300, "src/Img/calzado-basket-long.jpg", "1Pendiente", 0, 1, "Juan"),
     ];
+    this.Imagenes = [
+      "src/Img/calzado-basket-long.jpg",
+      "src/Img/patin-sanz.jpg",
+      "src/Img/pelota.jpg",
+      "src/Img/pack-deporte.jpg",
+      "src/Img/raquetaDeTenis.jpg",
+      "src/Img/pingPong.jpeg",
+      "src/Img/guantes.jpg",
+      "src/Img/bici.jpeg",
+      "src/Img/bate.jpg",
+      "src/Img/Americano.jpg",
+    ]
   }
   // Permite registrar usuarios con id auto incremental y saldo base precargado
   registrarUsuario(pNombreUsuario, pContrasenia, pNombre, pApellido, pTarjeta, pCVC) {
@@ -152,9 +161,9 @@ class Sistema {
   }
   // Funciones productos
   // Añade un producto nuevo a Productos
-  agregarProducto(pNombre, pPrecio, pDescripcion, pImagen, pStock, pEstado, pOferta) {
+  crearProducto(pNombre, pPrecio, pDescripcion, pImagen, pStock) {
     let idProductoTemp = `PROD_ID_${idProductoGlob}`;
-    this.Productos.push(new Producto(idProductoTemp, pNombre, pPrecio, pDescripcion, pImagen, pStock, pEstado, pOferta, 0));
+    this.Productos.push(new Producto(idProductoTemp, pNombre, pPrecio, pDescripcion, pImagen, pStock, 1, 0, 1, 0));
     idProductoGlob++;
   }
   // Elimina un producto existente de Productos
