@@ -12,8 +12,8 @@ document.querySelector("#aListarProductosAdmin").addEventListener("click", mostr
 document.querySelector("#aCrearAdmin").addEventListener("click", mostrarAdministrarProductos);
 document.querySelector("#aSalirDelSistemaAdmin").addEventListener("click", mostrarIngreso);
 
-document.querySelector("#btnCancelarModificar").addEventListener("click", mostrarProductos);
-document.querySelector("#btnConfirmarModificar").addEventListener("click", modificarProducto);
+document.querySelector("#btnCancelarAdministrar").addEventListener("click", mostrarProductos);
+document.querySelector("#btnConfirmarAdministrar").addEventListener("click", modificarProducto);
 
 listarFiltrosCompra();
 document.querySelector("#slcFiltroCompra").addEventListener("change", listarCompra);
@@ -38,7 +38,7 @@ function ocultarTodo() {
   ocultar("secProductos");
   ocultar("secCompra");
   ocultar("secProductosOferta");
-  ocultar("secModificar");
+  ocultar("secAdministrar");
   console.log("Oultando todo");
 }
 function mostrarNavegacion() {
@@ -93,9 +93,9 @@ function mostrarCompra() {
   mostrar("secCompra", "block");
   console.log("Mostrando compra");
 }
-function mostrarModificarProducto() {
+function mostrarAdministrarProducto() {
   ocultarTodo();
-  mostrar("secModificar", "block");
+  mostrar("secAdministrar", "block");
   console.log("Mostrando modificar producto");
 }
 function mostrarAdministrarProductos() {
@@ -233,7 +233,15 @@ function listarProductos() {
 
   for (i = 0; i < sis.Productos.length; i++) {
     let prod = sis.Productos[i];
-    if (prod.stock > 0 && prod.estado !== 0) {
+    let productoPausado = false;
+
+    // Permite mostrar el producto aunque el stock y su estado sea 0 al administrador
+    if (!esAdministrador) {
+      if (prod.stock <= 0 || prod.estado === 0) {
+        productoPausado = true;
+      }
+    }
+    if (!productoPausado) {
       // Lista Productos
       existenProducto = true;
       cuerpoTabla += `<tr>
@@ -248,7 +256,7 @@ function listarProductos() {
         // Concatena un boton
         cuerpoTabla += `<td>${prod.stock}</td>
                         <td>${prod.estado}</td>
-                        <td><input type="button" value="Modificar" class="btnModificarProducto" data-id-producto="${prod.id}" style="display: inline-block;">
+                        <td><input type="button" value="Administrar" class="btnAdministrarProducto" data-id-producto="${prod.id}" style="display: inline-block;">
                         <input type="button" value="Eliminar" class="btnEliminarProducto" data-id-producto="${prod.id}" style="display: inline-block;"></td></tr>`;
       } else if (!esAdministrador) {
         // Concatena un boton
@@ -271,7 +279,7 @@ function listarProductos() {
           // Concatena un boton
           cuerpoTablaOferta += `<td>${prod.stock}</td>
                                 <td>${prod.estado}</td>
-                                <td><input class="btnModificarProducto" type="button" value="Modificar" data-id-producto="${prod.id}" style="display: inline-block;">
+                                <td><input class="btnAdministrarProducto" type="button" value="Administrar" data-id-producto="${prod.id}" style="display: inline-block;">
                                 <input class="btnEliminarProducto" type="button" value="Eliminar" data-id-producto="${prod.id}" style="display: inline-block;"></td></tr>`;
         } else if (!esAdministrador) {
           // Concatena un boton
@@ -293,7 +301,7 @@ function listarProductos() {
   bindearBotonComprar();
   bindearBotonComprarOferta();
   bindearBotonEliminarProducto();
-  bindearPrecargaModificarProducto();
+  bindearPrecargaAdministrarProducto();
 }
 function tituloTablaProductos() {
   tituloTabla = `
@@ -321,16 +329,15 @@ function tituloTablaProductos() {
 function listarCompra() {
   let filtro = document.querySelector("#slcFiltroCompra").value;
   let filtroUsuario = document.querySelector("#txtFiltroUsuarioCompra").value;
-  let existenProducto = false;
   let tituloTabla = "";
   let cuerpoTabla = "";
+  let resumenCuenta = "";
   let lista1 = "";
   let lista2 = "";
   let lista3 = "";
   if (sis.Compra.length > 0) {
     // Recorre la lista Compra
     for (i = 0; i < sis.Compra.length; i++) {
-      existenProducto = true;
       let prod = sis.Compra[i];
       // Recorre los filtros
       if (filtro === "0") {
@@ -355,12 +362,16 @@ function listarCompra() {
         cuerpoTabla += cuerpoTablaCompra(prod, filtroUsuario);
       }
     }
-    if (existenProducto) {
+    cuerpoTabla += lista1 + lista2 + lista3;
+    if (cuerpoTabla.length > 0) {
       tituloTabla = tituloTablaCompra();
     }
-    cuerpoTabla += lista1 + lista2 + lista3;
   }
-
+  if (!esAdministrador) {
+    let usua = sis.obtenerUsuarioPorUsuario(usuarioActivo);
+    resumenCuenta = dineroEnCuenta(usua);
+  }
+  document.querySelector("#pResumenCompra").innerHTML = resumenCuenta;
   document.querySelector("#tituloCompra").innerHTML = tituloTabla;
   document.querySelector("#cuerpoCompra").innerHTML = cuerpoTabla;
   bindearBotonCancelarCompra();
@@ -401,13 +412,13 @@ function cuerpoTablaCompra(pProd, pFiltroUsuario) {
         // Concatena un boton
         cuerpoTabla += `<td>${pProd.usuarioComprador}</td>`;
         // Muestra el boton cuando el producto no está Aprobado
-        if (pProd.estado !== "3Aprobada") {
+        if (pProd.estado === "1Pendiente") {
           // Concatena un boton
           cuerpoTabla += `<td><input class="btnAprobarCompra" type="button" value="Aprobar Compra" data-id-Aprobar-Compra="${pProd.id}" style="display: inline-block;"></td></tr>`;
         } else {
           cuerpoTabla += `<td></td></tr>`;
         }
-      } else {
+      } else if (!esAdministrador) {
         // Muestra el boton cuando el producto no está cancelado
         if (pProd.estado === "1Pendiente") {
           // Concatena un boton
@@ -420,8 +431,8 @@ function cuerpoTablaCompra(pProd, pFiltroUsuario) {
   }
   return cuerpoTabla;
 }
-function dineroEnCuenta(pUsuario) {
-  return `Saldo disponible: ${pUsuario.saldo}<small>US$</small><br>Deuda acumulada: ${pUsuario.deuda}<small>US$</small>`;
+function dineroEnCuenta(pUsua) {
+  return `Saldo disponible: ${pUsua.saldo}<small>US$</small><br>Resumen de cuenta: ${pUsua.deuda}<small>US$</small>`;
 }
 // FIN Compra
 
@@ -481,10 +492,10 @@ function bindearBotonEliminarProducto() {
     botones[i].addEventListener("click", eliminarProducto);
   }
 }
-function bindearPrecargaModificarProducto() {
-  let botones = document.querySelectorAll(".btnModificarProducto");
+function bindearPrecargaAdministrarProducto() {
+  let botones = document.querySelectorAll(".btnAdministrarProducto");
   for (let i = 0; i < botones.length; i++) {
-    botones[i].addEventListener("click", precargaModificarProducto);
+    botones[i].addEventListener("click", precargaAdministrarProducto);
   }
 }
 // FIN Bindear
@@ -503,27 +514,27 @@ function agregarCompraOferta() {
   listarCompra();
 }
 // FIN Agregar
-// Modificar
-function precargaModificarProducto() {
+// Administrar
+function precargaAdministrarProducto() {
   let idProducto = this.getAttribute("data-id-producto");
   let prod = sis.obtenerProductoPorId(idProducto);
-  document.querySelector("#txtModificarId").value = prod.id;
-  document.querySelector("#txtModificarStock").value = prod.stock;
-  document.querySelector("#slcModificarEstado").value = prod.estado;
-  document.querySelector("#slcModificarOferta").value = prod.oferta;
-  mostrarModificarProducto();
+  document.querySelector("#txtAdministrarId").value = prod.id;
+  document.querySelector("#txtAdministrarStock").value = prod.stock;
+  document.querySelector("#slcAdministrarEstado").value = prod.estado;
+  document.querySelector("#slcAdministrarOferta").value = prod.oferta;
+  mostrarAdministrarProducto();
 }
 function modificarProducto() {
-  let idProducto = document.querySelector("#txtModificarId").value;
-  let campoStock = document.querySelector("#txtModificarStock").value;
-  let campoEstado = document.querySelector("#slcModificarEstado").value;
-  let campoOferta = document.querySelector("#slcModificarOferta").value;
-  if (txtModificarId !== "") {
+  let idProducto = document.querySelector("#txtAdministrarId").value;
+  let campoStock = document.querySelector("#txtAdministrarStock").value;
+  let campoEstado = document.querySelector("#slcAdministrarEstado").value;
+  let campoOferta = document.querySelector("#slcAdministrarOferta").value;
+  if (txtAdministrarId !== "") {
     sis.modificarProducto(idProducto, campoStock, campoEstado, campoOferta);
   }
   mostrarProductos();
 }
-// FIN Modificar
+// FIN Administrar
 // Cancelar
 function cancelarCompra() {
   let idCompra = this.getAttribute("data-id-Cancelar-Compra");
