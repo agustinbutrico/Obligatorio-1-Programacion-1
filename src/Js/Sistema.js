@@ -16,9 +16,9 @@ class Sistema {
     ];
 
     this.Usuarios = [
-      new Usuario(0, 3000, "Nahu51", "Panda28", "Nahuel", "Sosa", "WWWW-XXXX-YYYY-ZZZZ", "234"),
-      new Usuario(1, 3000, "Juan", "Juanico", "Jose", "Jose", "WVVW-XYYX-YGGY-ZFFZ", "967"),
-      new Usuario(2, 3000, "user", "user", "Usuario", "Test", "WVVW-XYYX-YGGY-ZFFZ", "999"),
+      new Usuario(0, 3000, "Nahu51", "Panda28", "Nahuel", "Sosa", "8723874590452378", "234"),
+      new Usuario(1, 3000, "Juan", "Juanico", "Jose", "Jose", "9823874597452378", "967"),
+      new Usuario(2, 3000, "user", "user", "Usuario", "Test", "3279873429876723", "999"),
       new Usuario(3, 3000, "Jeremy1998", "HolaMundo", "Jeremy", "McLovin", "5192009489684942", "336"),
       new Usuario(4, 3000, "Albert1889", "Albert123", "Albert", "Einstein", "5192009489684942", "336", 0), //_deuda
     ];

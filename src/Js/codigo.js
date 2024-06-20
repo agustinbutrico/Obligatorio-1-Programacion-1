@@ -1,41 +1,21 @@
 document.querySelector("#btnIngresar").addEventListener("click", ingreso);
 document.querySelector("#btnRegistrar").addEventListener("click", registro);
-document
-  .querySelector("#aCrearCuenta")
-  .addEventListener("click", mostrarRegistro);
+document.querySelector("#aCrearCuenta").addEventListener("click", mostrarRegistro);
 
 document.querySelector("#aIrACompras").addEventListener("click", mostrarCompra);
 document.querySelector("#aIrAOfertas").addEventListener("click", mostrarOfertas);
-document
-  .querySelector("#aListarProductos")
-  .addEventListener("click", mostrarProductos);
-document
-  .querySelector("#aSalirDelSistema")
-  .addEventListener("click", mostrarIngreso);
+document.querySelector("#aListarProductos").addEventListener("click", mostrarProductos);
+document.querySelector("#aSalirDelSistema").addEventListener("click", mostrarIngreso);
 
-document
-  .querySelector("#aIrAComprasAdmin")
-  .addEventListener("click", mostrarCompra);
-document
-  .querySelector("#aListarProductosAdmin")
-  .addEventListener("click", mostrarProductos);
-document
-  .querySelector("#aCrearAdmin")
-  .addEventListener("click", mostrarAdministrarProductos);
-document
-  .querySelector("#aSalirDelSistemaAdmin")
-  .addEventListener("click", mostrarIngreso);
+document.querySelector("#aIrAComprasAdmin").addEventListener("click", mostrarCompra);
+document.querySelector("#aListarProductosAdmin").addEventListener("click", mostrarProductos);
+document.querySelector("#aCrearAdmin").addEventListener("click", mostrarAdministrarProductos);
+document.querySelector("#aSalirDelSistemaAdmin").addEventListener("click", mostrarIngreso);
 
-document
-  .querySelector("#btnCancelarModificar")
-  .addEventListener("click", mostrarProductos);
-document
-  .querySelector("#btnConfirmarModificar")
-  .addEventListener("click", modificarProducto);
+document.querySelector("#btnCancelarModificar").addEventListener("click", mostrarProductos);
+document.querySelector("#btnConfirmarModificar").addEventListener("click", modificarProducto);
 
-document
-  .querySelector("#slcFiltroCompra")
-  .addEventListener("change", listarCompra);
+document.querySelector("#slcFiltroCompra").addEventListener("change", listarCompra);
 
 let sis = new Sistema();
 let esAdministrador = false;
@@ -84,7 +64,7 @@ function mostrarProductos() {
   mostrar("secProductos", "block");
   mostrar("secProductosOferta", "block");
 }
-function mostrarOfertas(){
+function mostrarOfertas() {
   ocultarTodo();
   mostrarNavegacion();
   listarProductos();
@@ -135,92 +115,70 @@ function registro() {
   let nombre = document.querySelector("#txtNombreRegistro").value;
   let apellido = document.querySelector("#txtApellidoRegistro").value;
   let tarjeta = document.querySelector("#numTarjetaRegistro").value;
-  let cvc = document.querySelector("#txtCVCRegistro").value;
+  tarjeta = limpiarTarjeta(tarjeta);
+  let cvc = Number(document.querySelector("#txtCVCRegistro").value);
   document.querySelector("#pErrorRegistro").innerHTML = "";
 
-  if (
-    campoVacio(usuario) ||
-    campoVacio(contrasenia) ||
-    campoVacio(nombre) ||
-    campoVacio(apellido) ||
-    campoVacio(tarjeta) ||
-    campoVacio(cvc)
-  ) {
-    document.querySelector("#pErrorRegistro").innerHTML =
-      "No pueden haber campos vacios";
+  if (campoVacio(usuario) || campoVacio(contrasenia) || campoVacio(nombre) || campoVacio(apellido) || campoVacio(tarjeta) || campoVacio(cvc)) {
+    document.querySelector("#pErrorRegistro").innerHTML = "No pueden haber campos vacios";
   } else {
     if (contrasenia.length <= 5) {
-      document.querySelector("#pErrorRegistro").innerHTML =
-        "La contraseña debe tener más de 5 caracteres ";
+      document.querySelector("#pErrorRegistro").innerHTML = "La contraseña debe tener más de 5 caracteres";
     } else if (!validacionCampo(contrasenia)[0]) {
-      document.querySelector("#pErrorRegistro").innerHTML =
-        "La contraseña debe tener al menos una mayúscula ";
+      document.querySelector("#pErrorRegistro").innerHTML = "La contraseña debe tener al menos una mayúscula";
     } else if (!validacionCampo(contrasenia)[1]) {
-      document.querySelector("#pErrorRegistro").innerHTML =
-        "La contraseña debe tener al menos una minúscula ";
+      document.querySelector("#pErrorRegistro").innerHTML = "La contraseña debe tener al menos una minúscula";
     } else if (!validacionCampo(contrasenia)[2]) {
-      document.querySelector("#pErrorRegistro").innerHTML =
-        "La contraseña debe tener al menos un número ";
+      document.querySelector("#pErrorRegistro").innerHTML = "La contraseña debe tener al menos un número";
     } else if (sis.existeAdministrador(usuario) || sis.existeUsuario(usuario)) {
-      document.querySelector("#pErrorRegistro").innerHTML =
-        "Nombre de usuario en uso";
+      document.querySelector("#pErrorRegistro").innerHTML = "Nombre de usuario en uso";
+    } else if (tarjeta.length !== 16) {
+      document.querySelector("#pErrorRegistro").innerHTML = "La Tarjeta de credito debe tener 16 números";
+    } else if (!validarTarjeta(tarjeta)) {
+      document.querySelector("#pErrorRegistro").innerHTML = "La Tarjeta de credito tiene un formato incorrecto";
+    } else if (cvc < 0) {
+      document.querySelector("#pErrorRegistro").innerHTML = "El código cvc debe un número positivo";
+    } else if (validacionCampo(cvc)[2] || cvc.length === 3) {
+      document.querySelector("#pErrorRegistro").innerHTML = "El código cvc debe tener 3 números";
     } else {
-      if (!validarTarjeta(tarjeta)) {
-        document.querySelector("#pErrorRegistro").innerHTML =
-          "La Tarjeta de credito tiene un formato incorrecto ";
-      } else {
-        sis.registrarUsuario(
-          usuario,
-          contrasenia,
-          nombre,
-          apellido,
-          tarjeta,
-          cvc
-        );
-        // Mostrar
-        mostrarIngreso();
-      }
+      sis.registrarUsuario(usuario, contrasenia, nombre, apellido, tarjeta, cvc);
+      // Mostrar
+      mostrarIngreso();
     }
   }
 }
 
-function limpiarFormato(tarjeta) {
-  return tarjeta.replace('-', '');
+function limpiarTarjeta(pTarjeta) {
+  let tarjetaLimpia = "";
+  for (let i = 0; i < pTarjeta.length; i++) {
+    let l = pTarjeta.charAt(i);
+    if (!isNaN(l)) {
+      tarjetaLimpia += l;
+    }
+  }
+  return tarjetaLimpia;
 }
-
-function validarTarjeta(tarjeta) {
-  if (!tarjeta) {
+function validarTarjeta(pTarjeta) {
+  if (!pTarjeta) {
     return false;
-  }else{
+  } else {
     let suma = 0;
     let duplicar = false;
-  
-    for (let i = tarjeta.length - 1; i >= 0; i--) {
-      let n = Number(tarjeta[i]);
-  
+
+    for (let i = pTarjeta.length - 1; i >= 0; i--) {
+      let n = Number(pTarjeta[i]);
       if (duplicar) {
         n *= 2;
         if (n > 9) {
           n -= 9;
         }
       }
-  
       suma += n;
       duplicar = !duplicar;
     }
-  
-    return (suma % 10 === 0);
+    return suma % 10 === 0;
   }
 }
-
-function verificarTarjeta(tarjeta) {
-  const nroLimpio = limpiarFormato(tarjeta);
-  if (!validacionCampo(nroLimpio)[2]) {
-    return false; 
-  }
-  return validarTarjeta(nroLimpio);
-}
-
 
 // Fin Registro
 // Ingreso
@@ -229,8 +187,7 @@ function ingreso() {
   contrasenia = document.querySelector("#passContraseniaIngreso").value;
 
   if (campoVacio(usuario) || campoVacio(contrasenia)) {
-    document.querySelector("#pErrorIngreso").innerHTML =
-      "No pueden haber campos vacios";
+    document.querySelector("#pErrorIngreso").innerHTML = "No pueden haber campos vacios";
   } else if (sis.verificarCredencialesAdministrador(usuario, contrasenia)) {
     esAdministrador = true;
     ocultarTodo();
@@ -242,17 +199,12 @@ function ingreso() {
     mostrarNavegacion();
     mostrarProductos();
   } else {
-    document.querySelector("#pErrorIngreso").innerHTML =
-      "Usario y/o contraseña incorrectos";
+    document.querySelector("#pErrorIngreso").innerHTML = "Usario y/o contraseña incorrectos";
   }
 }
 // FIN Ingreso
 // Listar
-function tituloTablaProductos(
-  pEsOferta,
-  pExistenProductos,
-  pExistenProductosOferta
-) {
+function tituloTablaProductos(pEsOferta, pExistenProductos, pExistenProductosOferta) {
   tituloTabla = `
     <th style="width: 5%;">Producto</th>
     <th style="width: 10%;">Nombre</th>
@@ -328,9 +280,7 @@ function listarProductos() {
           <td><img src="${prod.imagen}"></td>
           <td>${prod.nombre}</td>
           <td>${prod.descripcion}</td>
-          <td><input type="number" id="numCantUnidadesOferta${
-            prod.id
-          }" min=1 value=1 style="display: inline-block;"></td>
+          <td><input type="number" id="numCantUnidadesOferta${prod.id}" min=1 value=1 style="display: inline-block;"></td>
           <td>20% OFF</td>
           <td>${precioConDescuento.toFixed(0)} <small>US$</small></td>`;
         // Separa los botones de administrador y usuario
@@ -348,22 +298,13 @@ function listarProductos() {
     }
   }
   if (existenProductos) {
-    tituloTabla = tituloTablaProductos(
-      false,
-      existenProductos,
-      existenProductosOferta
-    );
+    tituloTabla = tituloTablaProductos(false, existenProductos, existenProductosOferta);
   }
   if (existenProductosOferta) {
-    tituloTablaOferta = tituloTablaProductos(
-      true,
-      existenProductos,
-      existenProductosOferta
-    );
+    tituloTablaOferta = tituloTablaProductos(true, existenProductos, existenProductosOferta);
   }
   document.querySelector("#tituloProductos").innerHTML = tituloTabla;
-  document.querySelector("#tituloProductosOferta").innerHTML =
-    tituloTablaOferta;
+  document.querySelector("#tituloProductosOferta").innerHTML = tituloTablaOferta;
   document.querySelector("#curpoProductos").innerHTML = cuerpoTabla;
   document.querySelector("#curpoProductosOferta").innerHTML = cuerpoTablaOferta;
   bindearBotonComprar();
@@ -379,13 +320,9 @@ function cuerpoTablaCompra(prod) {
   <td><img src="${prod.imagen}"></td>
   <td>${prod.nombre}</td>`;
   if (prod.oferta === 1) {
-    cuerpoTabla += `<td>${
-      precioConDescuento.toFixed(0) * prod.cantUnidades
-    } <small>US$</small></td>`;
+    cuerpoTabla += `<td>${precioConDescuento.toFixed(0) * prod.cantUnidades} <small>US$</small></td>`;
   } else {
-    cuerpoTabla += `<td>${
-      prod.precio * prod.cantUnidades
-    } <small>US$</small></td>`;
+    cuerpoTabla += `<td>${prod.precio * prod.cantUnidades} <small>US$</small></td>`;
   }
   cuerpoTabla += `<td>${prod.cantUnidades}</td><td>`;
   // Separa los botones de adnimistrador y usuario
