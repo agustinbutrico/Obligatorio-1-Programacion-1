@@ -354,20 +354,19 @@ function listarCompra() {
       // Recorre los filtros
       if (esAdministrador) {
         if (filtro === "0") {
-          console.log(prod.estado.charAt(0));
-          if (prod.estado.charAt(0) === "1") {
-            lista1 += cuerpoTablaCompra(prod, filtroUsuario);
+          if (esAdministrador) {
+            if (prod.estado.charAt(0) === "1") {
+              lista1 += cuerpoTablaCompra(prod, filtroUsuario);
+            }
+            if (prod.estado.charAt(0) === "2") {
+              lista2 += cuerpoTablaCompra(prod, filtroUsuario);
+            }
+            if (prod.estado.charAt(0) === "3") {
+              lista3 += cuerpoTablaCompra(prod, filtroUsuario);
+            }
+          } else if (!esAdministrador) {
+            cuerpoTabla += cuerpoTablaCompra(prod, filtroUsuario);
           }
-          if (prod.estado.charAt(0) === "2") {
-            lista2 += cuerpoTablaCompra(prod, filtroUsuario);
-          }
-          if (prod.estado.charAt(0) === "3") {
-            lista3 += cuerpoTablaCompra(prod, filtroUsuario);
-          }
-        }
-      } else if (!esAdministrador) {
-        if (filtro === "0") {
-          cuerpoTabla += cuerpoTablaCompra(prod, filtroUsuario);
         } else if (filtro === "1" && filtro === prod.estado.charAt(0)) {
           cuerpoTabla += cuerpoTablaCompra(prod, filtroUsuario);
         } else if (filtro === "2" && filtro === prod.estado.charAt(0)) {
