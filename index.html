@@ -90,6 +90,7 @@
     <!-- Contenido -->
     <section class="contenido">
       <main>
+        <!-- Todos los productos -->
         <section id="secProductos">
           <!-- tabla de los productos -->
           <table style="width: 100%">
@@ -97,6 +98,7 @@
             <tbody id="curpoProductos"></tbody>
           </table>
         </section>
+        <!-- Productos en oferta -->
         <section id="secProductosOferta">
           <!-- tabla de las Ofertas -->
           <table style="width: 100%">
@@ -131,6 +133,33 @@
             </select>
             <input type="button" value="Cancelar Edición" id="btnCancelarModificar" />
             <input type="button" value="Confirmar Edición" id="btnConfirmarModificar" />
+          </form>
+        </section>
+        <section class="menu" id="secCrearProducto">
+          <h2>Crear Producto</h2>
+          <form action="#" method="post">
+            <label for="txtCrearNombre">Nombre del producto</label>
+            <input type="text" id="txtCrearNombre" />
+            <label for="txtCrearPrecio">Precio</label>
+            <input type="text" id="txtCrearPrecio" />
+            <label for="txtCrearDescripcion">Descripción</label>
+            <input type="text" id="txtCrearDescripcion" />
+            <label for="slcCrearImagen">Imagen</label>
+            <select id="slcCrearImagen">
+              <option value="vacio">...</option>
+              <option value="0">Calzado Basket Long</option>
+              <option value="1">Patín Artístico SANZ Profesional</option>
+              <option value="2">Pelota de Futbol</option>
+              <option value="3">Pack de deporte Familiar</option>
+              <option value="4">Raqueta de Tenis con Pelota</option>
+              <option value="5">Pack Ping-Pong</option>
+              <option value="6">Guantes de Boxeo</option>
+              <option value="7">Mountain Bike</option>
+              <option value="8">Bate de Baisball</option>
+              <option value="9">Traje de Futbol Americano</option>
+            </select>
+            <input type="button" value="Cancelar Creación" id="btnCancelarCreacion" />
+            <input type="button" value="Confirmar Creación" id="btnConfirmarCreacion" />
           </form>
         </section>
       </main>

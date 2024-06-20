@@ -86,7 +86,6 @@ function mostrarOfertas() {
   listarProductos();
   mostrar("secProductosOferta", "block");
 }
-
 function mostrarCompra() {
   ocultarTodo();
   listarCompra();
