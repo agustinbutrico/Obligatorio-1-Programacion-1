@@ -182,9 +182,9 @@ class Sistema {
       campoStock = 0;
       campoEstado = 0;
     }
-    prod.stock = campoStock;
-    prod.estado = campoEstado;
-    prod.oferta = campoOferta;
+    prod.stock = Number(campoStock);
+    prod.estado = Number(campoEstado);
+    prod.oferta = Number(campoOferta);
   }
   // Obtiene los meta datos de un producto existente en Productos
   obtenerProductoPorId(pIdProducto) {
