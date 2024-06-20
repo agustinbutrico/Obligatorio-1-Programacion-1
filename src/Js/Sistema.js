@@ -16,9 +16,9 @@ class Sistema {
     ];
 
     this.Usuarios = [
-      new Usuario(0, 3000, "Nahu51", "Panda28", "Nahuel", "Sosa", "WWWW-XXXX-YYYY-ZZZZ", "234", 0),
-      new Usuario(1, 3000, "Juan", "Juanico", "Jose", "Jose", "WVVW-XYYX-YGGY-ZFFZ", "967", 0),
-      new Usuario(2, 3000, "user", "user", "Usuario", "Test", "WVVW-XYYX-YGGY-ZFFZ", "999", 0),
+      new Usuario(0, 3000, "Nahu51", "Panda28", "Nahuel", "Sosa", "8723874590452378", "234", 0),
+      new Usuario(1, 3000, "Juan", "Juanico", "Jose", "Jose", "9823874597452378", "967", 0),
+      new Usuario(2, 3000, "user", "user", "Usuario", "Test", "3279873429876723", "999", 0),
       new Usuario(3, 3000, "Jeremy1998", "HolaMundo", "Jeremy", "McLovin", "5192009489684942", "336", 0),
       new Usuario(4, 3000, "Albert1889", "Albert123", "Albert", "Einstein", "5192009489684942", "336", 0),
     ];
@@ -67,11 +67,11 @@ class Sistema {
     ];
 
     this.Compra = [
-      new Compra("COMPRA_ID_4", "PROD_ID_4", "Raqueta de Tenis con Pelota", 12, "src/Img/raquetaDeTenis.jpg", 40, "2Cancelada", 0, 3, "Jeremy1998"),
-      new Compra("COMPRA_ID_2", "PROD_ID_2", "Pelota de Futbol", 25, "src/Img/pelota.jpg", 300, "1Pendiente", 1, 5, "Juan"),
-      new Compra("COMPRA_ID_5", "PROD_ID_5", "Pack Ping-Pong", 87, "src/Img/pingPong.jpeg", 18, "1Pendiente", 1, 2, "Juan"),
-      new Compra("COMPRA_ID_4", "PROD_ID_4", "Raqueta de Tenis con Pelota", 12, "src/Img/raquetaDeTenis.jpg", 40, "3Realizada", 0, 1, "user"),
-      new Compra("COMPRA_ID_0", "PROD_ID_0", "Calzado Basket Long", 300, "src/Img/calzado-basket-long.jpg", 10, "1Pendiente", 0, 1, "Juan"),
+      new Compra("COMPRA_ID_0", "PROD_ID_4", "Raqueta de Tenis con Pelota", 12, "src/Img/raquetaDeTenis.jpg", 40, "2Cancelada", 0, 3, "Jeremy1998"),
+      new Compra("COMPRA_ID_1", "PROD_ID_2", "Pelota de Futbol", 25, "src/Img/pelota.jpg", 300, "1Pendiente", 1, 5, "Juan"),
+      new Compra("COMPRA_ID_2", "PROD_ID_5", "Pack Ping-Pong", 87, "src/Img/pingPong.jpeg", 18, "1Pendiente", 1, 2, "Juan"),
+      new Compra("COMPRA_ID_3", "PROD_ID_4", "Raqueta de Tenis con Pelota", 12, "src/Img/raquetaDeTenis.jpg", 40, "3Realizada", 0, 1, "user"),
+      new Compra("COMPRA_ID_4", "PROD_ID_0", "Calzado Basket Long", 300, "src/Img/calzado-basket-long.jpg", 10, "1Pendiente", 0, 1, "Juan"),
     ];
   }
   // Permite registrar usuarios con id auto incremental y saldo base precargado
