@@ -248,18 +248,18 @@ function listarProductos() {
         <td><img src="${prod.imagen}"></td>
         <td>${prod.nombre}</td>
         <td>${prod.descripcion}</td>
-        <td><input type="number" id="numCantUnidades${prod.id}" value=1 min=1 style="display: inline-block;"></td>`
-      if (esAdministrador) {
-        cuerpoTabla += `<td>${prod.oferta}</td>`
-      }
-        cuerpoTabla += `<td>${prod.precio} <small>US$</small></td>`;
+        <td><input type="number" id="numCantUnidades${prod.id}" value=1 min=1 style="display: inline-block;"></td>  
+        <td>${prod.precio} <small>US$</small></td>`;
       // Separa los botones de administrador y usuario
       if (esAdministrador) {
-        // Concatena un boton
-        cuerpoTabla += `<td>${prod.stock}</td>
-                        <td>${prod.estado}</td>
-                        <td><input type="button" value="Modificar" class="btnModificarProducto" data-id-producto="${prod.id}" style="display: inline-block;">
-                        <input type="button" value="Eliminar" class="btnEliminarProducto" data-id-producto="${prod.id}" style="display: inline-block;"></td></tr>`;
+        cuerpoTabla += `
+          <td>${prod.oferta}</td>
+          <td>${prod.estado}</td>
+          <td>${prod.stock}</td>`
+        // Concatena dos botones
+        cuerpoTabla += `
+          <td><input type="button" value="Modificar" class="btnModificarProducto" data-id-producto="${prod.id}" style="display: inline-block;">
+          <input type="button" value="Eliminar" class="btnEliminarProducto" data-id-producto="${prod.id}" style="display: inline-block;"></td></tr>`;
       } else if (!esAdministrador) {
         // Concatena un boton
         cuerpoTabla += `<td><input class="btnAgregarCompra" type="button" value="Comprar" data-id-producto="${prod.id}" style="display: inline-block;"></td></tr>`;
@@ -274,16 +274,19 @@ function listarProductos() {
           <td>${prod.nombre}</td>
           <td>${prod.descripcion}</td>
           <td><input type="number" id="numCantUnidadesOferta${prod.id}" value=1 min=1 style="display: inline-block;"></td>
-          <td>20% OFF</td>
           <td>${precioConDescuento.toFixed(0)} <small>US$</small></td>`;
         // Separa los botones de administrador y usuario
         if (esAdministrador) {
-          // Concatena un boton
-          cuerpoTablaOferta += `<td>${prod.stock}</td>
-                                <td>${prod.estado}</td>
-                                <td><input class="btnModificarProducto" type="button" value="Modificar" data-id-producto="${prod.id}" style="display: inline-block;">
-                                <input class="btnEliminarProducto" type="button" value="Eliminar" data-id-producto="${prod.id}" style="display: inline-block;"></td></tr>`;
+          cuerpoTablaOferta += `
+            <td>${prod.oferta}</td>
+            <td>${prod.estado}</td>
+            <td>${prod.stock}</td>`
+          // Concatena dos botones
+          cuerpoTablaOferta += `
+            <td><input class="btnModificarProducto" type="button" value="Modificar" data-id-producto="${prod.id}" style="display: inline-block;">
+            <input class="btnEliminarProducto" type="button" value="Eliminar" data-id-producto="${prod.id}" style="display: inline-block;"></td></tr>`;
         } else if (!esAdministrador) {
+          cuerpoTablaOferta += `<td>20% OFF</td>`
           // Concatena un boton
           cuerpoTablaOferta += `<td><input class="btnAgregarCompraOferta" type="button" value="Comprar" data-id-producto="${prod.id}" style="display: inline-block;"></td></tr>`;
         }
@@ -294,7 +297,7 @@ function listarProductos() {
     tituloTabla = tituloTablaProductos();
   }
   if (existenProductoOferta) {
-    tituloTablaOferta = tituloTablaProductos();
+    tituloTablaOferta = tituloTablaProductos(existenProductoOferta);
   }
   document.querySelector("#tituloProductos").innerHTML = tituloTabla;
   document.querySelector("#tituloProductosOferta").innerHTML = tituloTablaOferta;
@@ -305,7 +308,7 @@ function listarProductos() {
   bindearBotonEliminarProducto();
   bindearPrecargaModificarProducto();
 }
-function tituloTablaProductos() {
+function tituloTablaProductos(pEsOferta) {
   tituloTabla = `
     <th style="width: 5%;">Producto</th>
     <th style="width: 10%;">Nombre</th>
@@ -313,14 +316,17 @@ function tituloTablaProductos() {
     <th style="width: 30px;">Cantidad</th>`;
   if (esAdministrador) {
     tituloTabla += `
-        <th style="width: 5%;">Oferta</th>
-        <th style="width: 5%;">Precio</th>
-        <th style="width: 5%;">Stock</th>
-        <th style="width: 5%;">Estado</th>`;
+      <th style="width: 5%;">Precio</th>
+      <th style="width: 5%;">Oferta</th>
+      <th style="width: 5%;">Estado</th>
+      <th style="width: 5%;">Stock</th>`;
   } else if (!esAdministrador) {
     tituloTabla += `
-        <th style="width: 5%;">Oferta</th>
-        <th style="width: 5%;">Precio</th>`;
+      <th style="width: 10%;">Precio</th>`;
+    if (pEsOferta) {
+      tituloTabla += `
+        <th style="width: 5%;">Oferta</th>`;
+    }
   }
   tituloTabla += `
     <th style="width: 10%;">Acción</th>`;
@@ -333,7 +339,6 @@ function listarCompra() {
   let filtroUsuario = document.querySelector("#txtFiltroUsuarioCompra").value;
   let tituloTabla = "";
   let cuerpoTabla = "";
-  let resumenCuenta = "";
   let lista1 = "";
   let lista2 = "";
   let lista3 = "";
@@ -371,9 +376,8 @@ function listarCompra() {
   }
   if (!esAdministrador) {
     let usua = sis.obtenerUsuarioPorUsuario(usuarioActivo);
-    resumenCuenta = dineroEnCuenta(usua);
+    cuerpoTabla = cuerpoTabla.slice(0, -5) + dineroEnCuenta(usua);
   }
-  document.querySelector("#pResumenCompra").innerHTML = resumenCuenta;
   document.querySelector("#tituloCompra").innerHTML = tituloTabla;
   document.querySelector("#cuerpoCompra").innerHTML = cuerpoTabla;
   bindearBotonCancelarCompra();
@@ -405,7 +409,7 @@ function cuerpoTablaCompra(pProd, pFiltroUsuario) {
       <td>${pProd.nombre}</td>`;
       if (pProd.oferta === 1) {
         cuerpoTabla += `<td>${precioConDescuento.toFixed(0) * pProd.cantUnidades} <small>US$</small></td>`;
-      } else {
+      } else if (pProd.oferta === 0) {
         cuerpoTabla += `<td>${pProd.precio * pProd.cantUnidades} <small>US$</small></td>`;
       }
       cuerpoTabla += `<td>${pProd.cantUnidades}</td>`;
@@ -434,7 +438,9 @@ function cuerpoTablaCompra(pProd, pFiltroUsuario) {
   return cuerpoTabla;
 }
 function dineroEnCuenta(pUsua) {
-  return `Saldo disponible: ${pUsua.saldo}<small>US$</small><br>Resumen de cuenta: ${pUsua.deuda}<small>US$</small>`;
+  return `
+    <tr><td colspan="6">Saldo disponible: ${pUsua.saldo} <small>US$</small></td></tr>
+    </tr><td colspan="6">Resumen de cuenta: ${pUsua.deuda} <small>US$</small></td></tr>`;
 }
 // FIN Compra
 
