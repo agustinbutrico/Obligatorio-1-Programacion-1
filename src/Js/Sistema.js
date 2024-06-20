@@ -70,7 +70,7 @@ class Sistema {
       new Compra("COMPRA_ID_0", "PROD_ID_4", "Raqueta de Tenis con Pelota", 12, "src/Img/raquetaDeTenis.jpg", 40, "2Cancelada", 0, 3, "Jeremy1998"),
       new Compra("COMPRA_ID_1", "PROD_ID_2", "Pelota de Futbol", 25, "src/Img/pelota.jpg", 300, "1Pendiente", 1, 5, "Juan"),
       new Compra("COMPRA_ID_2", "PROD_ID_5", "Pack Ping-Pong", 87, "src/Img/pingPong.jpeg", 18, "1Pendiente", 1, 2, "Juan"),
-      new Compra("COMPRA_ID_3", "PROD_ID_4", "Raqueta de Tenis con Pelota", 12, "src/Img/raquetaDeTenis.jpg", 40, "3Realizada", 0, 1, "user"),
+      new Compra("COMPRA_ID_3", "PROD_ID_4", "Raqueta de Tenis con Pelota", 12, "src/Img/raquetaDeTenis.jpg", 40, "3Aprobada", 0, 1, "user"),
       new Compra("COMPRA_ID_4", "PROD_ID_0", "Calzado Basket Long", 300, "src/Img/calzado-basket-long.jpg", 10, "1Pendiente", 0, 1, "Juan"),
     ];
   }
@@ -170,6 +170,10 @@ class Sistema {
   cancelarCompra(pIdCompra) {
     let prod = this.obtenerCompraPorId(pIdCompra);
     prod.estado = `2Cancelado`;
+  }
+  aprobarCompra(pIdCompra) {
+    let prod = this.obtenerCompraPorId(pIdCompra);
+    prod.estado = `3Aprobada`;
   }
 
   // FIN Funciones compra

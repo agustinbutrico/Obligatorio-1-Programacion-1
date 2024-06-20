@@ -3,7 +3,6 @@ document.querySelector("#btnRegistrar").addEventListener("click", registro);
 document.querySelector("#aCrearCuenta").addEventListener("click", mostrarRegistro);
 
 document.querySelector("#aIrACompras").addEventListener("click", mostrarCompra);
-document.querySelector("#aIrAOfertas").addEventListener("click", mostrarOfertas);
 document.querySelector("#aListarProductos").addEventListener("click", mostrarProductos);
 document.querySelector("#aListarProductosOferta").addEventListener("click", mostrarProductosOferta);
 document.querySelector("#aSalirDelSistema").addEventListener("click", mostrarIngreso);
@@ -125,6 +124,27 @@ function validacionCampo(campo) {
   }
   return [mayuscula, minuscula, numero];
 }
+function validarTarjeta(pTarjeta) {
+  if (!pTarjeta) {
+    return false;
+  } else {
+    let suma = 0;
+    let duplicar = false;
+
+    for (let i = pTarjeta.length - 1; i >= 0; i--) {
+      let n = Number(pTarjeta[i]);
+      if (duplicar) {
+        n *= 2;
+        if (n > 9) {
+          n -= 9;
+        }
+      }
+      suma += n;
+      duplicar = !duplicar;
+    }
+    return suma % 10 === 0;
+  }
+}
 // FIN Validaciones
 // Registro
 function registro() {
@@ -165,7 +185,6 @@ function registro() {
     }
   }
 }
-
 function limpiarTarjeta(pTarjeta) {
   let tarjetaLimpia = "";
   for (let i = 0; i < pTarjeta.length; i++) {
@@ -176,28 +195,6 @@ function limpiarTarjeta(pTarjeta) {
   }
   return tarjetaLimpia;
 }
-function validarTarjeta(pTarjeta) {
-  if (!pTarjeta) {
-    return false;
-  } else {
-    let suma = 0;
-    let duplicar = false;
-
-    for (let i = pTarjeta.length - 1; i >= 0; i--) {
-      let n = Number(pTarjeta[i]);
-      if (duplicar) {
-        n *= 2;
-        if (n > 9) {
-          n -= 9;
-        }
-      }
-      suma += n;
-      duplicar = !duplicar;
-    }
-    return suma % 10 === 0;
-  }
-}
-
 // Fin Registro
 // Ingreso
 function ingreso() {
@@ -367,6 +364,7 @@ function listarCompra() {
   document.querySelector("#tituloCompra").innerHTML = tituloTabla;
   document.querySelector("#cuerpoCompra").innerHTML = cuerpoTabla;
   bindearBotonCancelarCompra();
+  bindearBotonAprobarCompra();
 }
 function tituloTablaCompra() {
   let tituloTabla = "";
@@ -386,29 +384,37 @@ function tituloTablaCompra() {
 function cuerpoTablaCompra(pProd, pFiltroUsuario) {
   let cuerpoTabla = "";
   let precioConDescuento = descuentoFijo(pProd.precio, 20);
-  if (pProd.usuarioComprador.toLowerCase().indexOf(pFiltroUsuario.toLowerCase()) !== -1) {
-    cuerpoTabla += `
-    <tr><td>${pProd.estado.slice(1)}</td>
-    <td><img src="${pProd.imagen}"></td>
-    <td>${pProd.nombre}</td>`;
-    if (pProd.oferta === 1) {
-      cuerpoTabla += `<td>${precioConDescuento.toFixed(0) * pProd.cantUnidades} <small>US$</small></td>`;
-    } else {
-      cuerpoTabla += `<td>${pProd.precio * pProd.cantUnidades} <small>US$</small></td>`;
-    }
-    cuerpoTabla += `<td>${pProd.cantUnidades}</td>`;
-    // Separa los botones de adnimistrador y usuario
-    if (esAdministrador) {
-      // Concatena un boton
-      cuerpoTabla += `<td>${pProd.usuarioComprador}</td>`;
-      cuerpoTabla += `<td></td>`;
-    } else {
-      // Muestra el boton cuando el producto no está cancelado
-      if (pProd.estado === "1Pendiente") {
-        // Concatena un boton
-        cuerpoTabla += `<td><input type="button" value="Cancelar Compra" class="btnCancelarCompra" data-id-Cancelar-Compra="${pProd.id}" style="display: inline-block;"></td></tr>`;
+  if (pProd.usuarioComprador === usuarioActivo || esAdministrador) {
+    if (pProd.usuarioComprador.toLowerCase().indexOf(pFiltroUsuario.toLowerCase()) !== -1) {
+      cuerpoTabla += `
+      <tr><td>${pProd.estado.slice(1)}</td>
+      <td><img src="${pProd.imagen}"></td>
+      <td>${pProd.nombre}</td>`;
+      if (pProd.oferta === 1) {
+        cuerpoTabla += `<td>${precioConDescuento.toFixed(0) * pProd.cantUnidades} <small>US$</small></td>`;
       } else {
-        cuerpoTabla += `<td></td></tr>`;
+        cuerpoTabla += `<td>${pProd.precio * pProd.cantUnidades} <small>US$</small></td>`;
+      }
+      cuerpoTabla += `<td>${pProd.cantUnidades}</td>`;
+      // Separa los botones de adnimistrador y usuario
+      if (esAdministrador) {
+        // Concatena un boton
+        cuerpoTabla += `<td>${pProd.usuarioComprador}</td>`;
+        // Muestra el boton cuando el producto no está Aprobado
+        if (pProd.estado !== "3Aprobada") {
+          // Concatena un boton
+          cuerpoTabla += `<td><input class="btnAprobarCompra" type="button" value="Aprobar Compra" data-id-Aprobar-Compra="${pProd.id}" style="display: inline-block;"></td></tr>`;
+        } else {
+          cuerpoTabla += `<td></td></tr>`;
+        }
+      } else {
+        // Muestra el boton cuando el producto no está cancelado
+        if (pProd.estado === "1Pendiente") {
+          // Concatena un boton
+          cuerpoTabla += `<td><input class="btnCancelarCompra" type="button" value="Cancelar Compra" data-id-Cancelar-Compra="${pProd.id}" style="display: inline-block;"></td></tr>`;
+        } else {
+          cuerpoTabla += `<td></td></tr>`;
+        }
       }
     }
   }
@@ -461,6 +467,12 @@ function bindearBotonCancelarCompra() {
   let botones = document.querySelectorAll(".btnCancelarCompra");
   for (let i = 0; i < botones.length; i++) {
     botones[i].addEventListener("click", cancelarCompra);
+  }
+}
+function bindearBotonAprobarCompra() {
+  let botones = document.querySelectorAll(".btnAprobarCompra");
+  for (let i = 0; i < botones.length; i++) {
+    botones[i].addEventListener("click", aprobarCompra);
   }
 }
 function bindearBotonEliminarProducto() {
@@ -519,6 +531,13 @@ function cancelarCompra() {
   listarCompra();
 }
 // FIN Cancelar
+// Aprobar
+function aprobarCompra() {
+  let idCompra = this.getAttribute("data-id-Aprobar-Compra");
+  sis.aprobarCompra(idCompra);
+  listarCompra();
+}
+// FIN Aprobar
 // Eliminar
 function eliminarProducto() {
   let idProducto = this.getAttribute("data-id-producto");
